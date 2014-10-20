@@ -1,0 +1,24 @@
+# The get-examples.py uses this file to pull down source code examples for our book from
+# various sources. These will be cached in the examples subdirectory.
+# The script is re-entrant and can be used to pull down updates
+#
+# HPC-style examples (George and Konstantin)
+#
+hg,integration,https://bitbucket.org/loyolachicagocs_plsystems/integration-scala
+hg,lcs-systolicarray,https://bitbucket.org/loyolachicagocs_plsystems/lcs-systolicarray-scala
+
+# Student-contributed
+#hg,predatorprey,https://bitbucket.org/loyolachicagocs_plsystems/predatorprey-scala-eclipse
+
+#
+# Introductory, CS1 style things
+#
+hg,hpspc-babysteps,https://bitbucket.org/loyolachicagocs_plsystems/hpspc-babysteps
+
+hg,hpjpc,https://bitbucket.org/loyolachicagocs_books/hpjpc-source-java
+
+#
+# Emerging Numerical and Intro CS examples collections
+
+hg,introcs-scala-examples,https://bitbucket.org/loyolachicagocs_books/introcs-scala-examples
+hg,numerical-explorations-scala,https://bitbucket.org/loyolachicagocs_plsystems/numerical-explorations-scala
