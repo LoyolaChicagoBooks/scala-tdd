@@ -2,7 +2,7 @@ Welcome to the Test-Driven Development in Scala upstream repository.
 This repository is maintained by George K. Thiruvathukal.
 
 With this project, we're going to make use of a distributed workflow from the beginning. What this
-means is that each of us will do our work (including George, the maintiner) in a forked repository.
+means is that each of us will do our work (including George, the maintainer) in a forked repository.
 
 We're going to use the paradigm outlined in
 http://git-scm.com/book/en/Distributed-Git-Distributed-Workflows, the only difference being that 
@@ -17,4 +17,4 @@ Details will follow, but as soon as you get your private fork set up, please let
 allow us to see what each other are working on. 
 
 So the new model is commit early and often. Don't worry about holding tokens and all that jazz. Just
-write! 
+write!

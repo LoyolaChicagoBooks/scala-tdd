@@ -32,3 +32,5 @@ examples/
 *.vrb
 *.xdy
 *.tdo
+*~
+\#*\#
