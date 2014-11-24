@@ -15,13 +15,14 @@ Book Contents
 .. toctree::
    :maxdepth: 2
 
-   advanced.rst
+   fundamentals.rst 
+   environment.rst 
+   basicjava.rst
+   mocking.rst 
+   advanced.rst 
    ci.rst
-   environment.rst
-   fundamentals.rst
-   mocking.rst
-   scalacheck.rst
-   scalatest.rst
+   uitesting.rst
+   cpdctesting.rst
 
 
 Indices and tables

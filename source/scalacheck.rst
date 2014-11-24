@@ -1,4 +1,0 @@
-ScalaCheck
-===============
-
-Details to follow.

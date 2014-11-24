@@ -1,5 +1,5 @@
-ScalaTest
-============
+Basic Testing
+=============
 
 - almost like a meta-framework that supports a broad range of testing styles
 - great way to get started with Scala as a team
