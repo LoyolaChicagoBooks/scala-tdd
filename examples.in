@@ -4,21 +4,21 @@
 #
 # HPC-style examples (George and Konstantin)
 #
-hg,integration,https://bitbucket.org/loyolachicagocs_plsystems/integration-scala
-hg,lcs-systolicarray,https://bitbucket.org/loyolachicagocs_plsystems/lcs-systolicarray-scala
+git,integration,https://github.com/LoyolaChicagoCode/integration-scala
+git,lcs-systolicarray,https://github.com/LoyolaChicagoCode/lcs-systolicarray-scala
 
 # Student-contributed
-#hg,predatorprey,https://bitbucket.org/loyolachicagocs_plsystems/predatorprey-scala-eclipse
+#git,predatorprey,https://github.com/LoyolaChicagoCode/predatorprey-scala-eclipse
 
 #
 # Introductory, CS1 style things
 #
-hg,hpspc-babysteps,https://bitbucket.org/loyolachicagocs_plsystems/hpspc-babysteps
+git,hpspc-babysteps,https://github.com/LoyolaChicagoCode/hpspc-babysteps
 
-hg,hpjpc,https://bitbucket.org/loyolachicagocs_books/hpjpc-source-java
+git,hpjpc,https://github.com/LoyolaChicagoCode/hpjpc-source-java
 
 #
 # Emerging Numerical and Intro CS examples collections
 
-hg,introcs-scala-examples,https://bitbucket.org/loyolachicagocs_books/introcs-scala-examples
-hg,numerical-explorations-scala,https://bitbucket.org/loyolachicagocs_plsystems/numerical-explorations-scala
+git,introcs-scala-examples,https://github.com/LoyolaChicagoCode/introcs-scala-examples
+git,numerical-explorations-scala,https://github.com/LoyolaChicagoCode/numerical-explorations-scala
