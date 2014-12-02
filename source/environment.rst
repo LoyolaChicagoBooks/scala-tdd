@@ -14,6 +14,13 @@ Testing Environment and Simple Build Tool (SBT)
 .. todo:: Consider evaluating and possibly discussing Typesafe
           Activator (sbt-based!).
 
+.. todo:: explain sbt's test interface and that ScalaTest supports
+	  this directly but the com.novocode interface is required for
+	  running JUnit tests
+
+.. todo:: explain in detail all different ways to run tests (or a
+	  single test) with sbt, including test:console
+
 In this chapter, we'll discuss your choices for setting up an
 effective development and testing environment for Scala. The main
 thing to keep in mind is that proper testing almost always involves
