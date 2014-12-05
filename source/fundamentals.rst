@@ -8,8 +8,24 @@ dimensions of testing
 
 - correctness
 - performance: express runtime expectations as assertions
-- level: unit, integration, functional
-- code coverage: measures, tools (-> environment)
+- level: unit, integration, system, acceptance
+- visibility: white, gray, black box
+- code coverage: measures (statement, branch, path, etc.), tools (->
+  environment)
+
+style: bdd versus tdd
+---------------------
+
+- http://blog.andolasoft.com/2014/06/rails-things-you-must-know-about-tdd-and-bdd.html
+- http://stackoverflow.com/questions/15389490/bdd-in-scala-does-it-have-to-be-ugly
+- http://blog.knoldus.com/2013/01/15/atdd-cucumber-and-scala/
+- cucumber-jvm https://github.com/cucumber/cucumber-jvm, jbehave http://jbehave.org
+- specs2: very powerful and expressive, covers broad range of styles, http://etorreborre.github.io/specs2
+
+The role of automated testing in the development process (see Fowler)
+  - testing
+  - refactoring
+  - CI/CD
 
 examples
 --------------
