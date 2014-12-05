@@ -1,11 +1,9 @@
-Testing Environment and Simple Build Tool (SBT)
-===============================================
+Testing Environment and the Simple Build Tool (SBT)
+===================================================
 
 .. note:: We should definitely cover the use of the command-line and
 	  how to work within IntelliJ. I think we should not waste
 	  time with Eclipse, but this can be discussed. 
-
-.. note:: Here we can paint the context.
 
 .. todo:: I think we should include a very brief paragraph to mention
 	  the Scala Eclipse IDE and point out that it works with Juno
@@ -38,36 +36,6 @@ environment (IDE), you are in luck as well: JetBrains IntelliJ IDEA
 and Eclipse, both very popular IDEs for Scala, integrate well with
 sbt.
 
-Getting Started
----------------
-
-The main prerequisite to Scala development is having a Java runtime,
-version 1.6 or later, installed on your system. We recommend that you
-install the `latest available Oracle Java 7 Development Kit
-<http://www.oracle.com/technetwork/java/javase/downloads/>`_. While
-you can work with OpenJDK and other VM implementations to run Scala,
-we believe that that the best experience and performance comes from
-the latest stable release of the Java 7 Platform.
-
-Equally important is having an installation of sbt itself on your
-system. The exact way of doing so depends on your platform. 
-
-- On the Mac, the recommended way is to use Homebrew
-
-  .. code-block:: bash
-
-       $ brew install sbt
-
-  or MacPorts:
-
-  .. code-block:: bash
-
-       $ sudo port install sbt
-
-- On Windows and Linux, the recommended way is to use the installer
-for your platform available in the `sbt setup instructions
-<http://www.scala-sbt.org/0.13/tutorial/Setup.html>`_.
- 
 
 Brief History of Build Tools
 ----------------------------
@@ -76,9 +44,9 @@ Brief History of Build Tools
 
 In general, build tools support the build process in several ways:
 
-- structured representation of the project dependency graph
-- management of the build lifecycle (compile, test, run)
-- management of external dependencies
+1. structured representation of the project dependency graph
+2. management of the build lifecycle (compile, test, run)
+3. management of external dependencies
 
 Some well-known build tools include:
 
@@ -111,8 +79,43 @@ Apache ivy, Gradle, sbt, etc.
 
    <dependency org="junit" name="junit" rev="4.11"/>
 
-sbt
----
+We will focus on sbt in the remainder of this book, though the
+concepts equally apply to similar build systems and IDEs.
+
+
+Installing sbt
+--------------
+
+The main prerequisite to Scala development is having a Java runtime,
+version 1.6 or later, installed on your system. We recommend that you
+install the `latest available Oracle Java 7 Development Kit
+<http://www.oracle.com/technetwork/java/javase/downloads/>`_. While
+you can work with OpenJDK and other VM implementations to run Scala,
+we believe that that the best experience and performance comes from
+the latest stable release of the Java 7 Platform.
+
+Equally important is having an installation of sbt itself on your
+system. The exact way of doing so depends on your platform. 
+
+- On the Mac, the recommended way is to use Homebrew
+
+  .. code-block:: bash
+
+       $ brew install sbt
+
+  or MacPorts:
+
+  .. code-block:: bash
+
+       $ sudo port install sbt
+
+- On Windows and Linux, the recommended way is to use the installer
+for your platform available in the `sbt setup instructions
+<http://www.scala-sbt.org/0.13/tutorial/Setup.html>`_.
+ 
+
+Configuring sbt
+---------------
 
 In the simplest case, sbt does not require any configuration and will
 use reasonable defaults. The project layout is the same as the one
@@ -149,21 +152,54 @@ or as a group
 .. code-block:: scala
 
    libraryDependencies ++= Seq(
-     "org.scala-lang" % "scala-actors" % "2.10.1",
+     "org.scalatest" %% "scalatest" % "2.2.1" % "test",
      "com.novocode" % "junit-interface" % "0.10" % "test"
    )
+
+.. todo:: explain % versus %%
 
 Build.scala format
 ^^^^^^^^^^^^^^^^^^
 
-Some complex projects require build files that use the full Scala
+Though you are generally encouraged to use the ``build.sbt`` format,
+some complex projects require build files that use the full Scala
 syntax. The main build file should be named ``Build.scala``. It and
 other Scala-based build files must be placed in the ``project``
 subfolder of your project root.
 
 
+Testing with sbt
+----------------
+
+.. note:: http://www.scala-sbt.org/0.13/docs/Testing.html - elaborate here 
+
+.. todo:: factor out as proper code example
+
+key tasks
+
+- test
+- testOnly
+- testQuick
+- test:console
+- ``test:`` prefix
+
+other tips
+
+- sbt history
+
+
+Example: Trapezoidal Integration
+--------------------------------
+
+.. literalinclude:: ../examples/integration/src/test/scala/edu/luc/etl/sigcse13/scala/integration/Tests.scala
+   :language: scala
+   :linenos:
+
+
 Plugin Ecosystem
 ----------------
+
+.. todo:: focus on plugins relevant to testing
 
 sbt includes a growing plugin ecosystem. `You can install them per
 project or
@@ -173,13 +209,14 @@ Some useful examples include
 - `sbteclipse <https://github.com/typesafehub/sbteclipse>`_
   automatically generates an Eclipse project configuration from an sbt
   one.
-
 - `sbt-start-script <https://github.com/sbt/sbt-start-script>`_
   generates a start script for running a Scala application outside of
   sbt.
-
 - `sbt-scoverage <https://github.com/scoverage/sbt-scoverage>`_:
   uses Scoverage to produce a test code coverage report
+- `sbt-coveralls <https://github.com/scoverage/sbt-coveralls>`_:
+  uploads scala code coverage to https://coveralls.io and integrates
+  with Travis CI
 - `ls-sbt <https://github.com/softprops/ls>`_:  browse available
   libraries on GitHub using ls.implicit.ly
 - `sbt-dependency-graph <https://github.com/jrudolph/sbt-dependency-graph>`_: creates a
@@ -218,6 +255,8 @@ faster.
 
 To work around false compilation errors in Scala worksheets, we also
 recommend a standalone installation of sbt.
+
+.. todo:: add screenshots and other details
 
 
 IDE Option: Eclipse Scala IDE
