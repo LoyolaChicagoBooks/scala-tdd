@@ -242,6 +242,8 @@ latex_elements = {
 
 # Additional stuff for the LaTeX preamble.
 #'preamble': '',
+
+  'preamble': '\usepackage[paperwidth=7in, paperheight=9in]{geometry}'
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
@@ -378,3 +380,5 @@ epub_exclude_files = ['search.html']
 
 # If false, no index is generated.
 #epub_use_index = True
+
+todo_include_todos = True

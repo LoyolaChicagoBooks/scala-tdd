@@ -12,6 +12,10 @@ Testing Environment and the Simple Build Tool (SBT)
 .. todo:: Consider evaluating and possibly discussing Typesafe
           Activator (sbt-based!).
 
+.. note:: The main reference source for this chapter is
+	  http://www.scala-sbt.org/0.13/docs/, especially
+	  http://www.scala-sbt.org/0.13/docs/Testing.html 
+	  
 .. todo:: explain sbt's test interface and that ScalaTest supports
 	  this directly but the com.novocode interface is required for
 	  running JUnit tests
@@ -110,20 +114,24 @@ system. The exact way of doing so depends on your platform.
        $ sudo port install sbt
 
 - On Windows and Linux, the recommended way is to use the installer
-for your platform available in the `sbt setup instructions
-<http://www.scala-sbt.org/0.13/tutorial/Setup.html>`_.
+  for your platform available in the `sbt setup instructions
+  <http://www.scala-sbt.org/0.13/tutorial/Setup.html>`_. 
  
 
 Configuring sbt
 ---------------
 
-In the simplest case, sbt does not require any configuration and will
+In the simplest cases, sbt does not require any configuration and will
 use reasonable defaults. The project layout is the same as the one
 Maven uses:
 
 - Production code goes in ``src/main/scala``.
 - Test code goes in ``src/test/scala``.
 
+In practice, however, we will want to include some automated testing
+in the build process, and this typically requires at least one build
+dependency, as we will see shortly.
+  
 sbt supports two configuration styles, one based on a simple
 Scala-based domain-specific language, and one based on the full Scala
 language for configuring all aspects of a project.
@@ -145,56 +153,214 @@ Additional dependencies can be specified either one at a time
 
 .. code-block:: scala
 
-   libraryDependencies += "com.novocode" % "junit-interface" % "0.10" % "test"
+   libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.2" % Test
  
 or as a group
 
 .. code-block:: scala
 
    libraryDependencies ++= Seq(
-     "org.scalatest" %% "scalatest" % "2.2.1" % "test",
-     "com.novocode" % "junit-interface" % "0.10" % "test"
+     "org.scalatest" %% "scalatest" % "2.2.2" % Test,
+     "org.mod4j.org.apache.commons" % "logging" % "1.0.4"
    )
 
-.. todo:: explain % versus %%
+The dependency format follows the same structure as the Maven example
+above:
 
-Build.scala format
-^^^^^^^^^^^^^^^^^^
+- organization ID
+- artifact ID
+- version (of the artifact)
+- configuration (within the sbt build lifecycle)
+   
+Furthermore, some dependencies are "cross-built" against different
+versions of Scala. For example, the ScalaTest library comes in the
+form of two artifacts, ``scalatest_2.10`` and ``scalatest_2.11``, for
+use with the corresponding versions of Scala.
+
+When we use "%%" between
+organization ID and artifact ID, sbt automatically appends an
+underscore and the Scala version to the artifact ID. For example, if
+our Scala version is 2.10, then 
+
+.. code-block:: scala
+
+   "org.scalatest" %% "scalatest" % "2.2.2" % Test
+
+is equivalent to
+
+.. code-block:: scala
+
+   "org.scalatest" % "scalatest_2.10" % "2.2.2" % Test
+
+This allows us to rely on the default Scala version or indicate our
+choice in a single place, e.g.:
+
+.. code-block:: scala
+
+   scalaVersion := "2.11.4"
+   
+
+Build.scala and multi-project formats
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Though you are generally encouraged to use the ``build.sbt`` format,
-some complex projects require build files that use the full Scala
+some complex projects may require build files that use the full Scala
 syntax. The main build file should be named ``Build.scala``. It and
 other Scala-based build files must be placed in the ``project``
-subfolder of your project root.
+subfolder of your project root. Further details are available in the
+`.scala build definition
+<http://www.scala-sbt.org/0.13/tutorial/Full-Def.html>`_ section of
+the sbt reference manual.
+
+The new `multi-project .sbt build definition
+<http://www.scala-sbt.org/0.13/tutorial/Basic-Def.html>`_ format
+combines the strengths of the other two flavors and is recommended for
+complex projects instead of the `.scala` flavor.
 
 
-Testing with sbt
-----------------
+Finding libraries to depend on
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. note:: http://www.scala-sbt.org/0.13/docs/Testing.html - elaborate here 
+The default place where Maven and its descendents, including sbt, find
+their dependencies is Maven's *Central Repository* at
+http://search.maven.org. To use any dependencies not in the central
+repo, you need to add custom resolvers (preferred) or perform a local
+install (discouraged).
 
-.. todo:: factor out as proper code example
+Concretely, sbt provides a common test interface that these main Scala
+testing frameworks support directly:
 
-key tasks
+- ScalaTest
+- specs2
+- ScalaCheck
 
-- test
-- testOnly
-- testQuick
-- test:console
-- ``test:`` prefix
+What this means is that no additional support for the test interface
+is needed, and you can simply add the desired testing framework(s) as
+managed dependencies (``libraryDependencies``) in sbt.
 
-other tips
+If you want to use JUnit, however, you will also need to pull in this
+separate adapter for JUnit to work with sbt's common interface.
 
-- sbt history
+.. code-block:: scala
+
+   "com.novocode" % "junit-interface" % "0.10" % Test
 
 
 Example: Trapezoidal Integration
 --------------------------------
 
+.. todo:: need another test class to illustrate testOnly
+
+Before we discuss how to use sbt in more detail, let's introduce a
+brief example. Our subject under test (SUT) is a Scala object that
+defines three different integration methods
+
+.. literalinclude:: ../examples/integration/src/main/scala/edu/luc/etl/sigcse13/scala/integration/Integration.scala
+   :language: scala
+   :linenos:
+   :lines: 11,19,27
+
+The first two take the boundaries of the integration interval and the
+function to be integrated of type
+
+.. literalinclude:: ../examples/integration/src/main/scala/edu/luc/etl/sigcse13/scala/integration/Integration.scala
+   :language: scala
+   :linenos:
+   :lines: 7
+
+The third one also takes a grain size that controls the granularity of
+parallelism. 
+
+The only additional test fixture in our example is a square function:
+
+.. literalinclude:: ../examples/integration/src/main/scala/edu/luc/etl/sigcse13/scala/integration/Fixtures.scala
+   :language: scala
+   :linenos:
+
+The following test case includes three methods, one for each
+integration method. The arguments are the same in each case (except
+for the additional grain size in the third test), and so is the
+expected result.
+
 .. literalinclude:: ../examples/integration/src/test/scala/edu/luc/etl/sigcse13/scala/integration/Tests.scala
    :language: scala
    :linenos:
 
+
+Testing with sbt
+----------------
+
+In this section, we'll take a look at test organization and the key
+sbt tasks (commands) for testing.
+
+In ScalaTest, a *test* is an atomic unit of testing that is either
+executed during a particular test run or it is not; a test is usually
+a method or other program element that stands for a method. A *test
+suite* is a collection of zero or more tests. (In JUnit, a *test
+class* corresponding to a test suite in ScalaTest, and a test suite is
+a collection of test classes.)
+
+The sbt testing tasks correspond to this test organization
+hierarchy. In general, to run one or more sbt tasks ``task1``,
+``task2``, ... ``taskN``, we either specify them on the sbt command
+line in the desired order separated by spaces
+
+.. code-block:: bash
+
+   $ sbt task1 task2 ... taskN
+
+or we launch sbt's interactive mode and then enter the tasks one by
+one
+
+.. code-block:: bash
+
+   $ sbt
+   ...some output...
+   > task1
+   ...some more output...
+   > task2
+   ...etc...
+
+   
+- ``test``
+  This task runs all tests in all available test suites.
+
+  In our example, it would simply run the three tests
+
+   .. code-block:: bash
+
+      $ sbt test
+      ...some output...
+      [info] Passed: Total 3, Failed 0, Errors 0, Passed 3
+      [success] Total time: 7 s, completed Dec 11, 2014 5:36:35 PM
+
+with the most important information on the second-last line: the
+three tests have passed.
+   
+
+- ``testOnly``
+
+
+  
+- testQuick
+- test:console
+- ``test:`` prefix
+
+direct support for ScalaCheck, specs2, and ScalaTest
+  
+interface required for JUnit
+  
+other tips
+
+- sbt history
+
+parallel task execution including tests!
+
+
+
+.. todo:: explain test:test versus test
+
+      
 
 Plugin Ecosystem
 ----------------
