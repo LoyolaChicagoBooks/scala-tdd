@@ -22,3 +22,6 @@ git,hpjpc,https://github.com/LoyolaChicagoCode/hpjpc-source-java
 
 git,introcs-scala-examples,https://github.com/LoyolaChicagoCode/introcs-scala-examples
 git,numerical-explorations-scala,https://github.com/LoyolaChicagoCode/numerical-explorations-scala
+
+# Book-specific projects/exemplars
+git,scala-tdd-fundamentals,https://github.com/LoyolaChicagoCode/scala-tdd-fundamentals
