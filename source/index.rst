@@ -6,12 +6,6 @@
 Test-Driven Development in Scala
 =====================================
 
-We'll be publishing this book with Packt.
-
-Book Contents
----------------
-
-
 .. toctree::
    :maxdepth: 2
 
@@ -23,7 +17,6 @@ Book Contents
    ci.rst
    uitesting.rst
    cpdctesting.rst
-
 
 Indices and tables
 --------------------
