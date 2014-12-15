@@ -1,14 +1,6 @@
 Testing Environment and the Simple Build Tool (SBT)
 ===================================================
 
-.. note:: We should definitely cover the use of the command-line and
-	  how to work within IntelliJ. I think we should not waste
-	  time with Eclipse, but this can be discussed. 
-
-.. todo:: I think we should include a very brief paragraph to mention
-	  the Scala Eclipse IDE and point out that it works with Juno
-	  while Eclipse itself is up to Luna.
-
 .. todo:: Consider evaluating and possibly discussing Typesafe
           Activator (sbt-based!).
 
@@ -16,13 +8,6 @@ Testing Environment and the Simple Build Tool (SBT)
 	  http://www.scala-sbt.org/0.13/docs/, especially
 	  http://www.scala-sbt.org/0.13/docs/Testing.html 
 	  
-.. todo:: explain sbt's test interface and that ScalaTest supports
-	  this directly but the com.novocode interface is required for
-	  running JUnit tests
-
-.. todo:: explain in detail all different ways to run tests (or a
-	  single test) with sbt, including test:console
-
 In this chapter, we'll discuss your choices for setting up an
 effective development and testing environment for Scala. The main
 thing to keep in mind is that proper testing almost always involves
@@ -65,13 +50,13 @@ Apache maven
   external dependencies by downloading them from centralized
   repositories. It relies on XML-based configuration files.
 
-.. code-block:: xml
+  .. code-block:: xml
 
-   <dependency>
-     <groupId>org.restlet</groupId>
-     <artifactId>org.restlet.ext.spring</artifactId>
-     <version>${restlet.version}</version>
-   </dependency>
+     <dependency>
+       <groupId>org.restlet</groupId>
+       <artifactId>org.restlet.ext.spring</artifactId>
+       <version>${restlet.version}</version>
+     </dependency>
 
 Apache ivy, Gradle, sbt, etc.
   These newer tools emphasize convention over configuration in support
@@ -79,9 +64,9 @@ Apache ivy, Gradle, sbt, etc.
   designed primarily for Scala development. For example, ivy uses a
   structured but lighter-weight format:
 
-.. code-block:: xml
+  .. code-block:: xml
 
-   <dependency org="junit" name="junit" rev="4.11"/>
+     <dependency org="junit" name="junit" rev="4.11"/>
 
 We will focus on sbt in the remainder of this book, though the
 concepts equally apply to similar build systems and IDEs.
@@ -125,7 +110,7 @@ In the simplest cases, sbt does not require any configuration and will
 use reasonable defaults. The project layout is the same as the one
 Maven uses:
 
-- Production code goes in ``src/main/scala``.
+- Main application or library code goes in ``src/main/scala``.
 - Test code goes in ``src/test/scala``.
 
 In practice, however, we will want to include some automated testing
@@ -171,16 +156,19 @@ above:
 - artifact ID
 - version (of the artifact)
 - configuration (within the sbt build lifecycle)
+
+In particular, the ``Test`` configuration indicates that this
+dependency is required to compile and run the tests for this project
+but to compile or run the main project code itself.
    
 Furthermore, some dependencies are "cross-built" against different
 versions of Scala. For example, the ScalaTest library comes in the
 form of two artifacts, ``scalatest_2.10`` and ``scalatest_2.11``, for
-use with the corresponding versions of Scala.
+use with the corresponding versions of Scala. When we use ``%%``
+between organization ID and artifact ID, sbt automatically appends an
+underscore and the Scala version to the artifact ID.
 
-When we use "%%" between
-organization ID and artifact ID, sbt automatically appends an
-underscore and the Scala version to the artifact ID. For example, if
-our Scala version is 2.10, then 
+For example, if our Scala version is 2.10, then
 
 .. code-block:: scala
 
@@ -222,10 +210,43 @@ Finding libraries to depend on
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The default place where Maven and its descendents, including sbt, find
-their dependencies is Maven's *Central Repository* at
-http://search.maven.org. To use any dependencies not in the central
-repo, you need to add custom resolvers (preferred) or perform a local
-install (discouraged).
+their dependencies is Maven's *Central Repository*, which you can
+search via http://search.maven.org. This search interface will allow
+you to drill down into the desired artifact and ultimately show you
+exactly what to add to the ``libraryDependencies`` in your build file.
+
+For example, searching for ``scalatest`` results in a long list, of
+which we show only the top.
+
+.. image:: /images/environment/MavenSearchAll.png
+   :alt: Maven Central Search Results for ``scalatest``
+   :width: 100%
+	   
+Once we drill into the specific artifact ``scalatest_2.10``, we see
+the available versions of this artifact. (The non-cross-built artifact
+``scalatest`` without the added Scala version corresponds to much
+older versions of this framework.)
+
+.. image:: /images/environment/MavenSearchOne.png
+   :alt: Maven Central Search Results for artifact ``scalatest_2.10``
+   :width: 100%
+	   
+Now we can choose the desired version of this artifact. For learning
+and production development, it is usually best to choose the latest
+released version, in this case, ``2.2.2``. Once we select this
+version, we can go to the "dependency information" section of the
+page, select the "Scala SBT" tab, and will see the exact dependency
+definition we can copy and paste into our build file.
+
+.. image:: /images/environment/MavenArtifactDetails.png
+   :alt: Maven Central Details for artifact ``scalatest_2.10`` version ``2.2.2``
+   :width: 50%
+   
+To use any dependencies not in the central repo, you need to add
+custom resolvers (preferred) or perform a local install (discouraged).
+
+What Scala test framework are available for Scala?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Concretely, sbt provides a common test interface that these main Scala
 testing frameworks support directly:
@@ -238,18 +259,27 @@ What this means is that no additional support for the test interface
 is needed, and you can simply add the desired testing framework(s) as
 managed dependencies (``libraryDependencies``) in sbt.
 
-If you want to use JUnit, however, you will also need to pull in this
-separate adapter for JUnit to work with sbt's common interface.
+If you want to use JUnit or TestNG, however, you will also need to
+pull in a separate adapter for either of these to work with sbt's
+common interface. For JUnit, this is a simple additional dependency in
+the build file:
 
 .. code-block:: scala
 
    "com.novocode" % "junit-interface" % "0.10" % Test
 
+For TestNG, there is an `sbt plugin
+<https://github.com/sbt/sbt-testng-interface>`_ that requires a couple
+of extra steps to add to your project.
+
+In this book, we will start you out with plain JUnit because we assume
+that most readers are familiar with it. Then we will focus on
+ScalaTest, which also supports some techniques from ScalaCheck. In the
+advanced chapter, we will also take advantage of specs2.
+
 
 Example: Trapezoidal Integration
 --------------------------------
-
-.. todo:: need another test class to illustrate testOnly
 
 Before we discuss how to use sbt in more detail, let's introduce a
 brief example. Our subject under test (SUT) is a Scala object that
@@ -259,6 +289,9 @@ defines three different integration methods
    :language: scala
    :linenos:
    :lines: 11,19,27
+
+.. todo:: Problem here with super-long lines of source code! Will have
+	  to reformat source!
 
 The first two take the boundaries of the integration interval and the
 function to be integrated of type
@@ -271,10 +304,14 @@ function to be integrated of type
 The third one also takes a grain size that controls the granularity of
 parallelism. 
 
-The only additional test fixture in our example is a square function:
+In addition, we have a couple of test fixtures: an identity function
+(corresponding to the :math:`y = x` diagonal line) and a square
+function.
 
 .. literalinclude:: ../examples/integration/src/main/scala/edu/luc/etl/sigcse13/scala/integration/Fixtures.scala
    :language: scala
+   :start-after: begin-object-Fixtures
+   :end-before: end-object-Fixtures
    :linenos:
 
 The following test case includes three methods, one for each
@@ -282,14 +319,20 @@ integration method. The arguments are the same in each case (except
 for the additional grain size in the third test), and so is the
 expected result.
 
-.. literalinclude:: ../examples/integration/src/test/scala/edu/luc/etl/sigcse13/scala/integration/Tests.scala
+.. literalinclude:: ../examples/integration/src/test/scala/edu/luc/etl/sigcse13/scala/integration/TestId.scala
    :language: scala
    :linenos:
 
+There is another, very similar, test case that uses the ``sqr``
+fixture instead of the ``id`` one to test whether our integration
+methods work as expected.
+      
 
 Testing with sbt
 ----------------
 
+.. todo:: mention parallel task execution including tests!
+      
 In this section, we'll take a look at test organization and the key
 sbt tasks (commands) for testing.
 
@@ -321,97 +364,138 @@ one
    > task2
    ...etc...
 
+
+The following are the most important sbt tasks for testing:
    
-- ``test``
-  This task runs all tests in all available test suites.
+- ``test`` runs all tests in all available test suites.
 
-  In our example, it would simply run the three tests
+  In our example, it would simply run the six tests (two times three)
 
-   .. code-block:: bash
+  .. code-block:: bash
 
-      $ sbt test
-      ...some output...
-      [info] Passed: Total 3, Failed 0, Errors 0, Passed 3
-      [success] Total time: 7 s, completed Dec 11, 2014 5:36:35 PM
+     $ sbt test
+     ...some output...
+     [info] Passed: Total 6, Failed 0, Errors 0, Passed 6
+     [success] Total time: 1 s, completed Dec 14, 2014 8:04:54 PM
 
-with the most important information on the second-last line: the
-three tests have passed.
+  with the most important information on the second-last line: all
+  six tests have passed.
    
 
-- ``testOnly``
+- ``testOnly``: During development, to save time, we may want to run
+  only a subset of the available tests. The ``testOnly`` task allows
+  us to specify zero or more test classes to run.
 
+  For example, we can run only the test with the square function:
 
+  .. code-block:: bash
+
+     $ sbt 'testOnly edu.luc.etl.sigcse13.scala.integration.TestSqr'
+     ...some output...
+     [info] Passed: Total 3, Failed 0, Errors 0, Passed 3
+     [success] Total time: 1 s, completed Dec 14, 2014 9:03:38 PM
+
+  This task also supports wildcards, so
+
+  .. code-block:: bash
+
+     $ sbt 'testOnly *Sqr'
+
+  will run only ``TestSqr``, while
+
+  .. code-block:: bash
+
+     $ sbt 'testOnly *Test*'
+
+  will run both of them.
   
-- testQuick
-- test:console
-- ``test:`` prefix
+- ``testQuick`` is similar to ``testOnly`` in giving you the option to select
+  the matching tests to run. In addition, it runs only those tests
+  that meet at least one of the following conditions:
 
-direct support for ScalaCheck, specs2, and ScalaTest
+  - the test failed in the previous run
+  - the test has not been run before
+  - the tests has one or more transitive dependencies that have been recompiled
   
-interface required for JUnit
+- ``test:console`` allows you to enter an interactive Scala REPL
+  (read-eval-print loop) just like ``sbt console`` but with the test
+  code and its library dependencies for the ``Test`` configuration
+  (along with any transitive dependencies) on the class path.
+
+  This is useful when you want to explore any code in
+  ``src/test/scala`` or the library dependencies for the ``Test``
+  configuration interactively.
+
+- The ``test:`` prefix is optional for the other tasks we discussed
+  above because their names are unambiguous. There are various other
+  tasks, however, that also apply to the main sources. In those cases,
+  the ``test:`` prefix will allow you to disambiguate.
+
+  For example,
+
+  .. code-block:: bash
+
+     $ sbt test:compile
+
+  will compile the test sources along with the main sources, while
+
+  .. code-block:: bash
+
+     $ sbt compile
+
+  will compile only the main sources.
+
+  Similarly, if you have a main program in your test sources, you can
+  run it with
+
+  .. code-block:: bash
+
+     $ sbt test:run
+
+  or
+
+  .. code-block:: bash
+
+     $ sbt test:runMain
   
-other tips
-
-- sbt history
-
-parallel task execution including tests!
-
-
-
-.. todo:: explain test:test versus test
-
-      
 
 Plugin Ecosystem
 ----------------
 
-.. todo:: focus on plugins relevant to testing
+sbt includes a rich and growing plugin community-based
+ecosystem. Plugins extend the capabilities of sbt, and you can install
+them per project or globally. More details are available in the `sbt
+reference
+<http://www.scala-sbt.org/0.13.6/docs/Getting-Started/Using-Plugins.html>`_.
 
-sbt includes a growing plugin ecosystem. `You can install them per
-project or
-globally. <http://www.scala-sbt.org/0.13.6/docs/Getting-Started/Using-Plugins.html>`_
-Some useful examples include
+In addition to the `sbt-testng-interface
+<https://github.com/sbt/sbt-testng-interface>`_ mentioned above, here
+are some useful examples relevant to testing:
 
-- `sbteclipse <https://github.com/typesafehub/sbteclipse>`_
-  automatically generates an Eclipse project configuration from an sbt
-  one.
-- `sbt-start-script <https://github.com/sbt/sbt-start-script>`_
-  generates a start script for running a Scala application outside of
-  sbt.
 - `sbt-scoverage <https://github.com/scoverage/sbt-scoverage>`_:
   uses Scoverage to produce a test code coverage report
-- `sbt-coveralls <https://github.com/scoverage/sbt-coveralls>`_:
-  uploads scala code coverage to https://coveralls.io and integrates
-  with Travis CI
-- `ls-sbt <https://github.com/softprops/ls>`_:  browse available
-  libraries on GitHub using ls.implicit.ly
 - `sbt-dependency-graph <https://github.com/jrudolph/sbt-dependency-graph>`_: creates a
   visual representation of library dependency tree
+- `ls-sbt <https://github.com/softprops/ls>`_:  browse available 
+  libraries on GitHub using ls.implicit.ly 
 - `sbt-updates <https://github.com/rtimush/sbt-updates>`_: checks
   central repos for dependency updates
-- `cpd4sbt <https://github.com/sbt/cpd4sbt>`_: copy/paste detection
-  for Scala *(be sure to set* ``cpdSkipDuplicateFiles := true`` *in 
-  Android projects to avoid a false positive for each source file)*
-- `scalastyle <https://github.com/scalastyle/scalastyle-sbt-plugin>`_: static code checker for Scala
-- `sbt-stats <https://github.com/orrsella/sbt-stats>`_: simple, extensible source code statistics/metrics
-- `sbt-scalariform <https://github.com/sbt/sbt-scalariform>`_:
-  automatic source code formatting using Scalariform
-
-.. todo:: explain that IDEA directly works with sbt projects 
-
-The IntelliJ IDEA Scala plugin also integrates directly with sbt. 
 
 
 IDE Option: JetBrains IntelliJ IDEA
 -----------------------------------
 
-Many faculty teaching introductory CS courses prefer an Integrated
-Development Environment (IDE). We recommend IntelliJ IDEA, which is
-growing in popularity over Eclipse and preferred by many of us. You
-can get the Community edition for free from the following URL and then
-install the Scala plugin through the plugin manager.
+Many developers and students prefer an Integrated Development
+Environment (IDE) because of code completion and easier code
+comprehension for complex projects.
 
-- http://www.jetbrains.com/idea/download/  
+Our preferred IDE is IntelliJ IDEA, which has had a lot of traction in
+the open-source and agile development communities for a long time. You
+can get the current version of IntelliJ IDEA Community edition for
+free from the following URL and then install the Scala plugin through
+the plugin manager.
+
+- http://www.jetbrains.com/idea/download
 
 When you install the Scala plugin through the plugin manager, you will
 automatically get the version that matches that of IDEA. This plugin
@@ -419,33 +503,91 @@ has become quite mature and usable as of December 2014. In particular,
 compilation (and execution of Scala worksheets) has become much
 faster.
 
-To work around false compilation errors in Scala worksheets, we also
-recommend a standalone installation of sbt.
+The IntelliJ IDEA Scala plugin also integrates directly with sbt:
+Instead of *importing* an sbt-based project, you simply *open*
+it. When you make any changes to the sbt build file(s), IDEA reloads
+your project and updates the classpath and other IDEA-specific
+settings accordingly.
 
-.. todo:: add screenshots and other details
+.. image:: /images/environment/IntelliJProjectDependencies.png
+   :alt: IntelliJ IDEA Scala project view with sbt dependencies expanded
+   :width: 50%
 
+Testing in IntelliJ IDEA
+^^^^^^^^^^^^^^^^^^^^^^^^
+	   
+IntelliJ IDEA gives you several options for running tests:
+
+- To run all available tests, you can pop up the context menu (Windows
+  and Linux: right-click, Mac: Control-click) for the project root
+  node or ``src/test/scala`` and select "Run All Tests".
+
+- To run an individual test class, pop up the context menu for that
+  test and run it.
+
+- To run two or more specific tests, you can select them, pop up the
+  context menu, and then run them.
+
+.. image:: /images/environment/IntelliJProjectView.png 
+   :alt: IntelliJ IDEA Scala project view with test classes expanded 
+   :width: 50%
+
+After you run the tests and they all passed, you will usually see a
+condensed view with the passed tests hidden.
+
+.. image:: /images/environment/IntelliJTestsCondensed.png 
+   :alt: IntelliJ IDEA Scala test view with passed tests hidden 
+   :width: 100%
+	   
+This is because the leftmost button, "hide passed", is enabled by
+default. You can turn this option off and drill into the tests.
+
+.. image:: /images/environment/IntelliJTestsExpanded.png  
+   :alt: IntelliJ IDEA Scala test view with passed tests expanded  
+   :width: 100%
+	   
+ Also, failed tests automatically show up in expanded fashion.
+
+.. image:: /images/environment/IntelliJTestsFailed.png
+   :alt: IntelliJ IDEA Scala test view with failed/erroneous tests
+   :width: 100%
+
+On these images, we recognize the three possible outcomes of a test
+from the fundamentals chapter [REF]:
+
+- pass: green circle with the word "OK"
+- fail: orange circle with an exclamation mark 
+- error: red circle with an exclamation mark 
+	   
+
+Tips
+^^^^
+
+- IntelliJ IDEA has a built-in native terminal for your OS. This
+  allows you to use, say, hg or sbt conveniently without leaving
+  IDEA. ::
+
+        View > Tool Windows > Terminal
+
+- To practice Scala in a light-weight, exploratory way, you can use
+  Scala worksheets in IntelliJ IDEA. These will give you an
+  interactive, console-like environment, but your work is saved and
+  can be put under version control. ::
+
+        File > New > Scala Worksheet
+
+  *You can even make your worksheets test-driven by sprinkling assertions throughout them.*
+	   
 
 IDE Option: Eclipse Scala IDE
 ------------------------------
 
 The official Scala IDE is provided as an Eclipse bundle that has Scala
 already installed. It will work on all platforms with very minor
-differences. The following link will take you there.
+differences and provides similar functionality to IntelliJ IDEA. The
+following link will take you there.
 
 - http://scala-ide.org/download/sdk.html
 
 This is based on the Eclipse Juno release, which is two full releases
 behind the current Luna release.
-
-Tips
-----
-
-- IntelliJ IDEA has a built-in native terminal for your OS. This allows you to use, say, hg or sbt conveniently without leaving IDEA.::
-
-        View > Tool Windows > Terminal
-
-- To practice Scala in a light-weight, exploratory way, you can use Scala worksheets in IntelliJ IDEA. These will give you an interactive, console-like environment, but your work is saved and can be put under version control.::
-
-        File > New > Scala Worksheet
-
-  *You can even make it test-driven by sprinkling assertions throughout your worksheet!*

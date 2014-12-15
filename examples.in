@@ -14,8 +14,8 @@ git,lcs-systolicarray,https://github.com/LoyolaChicagoCode/lcs-systolicarray-sca
 # Introductory, CS1 style things
 #
 git,hpspc-babysteps,https://github.com/LoyolaChicagoCode/hpspc-babysteps
-
 git,hpjpc,https://github.com/LoyolaChicagoCode/hpjpc-source-java
+git,echotest-scala,https://github.com/LoyolaChicagoCode/echotest-scala
 
 #
 # Emerging Numerical and Intro CS examples collections
