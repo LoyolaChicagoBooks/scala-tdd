@@ -19,7 +19,7 @@ Dependencies
 ----------------------
 
 You need to install the Scala Build Tool - The details of this tool
-are covered in the :doc:`environment.rst`. There is no need to install
+are covered in the :doc:`environment`. There is no need to install
 Scala separately, because what we'll be showing you is how SBT downloads the
 required version(s) of Scala automatically.
 
@@ -114,9 +114,71 @@ examples
 - test-drive stack class
 - integration example
 
-Testing and coupling
----------------------------
+A Basic Example: Rational Arithmetic
+---------------------------------------------
 
+We begin with a *guiding example* that has been conceived with the following
+objectives in mind:
+
+- Easy to explain and (likely) familiar to most readers. It relies on
+  mathematical ideas that are taught to us in childhood.
+- Has sufficient complexity to make testing necessary.
+- Plays to Scala's strengths as a language.
+- Allows us to introduce all of the testing styles without getting
+  bogged down by domain-specific details.
+
+This example is also featured in Martin Odersky's seminal introduction
+to Scala, a.k.a. Scala by Example [SBE]_. Harrington and Thiruvathukal
+also present a version with are more complete API and robust unit testing in their introductory
+CS1 course [IntroCS]_.
+
+.. [SBE] Martin Odersky, Scala by Example, http://www.scala-lang.org/docu/files/ScalaByExample.pdf.
+
+.. [IntroCS] Andrew N. Harrington and George K. Thiruvathukal, http://introcs.cs.luc.edu.
+
+While we're reasonably certain you already know what a rational number
+is, it is helpful to understand its requirements. Later, we shall see
+that these requirements can be expressed in the various testing
+styles--a form of documentation.
+
+- A rational number is expressed as a quotient of integers with a *numerator* and a *denominator*.
+
+- The *denominator* must not be zero.
+
+- The *numerator* and *denominator* are always kept in a reduced form. That is, if the *numerator* is 2 and the *denominator* is 4, you would expect the reduced form to be *numerator* = 1 and *denominator* = 2.
+
+- Rational numbers must be able to perform the usual rules of arithmetic, including binary operations such as +, -, *, and / (explained below) and various *convenience* operations such as negation and reciprocal.
+
+- Any two rational numbers that are the same number should compare equally and be treated as the same number anywhere they might be used. For example, if you used a Scala set to keep a set of rational numbers (e.g. 1/2, 2/3, 2/4) you would expect this set to contain 1/2 and 2/3. 2/4 wouldn't be expected to appear in the set.
+
+.. todo: Might be leaving something out, but this is a great start!
+
+.. literalinclude:: ../examples/scala-tdd-fundamentals/src/main/scala/Rational.scala
+   :language: scala
+   :start-after: begin-Rational-gcd
+   :end-before: end-Rational-gcd
+   :linenos:
+
+
+.. literalinclude:: ../examples/scala-tdd-fundamentals/src/main/scala/Rational.scala
+   :language: scala
+   :start-after: begin-Rational
+   :end-before: end-Rational
+   :linenos:
+
+
+Testing JUnit Style
+---------------------------------------------
+.. literalinclude:: ../examples/scala-tdd-fundamentals/src/test/scala/RationalJUnitTests.scala
+   :language: scala
+   :linenos:
+
+Testing ScalaTest using FlatSpec Style
+------------------------------------------
+
+.. literalinclude:: ../examples/scala-tdd-fundamentals/src/test/scala/RationalScalaTestFlatSpecMatchers.scala
+   :language: scala
+   :linenos:
 
 Notes
 -------
