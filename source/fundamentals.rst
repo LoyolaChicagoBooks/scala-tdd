@@ -1,8 +1,6 @@
 Testing Fundamentals
 =========================
 
-Focus on principles
-
 This chapter is focused on the essentials of testing. Because we know
 that most readers are likely to come to Scala from a Java (or similar)
 environment based on JUnit, which is one of the one of the *xUnit*
@@ -11,9 +9,6 @@ discussion with an example of how to use JUnit within Scala, since
 Java can be used and mixed into Scala programs. We'll then take a look
 at a couple of introductory (and integrated) Scala examples and how to
 write them using JUnit and ScalaTest.
-
-The organization and presentation is very much aimed at being hands
-on.
 
 Dependencies
 ----------------------
@@ -41,9 +36,42 @@ platform-specific. However, we point you to web materials.
 
 Cloning the Exemplar
 ----------------------
+An important defining principle of our book is that the text and examples should remain relevant long after you have decided the book is no longer needed.We keep all of our examples under version control. There's nothing worse than having a book where there is a typo and having to waste time trying to convince the author to cough up the latest code (or fix it).
 
+So without further ado, let's get the code for this chapter.
 
+.. code-block:: shell
 
+   $ git clone https://github.com/LoyolaChicagoCode/scala-tdd-fundamentals.git
+   $ cd scala-tdd-fundamentals
+   $ ls
+
+At this point, it is worth noting that we do most of our work in a Unix
+style environment. You can also checkout our project using IntelliJ (covered int he next chapter) but we're mostly going to operate at the command line in this chapter. It really does help to illuminate the principles.
+
+Let's Test without looking at code
+-------------------------------------
+
+As you now have the source code, let's make sure we can compile and run
+the tests using **sbt**.
+
+The following *compiles* the code we just checked out via **git**. **sbt** generates a lot of output, mainly aimed at *helping* you when something goes wrong. Because dependencies are being pulled from the internet for the unit testing frameworks (JUnit and ScalaText) there is a chance you could see an error message but it is extremely unlikely. We're written the build file in such a way that it will evolve with Scala and its many moving parts.
+
+.. literalinclude:: images/fundamentals/sbt-compile.txt
+
+The most important line to observe in this output is the one beginning with ``[success]``. If for any reason you don't see this line when running it yourself, it is likely that something failed, more than likely a network connectivity problem (or some repository became unavailable, we hope, temporarily).
+
+If you've indeed encountered success in building our code with **sbt**, the next step is to run the tests. This is achieved by running ``sbt test``.
+
+.. literalinclude:: images/fundamentals/sbt-test.txt
+
+Again there is a *lot* of output generated, and what you see may differ from what you see in this console output, owing to changes that occur between the time a book is published and other changes that we or the Scala developers may make.
+
+You'll see a number of lines that begin with ``[info]``. This indicates that informative messages about tests are being written to the console. For our example, there are various tests being performed on our domain model (rational numbers). We have organized the tests according to the different methods in our implementation. Here, you can observe that we test everything from an internal helper method (the greatest common divisor), to initializer (construction) methods, and the each related groups of methods (for arithmetic, helpers, and equality/hashcode for use with other Scala classes).
+
+While the aforementioned might sound a bit *vague*, it is deliberate on our part. There is a *mindset* to testing. When you do testing right, you should be able to check out someone's code, compile it, and run the tests.
+
+Let's get started with looking at some code!
 
 Assertions
 -------------

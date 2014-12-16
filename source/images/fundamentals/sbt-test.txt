@@ -1,0 +1,32 @@
+[info] RationalScalaTestFlatSpecMatchers:
+[info] GCD involving 0
+[info] - should give y for gcd(0, y)
+[info] - should give x for gcd(x, 0)
+[info] Initializing
+[info] - should reduce 2/4 to 1/2
+[info] - should reduce -2/4 to -1/2
+[info] - should reduce -3/-6 to 1/2
+[info] Arithmetic
+[info] - should perform addition
+[info] - should perform subtraction
+[info] - should perform multiplication
+[info] - should perform division
+[info] - should perform the reciprocal
+[info] - should perform negation
+[info] Comparisons
+[info] - should perform ==
+[info]   + numeric equality (==) works 
+[info]   + object equality works, e.g. equals() 
+[info]   + hashcode() works 
+[info] - should perform <
+[info]   + operator < works 
+[info] - should perform >
+[info]   + operator > works 
+[info] - should perform <= for something < and for something =
+[info]   + operator <= works for < case 
+[info]   + operator <= works for == case 
+[info] - should perform >= for something > and for something =
+[info]   + operator >= works for > case 
+[info]   + operator >= works for == case 
+[info] Passed: Total 37, Failed 0, Errors 0, Passed 37
+[success] Total time: 6 s, completed Dec 16, 2014 3:41:29 PM
