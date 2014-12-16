@@ -12,5 +12,6 @@ if [ -f ~/.env/sphinx/bin/activate ]; then
 	. ~/.env/sphinx/bin/activate
 fi
 
+rm -rf build
 make html
 make latexpdf
