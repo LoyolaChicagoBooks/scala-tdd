@@ -49,7 +49,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Scala TDD'
-copyright = u'2014, Joseph P. Kaylor, Konstantin Läufer, and George K. Thiruvathukal'
+copyright = u'2014, Kaylor, Läufer, and Thiruvathukal'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -251,7 +251,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
   ('index', 'ScalaTDD.tex', u'Scala TDD Documentation',
-   u'Joseph P. Kaylor, Konstantin Läufer, and George K. Thiruvathukal', 'manual'),
+   u'Kaylor, Läufer, and Thiruvathukal', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -281,7 +281,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'scalatdd', u'Scala TDD Documentation',
-     [u'Joseph P. Kaylor, Konstantin Läufer, and George K. Thiruvathukal'], 1)
+     [u'Kaylor, Läufer, and Thiruvathukal'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -295,7 +295,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'ScalaTDD', u'Scala TDD Documentation',
-   u'Joseph P. Kaylor, Konstantin Läufer, and George K. Thiruvathukal', 'ScalaTDD', 'One line description of project.',
+   u'Kaylor, Läufer, and Thiruvathukal', 'ScalaTDD', 'One line description of project.',
    'Miscellaneous'),
 ]
 
@@ -316,9 +316,9 @@ texinfo_documents = [
 
 # Bibliographic Dublin Core info.
 epub_title = u'Scala TDD'
-epub_author = u'Joseph P. Kaylor, Konstantin Läufer, and George K. Thiruvathukal'
-epub_publisher = u'Joseph P. Kaylor, Konstantin Läufer, and George K. Thiruvathukal'
-epub_copyright = u'2014, Joseph P. Kaylor, Konstantin Läufer, and George K. Thiruvathukal'
+epub_author = u'Kaylor, Läufer, and Thiruvathukal'
+epub_publisher = u'Kaylor, Läufer, and Thiruvathukal'
+epub_copyright = u'2014, Kaylor, Läufer, and Thiruvathukal'
 
 # The basename for the epub file. It defaults to the project name.
 #epub_basename = u'Scala TDD'
