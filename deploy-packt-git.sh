@@ -4,7 +4,6 @@ num_changes=0
 total_checked=0
 for dir in . examples/*/
 do
-	echo "Checking $dir"
 	this_changed=$(sh git-pull-status.sh $dir)
 	num_changes=$((num_changes + this_changed))
 	total_checked=$((total_checked + 1))
