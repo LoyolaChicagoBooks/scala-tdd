@@ -52,16 +52,41 @@ You'll see a number of lines that begin with ``[info]``. This indicates that inf
 
 While the aforementioned might sound a bit *vague*, it is deliberate on our part. There is a *mindset* to testing. When you do testing right, you should be able to check out someone's code, compile it, and run the tests.
 
+
+dimensions of testing
+-------------------------
+
+- correctness
+- performance: express runtime expectations as assertions
+- level: unit, integration, system, acceptance
+- visibility: white, gray, black box
+- code coverage: measures (statement, branch, path, etc.), tools (->
+  environment)
+
+style: bdd versus tdd
+---------------------
+
+- http://blog.andolasoft.com/2014/06/rails-things-you-must-know-about-tdd-and-bdd.html
+- http://stackoverflow.com/questions/15389490/bdd-in-scala-does-it-have-to-be-ugly
+- http://blog.knoldus.com/2013/01/15/atdd-cucumber-and-scala/
+- cucumber-jvm https://github.com/cucumber/cucumber-jvm, jbehave http://jbehave.org
+- specs2: very powerful and expressive, covers broad range of styles, http://etorreborre.github.io/specs2
+
+The role of automated testing in the development process (see Fowler)
+  - testing
+  - refactoring
+  - CI/CD
+
 Let's get started with looking at some code!
 
 Assertions
 -------------
 
-A key notion of testing is the ability to make a logical assertion about something that generally must hold *true* if the test is to pass.
+A key notion of testing (and test-driven development) is the ability to make a logical assertion about something that generally must hold *true* if the test is to pass.
 
-Assertions are not a standard language feature in Scala. Instead, there are a number of classes that provide functions for assertion handling. In the framework we are using to introduce unit testing (JUnit), a class named Assert supports assertion testing (class) methods.
+Assertions are not a standard language feature in Scala. (They are in other languages but often without the other good stuff.) Instead, there are a number of classes that provide functions for assertion handling. In the framework we are using to introduce unit testing (JUnit), a class named Assert supports assertion testing (class) methods. When we move to ScalaTest (for good), we'll find that the need for explicit assertions is significantly reduced but they can still be useful.
 
-In our tests, we make use of an assertion method, ``Assert.IsTrue()`` to determine whether an assertion is successful. If the variable or expression passed to this method is *false*, the assertion fails.
+In our tests, we make use of assertion method, e.g. ``Assert.assert()``, to determine whether an assertion is successful. If the variable or expression passed to this method is *false*, the assertion fails.
 
 Here are some examples of assertions, JUnit style. Readers should consult [#junit]_ for details of all supported methods. Although these are Java, we will be using them in Scala (Scala can use any Java class, a salient feature of the language).
 
@@ -103,7 +128,7 @@ Let's try an assertion that we know would be successful.
    scala> assertTrue(true)
    scala> assertFalse(false)
 
-When an assertion is *successful*, you will see *no output*.
+When an assertion is *successful*, you will see *no output*. On the other hand, when an assertion is *not successful* or *fails*, you see the dreaded *stack trace*.
 
 .. code-block:: bash
 
@@ -114,38 +139,17 @@ When an assertion is *successful*, you will see *no output*.
    at org.junit.Assert.assertTrue(Assert.java:52)
    ... 43 elided   
 
-More to come.
+You can see more information about the exception as follows:
 
-dimensions of testing
--------------------------
+   scala> lastException.printStackTrace
 
-- correctness
-- performance: express runtime expectations as assertions
-- level: unit, integration, system, acceptance
-- visibility: white, gray, black box
-- code coverage: measures (statement, branch, path, etc.), tools (->
-  environment)
 
-style: bdd versus tdd
----------------------
+Luckily, a unit-testing framework allows you to avoid looking at the dreaded stack trace. It will cheerfully intercept the ``AssertionError`` in the test runner. (This chapter doesn't use the IDE so everyone will have a common basis for thinking about tests that relies only on Scala's standard toolset.)
 
-- http://blog.andolasoft.com/2014/06/rails-things-you-must-know-about-tdd-and-bdd.html
-- http://stackoverflow.com/questions/15389490/bdd-in-scala-does-it-have-to-be-ugly
-- http://blog.knoldus.com/2013/01/15/atdd-cucumber-and-scala/
-- cucumber-jvm https://github.com/cucumber/cucumber-jvm, jbehave http://jbehave.org
-- specs2: very powerful and expressive, covers broad range of styles, http://etorreborre.github.io/specs2
+.. todo::
 
-The role of automated testing in the development process (see Fowler)
-  - testing
-  - refactoring
-  - CI/CD
+   Add demonstrations of a few others here, especially those that are useful to our actual test cases.
 
-examples
---------------
-
-- rational numbers
-- test-drive stack class
-- integration example
 
 A Basic Example: Rational Arithmetic
 ---------------------------------------------
@@ -362,37 +366,73 @@ instead of:
 
 We think both have value, but it is clear that one has a more *literate* style than the other.
 
-Let's take a look at how we use this to cover the rest of the requirements.
-
-
 .. literalinclude:: ../examples/scala-tdd-fundamentals/src/test/scala/RationalScalaTestFlatSpecMatchers.scala
    :language: scala
    :start-after: RationalFlatSpec.Initializing
    :end-before: RationalFlatSpec
+
+Armed with the knowledge the GCD is working, testing initialization is fairly straightforward. We basically want to ensure that initialization of rational instances with any combination of positive and negative denominators results in a reduced fraction.
+
+.. todo::
+
+   We could also ensure that whole numbers represented as fractions have a one in the denominator. We could also ensure that 0 with any denominator reduces to 0/1. Need to add this to the code. Might also be a good exercise for the reader.
+
+One of the interesting tests is to "not allow a zero denominator". This shows easy it is to test for exceptions in Scala sans the familiar (dreaded?) try/catch syntax found in Java and other languages. The test fails if the ``ArithmeticException`` (actually, ``java.lang.ArithmeticException``) is not successfully intercepted.
+
+The tests of Rational arithmetic are largely what we'd expect.
 
 .. literalinclude:: ../examples/scala-tdd-fundamentals/src/test/scala/RationalScalaTestFlatSpecMatchers.scala
    :language: scala
    :start-after: RationalFlatSpec.Arithmetic
    :end-before: RationalFlatSpec
 
+We won't go through every single one of these as they are largely similar, but let's take a look at what is possible with the be-matching logic, thanks to our support (in Rational) for proper object equality.
+
+.. code-block::scala
+
+   r1 + r2 should be (new Rational(36, 64))
+
+Clearly, ``r1 + r2`` do not result in exactly the same object as ``new Rational(36, 64)``. In Scala, as in Java, and many other object-oriented language, it is important to know that equality is not a given. It depends on having defined equality. Because we've done this in the implementation of our Rational class, we are able to use the be matcher to write the test rather concisely. (In fact, we can use it in any situation where we want to assert equality, but having proper equality really comes in handy for be-matchers in ScalaTest FlatSpec style.)
+
+Let's look at how we test the comparison operations.
+
 .. literalinclude:: ../examples/scala-tdd-fundamentals/src/test/scala/RationalScalaTestFlatSpecMatchers.scala
    :language: scala
    :start-after: RationalFlatSpec.Comparisons
    :end-before: RationalFlatSpec
+
+For testing equality, we test a number of different dimensions:
+
+- Does == work as expected? We must always be able to compare two rational numbers, even when we are not thinking about object-oriented programming?
+- Does object equality, ``equals()``, work as expected?
+- Does the object hash, ``hashcode()``, work as expected?
+
+Knowing the answer to the first is particularly important to scientific programming types (one of us being among them) who want to know whether Rational behaves largely like a built-in datatype. Knowing the answer to the second and third questions is important for using Rational in non-computational situations, e.g. within a Scala collection (more on that shortly).
+
+This also shows another aspect of how BDD style testing goes *beyond* basic TDD testing. The ``info()`` method can be called to show how a test is breaking out different cases (the three cases above, in fact). The setup is largely the same for each, so we don't want to repeat ourselves, because all three of these questions are addressing different ways of looking at equality. Taken as a group, we want all of them to work so equality is meaningful in both a numeric and object-oriented sense.
+
+For the rest of our tests, we expect them to work, because we defined our Rational class to extend Ordered[Rational]. Nevertheless, a characteristic of good testing is to *test the obvious*. As we did with the equality tests, the ``<=`` and ``>=`` are tested to ensure that they work for ``<`` and ``=`` (for ``<=``) and ``>`` and ``=`` (for ``>=``). 
+
+Recalling the points we made about collections, the following shows how we test whether Rational works properly in a collection. We chose a Scala Set, because this set uses equality to determine whether or not a member should be included.
 
 .. literalinclude:: ../examples/scala-tdd-fundamentals/src/test/scala/RationalScalaTestFlatSpecMatchers.scala
    :language: scala
    :start-after: RationalFlatSpec.Collections
    :end-before: RationalFlatSpec
 
-.. literalinclude:: ../examples/scala-tdd-fundamentals/src/test/scala/RationalScalaTestFlatSpecMatchers.scala
-   :language: scala
-   :start-after: RationalFlatSpec.PatternMatching
-   :end-before: RationalFlatSpec
+If this test works as expected, ``Rational(2, 4)`` and ``Rational(1, 2)`` (two different objects, but both of which will have the numerator and denominator by virtue of having been reduced) will result in only one entry being added to the set. The second entry will be ``Rational(-3, 6)``. So the cardinality of the resulting Set[Rationa] should be two (2). 
+
+.. todo::
+
+   Add pattern-matching case? I'm still a bit concerned that this is making the example too complicated for a first chapter.
 
 
-Notes
--------
+Conclusions and Discussion
+---------------------------------
+
+.. note::
+
+   This text came from Joe's early comments during chapter brainstorming.
 
 In production code, there are stable methods and classes. These classes have a high ratio of afferent coupling to efferent coupling. In some cases you may see 20:1 or 30:1.
 
