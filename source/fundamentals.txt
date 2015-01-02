@@ -31,10 +31,10 @@ So without further ado, let's get the code for this chapter.
 
 At this point, it is worth noting that we do most of our work in a Unix style environment. You can also checkout our project using IntelliJ (covered int he next chapter) but we're mostly going to operate at the command line in this chapter. It really does help to illuminate the principles.
 
-Let's Test without looking at code
--------------------------------------
+The Testing Mindset - Running Tests on Checkout
+--------------------------------------------------
 
-As you now have the source code, let's make sure we can compile and run the tests using **sbt**.
+As you now have the source code, let's make sure we can compile and run the tests using **sbt**. We consider it a sign of a healthy project where you can immediately test the code as soon as you've downloaded it. We also think it can be part of a growth mindset when it comes to coding. If you think of testing as fun, you're more likely to do it. Not to sound hokey, but when you see others having fun when they checkout your code and gleefully observe the tests passing, you are multiplying the fun!
 
 The following *compiles* the code we just checked out via **git**. **sbt** generates a lot of output, mainly aimed at *helping* you when something goes wrong. Because dependencies are being pulled from the internet for the unit testing frameworks (JUnit and ScalaText) there is a chance you could see an error message but it is extremely unlikely. We're written the build file in such a way that it will evolve with Scala and its many moving parts.
 
@@ -51,7 +51,6 @@ Again there is a *lot* of output generated, and what you see may differ from wha
 You'll see a number of lines that begin with ``[info]``. This indicates that informative messages about tests are being written to the console. For our example, there are various tests being performed on our domain model (rational numbers). We have organized the tests according to the different methods in our implementation. Here, you can observe that we test everything from an internal helper method (the greatest common divisor), to initializer (construction) methods, and the each related groups of methods (for arithmetic, helpers, and equality/hashcode for use with other Scala classes).
 
 While the aforementioned might sound a bit *vague*, it is deliberate on our part. There is a *mindset* to testing. When you do testing right, you should be able to check out someone's code, compile it, and run the tests.
-
 
 dimensions of testing
 -------------------------
@@ -187,7 +186,7 @@ Central to making rational numbers work is a famous algorithm, attributable to E
    :start-after: begin-RationalMathUtility-gcd
    :end-before: end-RationalMathUtility-gcd
 
-We won't rehash the details of how the ``gcd()`` actually does what it does. This is covered extensively in online resources.
+We won't rehash the details of how the ``gcd()`` actually does what it does. This is covered extensively in online resources. It is one of the most famous algorithms in computer science and is attributed to Euclid (who predates modern computer science).
 
 The following is the complete implementation of the Rational class. We will explore this in a bit of detail to ensure the ensuing discussion of unit testing makes complete sense.
 
@@ -227,7 +226,6 @@ class Rational(n: Int, d: Int) extends Ordered[Rational] {
 
    object Rational ...
 
-
 We think the Rational class is a great example that plays to Scala's strengths, especially when it comes to clarity, conciseness, and correctness. Let's take a look at the implementation of this class in detail.
 
 For readers new to Scala, you can start by thinking of Scala as "Java done more concisely". The class definition basically gives us all we need to construct instances. A Rational number has a numerator and a denominator, *n* and *d*, respectively.
@@ -240,29 +238,72 @@ For readers new to Scala, you can start by thinking of Scala as "Java done more 
 
 Initializing *members* is a matter of creating Scala ``val`` definitions. Our Rational implementation is intended to be *side-effect free*. We initialize the *numerator* and *denominator* by dividing out the greatest-common divisor. This has the effect of reducing the fraction 
 
-We'll then dive into the arithmetic methods:
+Let's take a look at the methods that deal with basic arithmetic.
+
+
+Rational number arithmetic is interesting. One of the things that is fascinating about arithmetic involving rational numbers is that the addition (and subtraction) operations are in some ways *harder* than the multiplication (and division) operations. Why? Well, for one thing, when you do addition, you need to compute the product of the first rational's numerator and the second rational's denominator. Then you add this result to the product of second rational's numerator and the first rational's denominator. Once done, you divide this result by the product of the two rationals' demoninators. Of course, having seen children actually get confused by this (including myself), suffice it to say, you're going to want to test it to believe it--even if you understand it.
+
+So more formally, when we have :math:`\frac{a}{b} \cdot \frac{c}{d}`, addition is achieved by doing :math:`\frac{a d - b c}{b d}` and then using the normal methods (prayer, guessing factors, or using Euclid's algorithm) to reduce the fraction to a final result.
+
+Now let's look at it in Scala.
 
 .. literalinclude:: ../examples/scala-tdd-fundamentals/src/main/scala/Rational.scala
    :language: scala
    :start-after: RationalClass.Arithmetic
    :end-before: RationalClass
 
-And become even more excited about comparison operations!
+Scala makes this particularly beautiful, given its robust support for *operator overloading* (a concept you may have missed when moving from C++ to Java as we did). In Scala, it's just a matter of defining an operator function (+), which we are defining to work *only* with Rational on the left and right hand side in this example (again, with the intent of not driving to far from Martin Odersky's example). 
+
+We won't go into the explanation of every operator. Subtraction (-) is essentially the same as addition (+). 
+
+Multiplication of rational numbers is super simple by comparision. Multiply the numerators and denominators of each rational number. Reduce. Division follows similarly, where you basically are multiplying the first fraction by the reciprocal of the second fraction. Reduce. Done.
+
+To support the ``Ordered[Rational]`` trait, we need to implement comparison. This is shown in the following:
+
 
 .. literalinclude:: ../examples/scala-tdd-fundamentals/src/main/scala/Rational.scala
    :language: scala
    :start-after: RationalClass.Comparisons
    :end-before: RationalClass
 
-Followed by the complete ecstasy attained by addressing object equality, needed for the be-matchers.
+It is interesting to think about how rational numbers are properly compared. It is *essentially* the same as subtraction. The diference, however, is that we really don't need to know the denominator. Why is this? A simple example is helpful. For example, if you had 1/4 and 1/4, subtraction gives 0/16. Of course, we only need the numerator of the subtraction result to know that the two fractions compared equally. More importantly, however, it is about not doing work that doesn't need to be done.
+
+This
+
+.. code-block:: scala
+
+   def compare(that: Rational) = numerator * that.denominator - that.numerator * denominator
+
+is way more efficient than
+
+.. code-block:: scala
+
+   def compare(that: Rational) = (this - that).numerator
+
+Nevertheless, because it is taking advantage of a bit of mathematical cleverness, there is great value to testing whether compare does what we expect. In our forthcoming JUnit and ScalaTest examples, it will be apparent that we took great care to test this, despite our confidence in the underlying mathematical thinking behind comparison.
+
+Lastly, we have some methods that allow Rational instances to be used properly in Scala collections. We'll keep this simple for now by saying that we define object equality on Rational numbers as follows:
+
+- If a Rational is compared to another non-Rational object, the objects are not equal.
+- Two Rationals are equal objects if (and only if) they compare equal using the compare method we just discussed. That is, this.compare(that) == 0.
+
 
 .. literalinclude:: ../examples/scala-tdd-fundamentals/src/main/scala/Rational.scala
    :language: scala
    :start-after: RationalClass.Object
    :end-before: RationalClass
+   
 
-Can it get more exciting? Time will tell.
+We also provide a definition of hashcode() by taking the numerator and denominator and placing them in a Scala tuple and then punting the actual hash code computation to the tuple. Although a simple idea, this little session in sbt console shows how it works:
 
+.. code-block:: scala
+
+   scala> (1, 4).hashCode
+   res1: Int = -1116984814
+   scala> (1, 4).hashCode
+   res2: Int = -1116984814
+
+Two different tuples containing the same integers (numerator and denominator) do, indeed, result in the same hash code! Whew!
 
 Testing JUnit Style
 ---------------------------------------------
