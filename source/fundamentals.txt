@@ -183,6 +183,7 @@ Central to making rational numbers work is a famous algorithm, attributable to E
 
 .. literalinclude:: ../examples/scala-tdd-fundamentals/src/main/scala/Rational.scala
    :language: scala
+   :dedent: 2
    :start-after: begin-RationalMathUtility-gcd
    :end-before: end-RationalMathUtility-gcd
 
@@ -230,9 +231,9 @@ We think the Rational class is a great example that plays to Scala's strengths, 
 
 For readers new to Scala, you can start by thinking of Scala as "Java done more concisely". The class definition basically gives us all we need to construct instances. A Rational number has a numerator and a denominator, *n* and *d*, respectively.
 
-
 .. literalinclude:: ../examples/scala-tdd-fundamentals/src/main/scala/Rational.scala
    :language: scala
+   :dedent: 4
    :start-after: RationalClass.Initialization
    :end-before: RationalClass
 
@@ -249,6 +250,7 @@ Now let's look at it in Scala.
 
 .. literalinclude:: ../examples/scala-tdd-fundamentals/src/main/scala/Rational.scala
    :language: scala
+   :dedent: 4
    :start-after: RationalClass.Arithmetic
    :end-before: RationalClass
 
@@ -263,6 +265,7 @@ To support the ``Ordered[Rational]`` trait, we need to implement comparison. Thi
 
 .. literalinclude:: ../examples/scala-tdd-fundamentals/src/main/scala/Rational.scala
    :language: scala
+   :dedent: 4
    :start-after: RationalClass.Comparisons
    :end-before: RationalClass
 
@@ -290,6 +293,7 @@ Lastly, we have some methods that allow Rational instances to be used properly i
 
 .. literalinclude:: ../examples/scala-tdd-fundamentals/src/main/scala/Rational.scala
    :language: scala
+   :dedent: 4
    :start-after: RationalClass.Object
    :end-before: RationalClass
    
@@ -312,6 +316,7 @@ Testing GCD code
 
 .. literalinclude:: ../examples/scala-tdd-fundamentals/src/test/scala/RationalJUnitTests.scala
    :language: scala
+   :dedent: 2
    :start-after: RationalJUnitTests.gcd
    :end-before: RationalJUnitTests
 
@@ -319,6 +324,7 @@ Testing whether rational numbers get initialized properly and are kept in reduce
 
 .. literalinclude:: ../examples/scala-tdd-fundamentals/src/test/scala/RationalJUnitTests.scala
    :language: scala
+   :dedent: 2
    :start-after: RationalJUnitTests.Initialization
    :end-before: RationalJUnitTests
 
@@ -326,6 +332,7 @@ Testing whether rational number arithmetic works as expected.
 
 .. literalinclude:: ../examples/scala-tdd-fundamentals/src/test/scala/RationalJUnitTests.scala
    :language: scala
+   :dedent: 2
    :start-after: RationalJUnitTests.Arithmetic
    :end-before: RationalJUnitTests
 
@@ -333,6 +340,7 @@ Testing whether the comparisons involving rational numbers work as expected.
 
 .. literalinclude:: ../examples/scala-tdd-fundamentals/src/test/scala/RationalJUnitTests.scala
    :language: scala
+   :dedent: 2
    :start-after: RationalJUnitTests.Comparisons
    :end-before: RationalJUnitTest
 
@@ -344,7 +352,6 @@ The following is an example of one of the ScalaTest styles, known as FlatSpec. F
 One thing we *said* that rational numbers should *do* is to maintain their representation in a reduced form. When combined with other rational numbers (via arithmetic), we also expect this behavior to be observed.
 
 So let's start with looking at how this style applies to the greatest-common divisor itself.
-
 
 What do we expect of the greatest common divisor algorithm? Well, our friend Euclid had something to say about this. 
 
@@ -388,6 +395,7 @@ Back to the actual GCD, here it is:
 
 .. literalinclude:: ../examples/scala-tdd-fundamentals/src/test/scala/RationalScalaTestFlatSpecMatchers.scala
    :language: scala
+   :dedent: 2
    :start-after: RationalFlatSpec.GCD
    :end-before: RationalFlatSpec
 
@@ -409,6 +417,7 @@ We think both have value, but it is clear that one has a more *literate* style t
 
 .. literalinclude:: ../examples/scala-tdd-fundamentals/src/test/scala/RationalScalaTestFlatSpecMatchers.scala
    :language: scala
+   :dedent: 2
    :start-after: RationalFlatSpec.Initializing
    :end-before: RationalFlatSpec
 
@@ -424,6 +433,7 @@ The tests of Rational arithmetic are largely what we'd expect.
 
 .. literalinclude:: ../examples/scala-tdd-fundamentals/src/test/scala/RationalScalaTestFlatSpecMatchers.scala
    :language: scala
+   :dedent: 2
    :start-after: RationalFlatSpec.Arithmetic
    :end-before: RationalFlatSpec
 
@@ -439,6 +449,7 @@ Let's look at how we test the comparison operations.
 
 .. literalinclude:: ../examples/scala-tdd-fundamentals/src/test/scala/RationalScalaTestFlatSpecMatchers.scala
    :language: scala
+   :dedent: 2
    :start-after: RationalFlatSpec.Comparisons
    :end-before: RationalFlatSpec
 
@@ -458,6 +469,7 @@ Recalling the points we made about collections, the following shows how we test 
 
 .. literalinclude:: ../examples/scala-tdd-fundamentals/src/test/scala/RationalScalaTestFlatSpecMatchers.scala
    :language: scala
+   :dedent: 2
    :start-after: RationalFlatSpec.Collections
    :end-before: RationalFlatSpec
 
