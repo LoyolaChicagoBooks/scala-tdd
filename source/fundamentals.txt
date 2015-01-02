@@ -23,6 +23,10 @@ An important defining principle of our book is that the text and examples should
 
 So without further ado, let's get the code for this chapter.
 
+.. todo:: 
+
+   Investigate URL shortening for GitHub URLs. I tried git.io but the end result cannot be used with git clone. Thoughts?
+   
 .. code-block:: shell
 
    $ git clone https://github.com/LoyolaChicagoCode/scala-tdd-fundamentals.git
@@ -38,13 +42,13 @@ As you now have the source code, let's make sure we can compile and run the test
 
 The following *compiles* the code we just checked out via **git**. **sbt** generates a lot of output, mainly aimed at *helping* you when something goes wrong. Because dependencies are being pulled from the internet for the unit testing frameworks (JUnit and ScalaText) there is a chance you could see an error message but it is extremely unlikely. We're written the build file in such a way that it will evolve with Scala and its many moving parts.
 
-.. literalinclude:: images/fundamentals/sbt-compile.txt
+.. literalinclude:: images/fundamentals/sbt-compile-wrap.txt
 
 The most important line to observe in this output is the one beginning with ``[success]``. If for any reason you don't see this line when running it yourself, it is likely that something failed, more than likely a network connectivity problem (or some repository became unavailable, we hope, temporarily).
 
 If you've indeed encountered success in building our code with **sbt**, the next step is to run the tests. This is achieved by running ``sbt test``.
 
-.. literalinclude:: images/fundamentals/sbt-test.txt
+.. literalinclude:: images/fundamentals/sbt-test-wrap.txt
 
 Again there is a *lot* of output generated, and what you see may differ from what you see in this console output, owing to changes that occur between the time a book is published and other changes that we or the Scala developers may make.
 
@@ -97,13 +101,15 @@ Let's fire up the Scala test console:
 .. code-block:: bash
 
    $ sbt test:console
-   [info] Set current project to SimpleTesting (in build file:/Users/gkt/Dropbox/Work/LUC/scala-tdd-fundamentals/)
+   [info] Set current project to SimpleTesting (in build
+   file:/Users/gkt/Dropbox/Work/LUC/scala-tdd-fundamentals/)
    [info] Starting scala interpreter...
    [info]
-   Welcome to Scala version 2.11.4 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_25).
+   Welcome to Scala version 2.11.4 (Java HotSpot(TM) 64-Bit
+   Server VM, Java 1.8.0_25).
    Type in expressions to have them evaluated.
    Type :help for more information.
-
+   
 Now let's import JUnit and try out the assertion methods.
 
 .. code-block:: bash
@@ -275,13 +281,13 @@ This
 
 .. code-block:: scala
 
-   def compare(that: Rational) = numerator * that.denominator - that.numerator * denominator
+   def compare(that: Rational) = _n * that._d - that._n * _d
 
 is way more efficient than
 
 .. code-block:: scala
 
-   def compare(that: Rational) = (this - that).numerator
+   def compare(that: Rational) = (this - that)._n
 
 Nevertheless, because it is taking advantage of a bit of mathematical cleverness, there is great value to testing whether compare does what we expect. In our forthcoming JUnit and ScalaTest examples, it will be apparent that we took great care to test this, despite our confidence in the underlying mathematical thinking behind comparison.
 
@@ -366,7 +372,8 @@ As this is the first example of a FlatSpec style test, let's introduce a few thi
 
    import org.scalatest._
 
-   class RationalScalaTestFlatSpecMatchers extends FlatSpec with Matchers {
+   class RationalScalaTestFlatSpecMatchers extends FlatSpec 
+     with Matchers {
       // Tests go here
    }
 
