@@ -4,7 +4,8 @@ num_changes=0
 total_checked=0
 for dir in . examples/*/
 do
-	this_changed=$(./git-pull-status.sh $dir)
+	./git-pull-status.sh $dir
+	this_changed=$?
 	num_changes=$((num_changes + this_changed))
 	total_checked=$((total_checked + 1))
 	echo "Checked $dir changes=$num_changes"

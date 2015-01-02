@@ -7,7 +7,7 @@ AFTER=/tmp/git-after-pull-$$.out
 git log > $BEFORE
 git pull > /dev/null
 git log > $AFTER
-diff $BEFORE $AFTER > /dev/null 2&>1
+diff $BEFORE $AFTER > /dev/null
 repo_changed=$?
 rm -f $BEFORE $AFTER
 exit $repo_changed
