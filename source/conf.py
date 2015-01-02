@@ -39,7 +39,7 @@ extensions = [
 templates_path = ['_templates']
 
 # The suffix of source filenames.
-source_suffix = '.rst'
+source_suffix = '.txt'
 
 # The encoding of source files.
 #source_encoding = 'utf-8-sig'
@@ -73,6 +73,10 @@ release = '1.0'
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 exclude_patterns = []
+
+# Folders to exclude
+
+exclude_trees = [ 'images' ] 
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
