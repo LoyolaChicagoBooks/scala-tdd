@@ -13,4 +13,4 @@ done
 	&& echo "$num_changes of $total_checked dependent repositories changed" \
 	&& echo "git log for $(date)" \
 	&& git --no-pager log -5 --pretty=oneline \
-	&& sh ./deploy-packt.sh
+	&& bash ./deploy-packt.sh
