@@ -250,7 +250,7 @@ Let's take a look at the methods that deal with basic arithmetic.
 
 Rational number arithmetic is interesting. One of the things that is fascinating about arithmetic involving rational numbers is that the addition (and subtraction) operations are in some ways *harder* than the multiplication (and division) operations. Why? Well, for one thing, when you do addition, you need to compute the product of the first rational's numerator and the second rational's denominator. Then you add this result to the product of second rational's numerator and the first rational's denominator. Once done, you divide this result by the product of the two rationals' demoninators. Of course, having seen children actually get confused by this (including myself), suffice it to say, you're going to want to test it to believe it--even if you understand it.
 
-So more formally, when we have :math:`\frac{a}{b} \cdot \frac{c}{d}`, addition is achieved by doing :math:`\frac{a d + b c}{b d}` and then using the normal methods (prayer, guessing factors, or using Euclid's algorithm) to reduce the fraction to a final result.
+So more formally, when we have :math:`\frac{a}{b} + \frac{c}{d}`, addition is achieved by doing :math:`\frac{a d + b c}{b d}` and then using the normal methods (prayer, guessing factors, or using Euclid's algorithm) to reduce the fraction to a final result.
 
 Now let's look at it in Scala.
 
