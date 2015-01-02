@@ -318,7 +318,11 @@ Two different tuples containing the same integers (numerator and denominator) do
 Testing JUnit Style
 ---------------------------------------------
 
-Testing GCD code
+Java programmers nowadays write JUnit tests by creating a test class and using the @Test annotation for each intended test method. Each method is written by using the various and sundry assertion methods covered earlier in this chapter. 
+
+As the intention of this section is to show how you can take what you already know in Java and apply it immediately to Scala, we are assuming that you have previous experience working with JUnit and Java.
+
+Let's start by looking at the tests for our greatest common divisor method.
 
 .. literalinclude:: ../examples/scala-tdd-fundamentals/src/test/scala/RationalJUnitTests.scala
    :language: scala
@@ -326,7 +330,17 @@ Testing GCD code
    :start-after: RationalJUnitTests.gcd
    :end-before: RationalJUnitTests
 
-Testing whether rational numbers get initialized properly and are kept in reduced form.
+Our GCD tests are basically all encoded in one test method, because they're all similar and very closely related. What we're primarily trying to test here is whether various combinations of positive and negative numbers result in the expected behavior. It is worth pondering, however, what exactly is *expected* when it comes to Euclid's algorithm. If you've never looked at it closely, the results may surprise (or scare) you.
+
+Let's start with some easy examples. :math:`gcd(3, 6)` should produce 3. It's easy to see why, because 3 divides into both 3 and 6. You'd expect these two numbers, when they appear in a Rational number (fraction) to be reduced to 1 and 2, respectively.
+
+What about when either or both of the numbers is/are negative? :math:`gcd(-3, -6)` should do what? Let's start by thinking about what we *hope* it does. Ideally, we'd like a rational with -3 numerator and -6 denominator to be *reduced* to 1/2. So we *hope* that the greatest common divisor gives us -3. (Rest assured, it does, but we need to test this. It will only help to cure a bad headache later.)
+
+When either of the numbers is negative (but not both), we expect the greatest common divisor to be positive, though it doesn't really matter in this case, because it will only affect whether the sign is negative in the numerator or the denominator. (Cosmetically, we prefer the sign to be in the numerator when writing fractions, but it doesn't much matter to a computer as long as it works properly when doing arithmetic.
+
+Lastly, we need to look at what happens when zero appears in a greatest common divisor calculation. The last two tests :math:`gcd(0,5)` and :math:`gcd(5,0)` both check that the GCD is 5. Is this what we expect? Yes. If I had a rational number :math:`\frac{0}{5}`, it should be reduced to :math:`\frac{0}{1}`.
+
+So assuming all of our greatest common divisor tests work properly, it becomes much easier to think about whether the rest of our class Rational's methods are working.
 
 .. literalinclude:: ../examples/scala-tdd-fundamentals/src/test/scala/RationalJUnitTests.scala
    :language: scala
