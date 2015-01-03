@@ -146,8 +146,86 @@ When an assertion is *successful*, you will see *no output*. On the other hand, 
 
 You can see more information about the exception as follows:
 
+.. code-block:: bash
+
    scala> lastException.printStackTrace
 
+Let's look at some of the other assertions. assertArrayEquals() is an interesting one!
+
+.. code-block:: bash
+
+   scala> val v1 = Array(1, 2, 3)
+   v1: Array[Int] = Array(1, 2, 3)
+
+   scala> val v2 = Array(1, 2)
+   v2: Array[Int] = Array(1, 2)
+
+   scala> assertArrayEquals(v1, v2)
+   java.lang.AssertionError: array lengths differed, expected.length=3 actual.length=2
+     at org.junit.Assert.fail(Assert.java:88)
+     at org.junit.internal.ComparisonCriteria.assertArraysAreSameLength(ComparisonCriteria.java:71)
+     at org.junit.internal.ComparisonCriteria.arrayEquals(ComparisonCriteria.java:32)
+     at org.junit.Assert.internalArrayEquals(Assert.java:473)
+     at org.junit.Assert.assertArrayEquals(Assert.java:369)
+     at org.junit.Assert.assertArrayEquals(Assert.java:380)
+     ... 43 elided
+
+   scala> val v3 = Array(1, 2, 3)
+   v3: Array[Int] = Array(1, 2, 3)
+
+   scala> assertArrayEquals(v1, v3)
+
+For arrays to be considered equal, they must match in type, length, and content. For this reason, only ``v1`` and ``v3`` compare equal as arrays. 
+
+If we try to compare two arrays of *different* types, we won't get very far. Consider:
+
+.. code-block:: bash
+
+   scala> val v4 = Array(1.0, 2.0)
+   v4: Array[Double] = Array(1.0, 2.0)
+
+   scala> assertArrayEquals(v1, v4)
+   <console>:13: error: overloaded method value assertArrayEquals with alternatives:
+     (x$1: Array[Long],x$2: Array[Long])Unit <and>
+     (x$1: Array[Int],x$2: Array[Int])Unit <and>
+     (x$1: Array[Short],x$2: Array[Short])Unit <and>
+     (x$1: Array[Char],x$2: Array[Char])Unit <and>
+     (x$1: Array[Byte],x$2: Array[Byte])Unit <and>
+     (x$1: Array[Object],x$2: Array[Object])Unit
+    cannot be applied to (Array[Int], Array[Double])
+                 assertArrayEquals(v1, v4)
+                 ^
+
+Remember that we're trying out Scala's assertion methods *interactively* in the REPL. The carat symbol just before ``assertArrayEquals(v1, v4)`` means that this is a *syntax error*. Why? The problem is that ``v1`` is a Scala ``Array[Int]``, while v4 is a Scala ``Array[Double]``--a problem! So this assertion neither passes nor fails. Luckily, when you write your unit tests normally, they will be within a Scala module (often within a class) and full syntactic and type checking will be performed before any test is run. The lowdown is that Scala requires your assertions to compile cleanly before they are actually executed--even within the REPL.
+
+So we know that ``assertArrayEquals(v1, v3)`` is successful. Let's look at what happens when we use ``assertEquals(v1, v3)``. The results may surprise you!
+
+.. code-block:: bash
+
+   scala> assertEquals(v1, v3)
+   java.lang.AssertionError: expected:<[I@3533e8ba> but was:<[I@386e9a04>
+     at org.junit.Assert.fail(Assert.java:88)
+     at org.junit.Assert.failNotEquals(Assert.java:743)
+     at org.junit.Assert.assertEquals(Assert.java:118)
+     at org.junit.Assert.assertEquals(Assert.java:144)
+     ... 43 elided
+
+What's going on here?
+
+Well, if you look carefully, there are two different object identifiers here. Although ``v1`` and ``v3`` have the same array values, they are by no means equal as in object equality. Further examination reveals what might be going on:
+
+.. code-block:: bash
+
+   scala> v1.hashCode
+   res13: Int = 892594362
+
+   scala> v2.hashCode
+   res14: Int = 1561484803
+
+   scala> v3.hashCode
+   res15: Int = 946772484
+
+Aha! ``v1`` and ``v3`` refer to identical arrays, at least in terms of their content, but their hash codes don't match. This is often a sign of *not being equal*, especially in object-oriented thinking.
 
 Luckily, a unit-testing framework allows you to avoid looking at the dreaded stack trace. It will cheerfully intercept the ``AssertionError`` in the test runner. (This chapter doesn't use the IDE so everyone will have a common basis for thinking about tests that relies only on Scala's standard toolset.)
 
