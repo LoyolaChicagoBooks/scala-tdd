@@ -6,9 +6,9 @@ This chapter is focused on the essentials of testing. Because we know that most 
 Dependencies
 ----------------------
 
-You need to install the Scala Build Tool [#SBT]_ - The details of this tool are covered in the :doc:`environment`. There is no need to install Scala separately, because what we'll be showing you is how SBT downloads the required version(s) of Scala automatically.
+You need to install the Scala Build Tool [#SBT]_ - The details of this tool are covered in the :doc:`environment`. There is no need to install Scala separately. What we'll be doing in this chapter uses SBT to install Scala on demand.
 
-Git distributed version control system (DVCS). Git is available for all major platforms [#GIT]_. Git is one of the preeminent version control systems and is used by GitHub [#GitHub]_, one of the most popular--and we think, best--sites for hosting free and open source projects. We use it for almost all of our public-facing projects.
+You must also install the Git distributed version control system (DVCS) but it is already on your computer if you are running OS X or Linux. Git is available for all major platforms [#GIT]_. Git is one of the preeminent version control systems and is used by GitHub [#GitHub]_, one of the most popular--and we think, best--sites for hosting free and open source projects. We use it for almost all of our public-facing projects.
 
 .. note::
 
@@ -19,7 +19,7 @@ To do the examples in this chapter, you must install both of these. Installation
 Cloning the Exemplar
 ----------------------
 
-An important defining principle of our book is that the text and examples should remain relevant long after you have decided the book is no longer needed. We keep all of our examples under version control. There's nothing worse than having a book where there is a typo and having to waste time trying to convince the author to cough up the latest code (or fix it).
+An important defining principle of our book is that the text and examples should remain relevant long after you have decided the book is no longer needed. We keep all of our examples under version control. In addition to our dear readers, countless students, research collaborators, and we, oursevles, depend on the examples continuing to work long after we create them. It might go without saying, but we think there's nothing worse than getting a book where there is a typo or compilation error and having to waste time trying to convince the author to cough up the latest code (or fix it).
 
 So without further ado, let's get the code for this chapter.
 
@@ -29,24 +29,35 @@ So without further ado, let's get the code for this chapter.
    
 .. code-block:: shell
 
-   $ git clone https://github.com/LoyolaChicagoCode/scala-tdd-fundamentals.git
+   $ git clone
+   https://github.com/LoyolaChicagoCode/scala-tdd-fundamentals.git
+
    $ cd scala-tdd-fundamentals
    $ ls
 
 At this point, it is worth noting that we do most of our work in a Unix style environment. You can also checkout our project using IntelliJ (covered int he next chapter) but we're mostly going to operate at the command line in this chapter. It really does help to illuminate the principles.
 
+.. note:: 
+
+   It is also worth noting at this point that we are command-line junkies. When it comes to things we are doing in a terminal session (e.g. entering commands and seeing output), at times we will need to break lines up for the purpose of formatting the book. Notably, the ``git clone`` command is entered entirely on one line without hitting the return (a.k.a. enter) key. Similarly, when we should you the output of a command, it is entirely possible the output you observe will be slightly different.
+
 The Testing Mindset - Running Tests on Checkout
 --------------------------------------------------
 
-As you now have the source code, let's make sure we can compile and run the tests using **sbt**. We consider it a sign of a healthy project where you can immediately test the code as soon as you've downloaded it. We also think it can be part of a growth mindset when it comes to coding. If you think of testing as fun, you're more likely to do it. Not to sound hokey, but when you see others having fun when they checkout your code and gleefully observe the tests passing, you are multiplying the fun!
+.. |sbt| replace:: ``sbt``
 
-The following *compiles* the code we just checked out via **git**. **sbt** generates a lot of output, mainly aimed at *helping* you when something goes wrong. Because dependencies are being pulled from the internet for the unit testing frameworks (JUnit and ScalaText) there is a chance you could see an error message but it is extremely unlikely. We're written the build file in such a way that it will evolve with Scala and its many moving parts.
+.. |git| replace:: ``git``
+
+As you now have the source code, let's make sure we can compile and run the tests using |sbt|. We consider it a sign of a healthy project where you can immediately test the code as soon as you've downloaded it. We also think it can be part of a growth mindset when it comes to coding. If you think of testing as fun, you're more likely to do it. Not to sound hokey, but when you see others having fun when they checkout your code and gleefully observe the tests passing, you are multiplying the fun!
+
+The following *compiles* the code we just checked out via |git|. |sbt|
+generates a lot of output, mainly aimed at *helping* you when something goes wrong. Because dependencies are being pulled from the internet for the unit testing frameworks (JUnit and ScalaText) there is a chance you could see an error message but it is extremely unlikely. We're written the build file in such a way that it will evolve with Scala and its many moving parts.
 
 .. literalinclude:: images/fundamentals/sbt-compile-wrap.txt
 
 The most important line to observe in this output is the one beginning with ``[success]``. If for any reason you don't see this line when running it yourself, it is likely that something failed, more than likely a network connectivity problem (or some repository became unavailable, we hope, temporarily).
 
-If you've indeed encountered success in building our code with **sbt**, the next step is to run the tests. This is achieved by running ``sbt test``.
+If you've indeed encountered success in building our code with |sbt|, the next step is to run the tests. This is achieved by running ``sbt test``.
 
 .. literalinclude:: images/fundamentals/sbt-test-wrap.txt
 
@@ -54,10 +65,9 @@ Again there is a *lot* of output generated, and what you see may differ from wha
 
 You'll see a number of lines that begin with ``[info]``. This indicates that informative messages about tests are being written to the console. For our example, there are various tests being performed on our domain model (rational numbers). We have organized the tests according to the different methods in our implementation. Here, you can observe that we test everything from an internal helper method (the greatest common divisor), to initializer (construction) methods, and the each related groups of methods (for arithmetic, helpers, and equality/hashcode for use with other Scala classes).
 
-While the aforementioned might sound a bit *vague*, it is deliberate on our part. There is a *mindset* to testing. When you do testing right, you should be able to check out someone's code, compile it, and run the tests.
+While the approach to checking out code and tesitng it without knowing any details might appear a bit odd at first, it is deliberate on our part. There is a *mindset* to testing. When you do testing right, you should be able to check out someone's code, compile it, and run the tests. We'd also like to hope that when we checkout your code, the first thing we can do is to run tests and see evidence of good software engineering!
 
-
-Let's get started with looking at some code!
+Without further ado, let's get started by looking at some code.
 
 Assertions
 -------------
@@ -70,11 +80,13 @@ In our tests, we make use of assertion method, e.g. ``Assert.assert()``, to dete
 
 Here are some examples of assertions, JUnit style. Readers should consult [#junit]_ for details of all supported methods. Although these are Java, we will be using them in Scala (Scala can use any Java class, a salient feature of the language).
 
-Let's take a look at how to test drive the API in the Scala sbt test:console. This is covered in the :doc:`environment` chapter.
+.. |sbt-console| replace:: ``sbt test:console``
+
+Let's take a look at how to test drive the API via |sbt-console|. The details of |sbt| are covered in the :doc:`environment` chapter.
 
 Let's fire up the Scala test console:
 
-.. code-block:: bash
+.. code-block:: text
 
    $ sbt test:console
    [info] Set current project to SimpleTesting (in build
@@ -88,7 +100,7 @@ Let's fire up the Scala test console:
    
 Now let's import JUnit and try out the assertion methods.
 
-.. code-block:: bash
+.. code-block:: text
 
    scala> import org.junit.Assert._
    import org.junit.Assert._
@@ -100,18 +112,18 @@ Now let's import JUnit and try out the assertion methods.
    assertFalse         assertNull        fail
 
 
-Perhaps one of the most awesome things in Scala's console is that you can *discover* the available methods by using tab completion (a long-time favorite of Linux/Unix geeks like us).
+Perhaps one of the most awesome things in Scala's test console is that you can *discover* the available methods by using tab completion (a long-time favorite of Linux/Unix geeks like us).
 
 Let's try an assertion that we know would be successful.
 
-.. code-block:: bash
+.. code-block:: text
 
    scala> assertTrue(true)
    scala> assertFalse(false)
 
 When an assertion is *successful*, you will see *no output*. On the other hand, when an assertion is *not successful* or *fails*, you see the dreaded *stack trace*.
 
-.. code-block:: bash
+.. code-block:: text
 
    scala> assertTrue(false)
    java.lang.AssertionError
@@ -122,13 +134,13 @@ When an assertion is *successful*, you will see *no output*. On the other hand, 
 
 You can see more information about the exception as follows:
 
-.. code-block:: bash
+.. code-block:: text
 
    scala> lastException.printStackTrace
 
 Let's look at some of the other assertions. assertArrayEquals() is an interesting one!
 
-.. code-block:: bash
+.. code-block:: text
 
    scala> val v1 = Array(1, 2, 3)
    v1: Array[Int] = Array(1, 2, 3)
@@ -137,11 +149,16 @@ Let's look at some of the other assertions. assertArrayEquals() is an interestin
    v2: Array[Int] = Array(1, 2)
 
    scala> assertArrayEquals(v1, v2)
-   java.lang.AssertionError: array lengths differed, expected.length=3 actual.length=2
+   java.lang.AssertionError: array lengths differed,
+   expected.length=3 actual.length=2
      at org.junit.Assert.fail(Assert.java:88)
-     at org.junit.internal.ComparisonCriteria.assertArraysAreSameLength(ComparisonCriteria.java:71)
-     at org.junit.internal.ComparisonCriteria.arrayEquals(ComparisonCriteria.java:32)
-     at org.junit.Assert.internalArrayEquals(Assert.java:473)
+     at org.junit.internal.ComparisonCriteria.assertArraysAreSame
+     Length(ComparisonCriteria.java:71)
+     at
+   org.junit.internal.ComparisonCriteria.arrayEquals(Comparison
+   Criteria.java:32)
+     at
+   org.junit.Assert.internalArrayEquals(Assert.java:473)
      at org.junit.Assert.assertArrayEquals(Assert.java:369)
      at org.junit.Assert.assertArrayEquals(Assert.java:380)
      ... 43 elided
@@ -151,17 +168,19 @@ Let's look at some of the other assertions. assertArrayEquals() is an interestin
 
    scala> assertArrayEquals(v1, v3)
 
+
 For arrays to be considered equal, they must match in type, length, and content. For this reason, only ``v1`` and ``v3`` compare equal as arrays. 
 
 If we try to compare two arrays of *different* types, we won't get very far. Consider:
 
-.. code-block:: bash
+.. code-block:: text
 
    scala> val v4 = Array(1.0, 2.0)
    v4: Array[Double] = Array(1.0, 2.0)
 
    scala> assertArrayEquals(v1, v4)
-   <console>:13: error: overloaded method value assertArrayEquals with alternatives:
+   <console>:13: error: overloaded method value assertArrayEquals
+   with alternatives:
      (x$1: Array[Long],x$2: Array[Long])Unit <and>
      (x$1: Array[Int],x$2: Array[Int])Unit <and>
      (x$1: Array[Short],x$2: Array[Short])Unit <and>
@@ -176,10 +195,11 @@ Remember that we're trying out Scala's assertion methods *interactively* in the 
 
 So we know that ``assertArrayEquals(v1, v3)`` is successful. Let's look at what happens when we use ``assertEquals(v1, v3)``. The results may surprise you!
 
-.. code-block:: bash
+.. code-block:: text
 
    scala> assertEquals(v1, v3)
-   java.lang.AssertionError: expected:<[I@3533e8ba> but was:<[I@386e9a04>
+   java.lang.AssertionError: expected:<[I@3533e8ba> but
+   was:<[I@386e9a04>
      at org.junit.Assert.fail(Assert.java:88)
      at org.junit.Assert.failNotEquals(Assert.java:743)
      at org.junit.Assert.assertEquals(Assert.java:118)
@@ -190,7 +210,7 @@ What's going on here?
 
 Well, if you look carefully, there are two different object identifiers here. Although ``v1`` and ``v3`` have the same array values, they are by no means equal as in object equality. Further examination reveals what might be going on:
 
-.. code-block:: bash
+.. code-block:: text
 
    scala> v1.hashCode
    res13: Int = 892594362
@@ -229,7 +249,7 @@ While we're reasonably certain you already know what a rational number is, it is
 
 3. The *numerator* and *denominator* are always kept in a reduced form. That is, if the *numerator* is 2 and the *denominator* is 4, you would expect the reduced form to be *numerator* = 1 and *denominator* = 2.
 
-4. Rational numbers must be able to perform the usual rules of arithmetic, including binary operations such as +, -, *, and / (explained below) and various *convenience* operations such as negation and reciprocal.
+4. Rational numbers must be able to perform the usual rules of arithmetic, including binary operations such as +, -, \*, and / (explained below) and various *convenience* operations such as negation and reciprocal.
 
 5. Any two rational numbers that are the same number should compare equally and be treated as the same number anywhere they might be used. For example, if you used a Scala set to keep a set of rational numbers (e.g. 1/2, 2/3, 2/4) you would expect this set to contain 1/2 and 2/3. 2/4 wouldn't be expected to appear in the set.
 
@@ -357,7 +377,7 @@ Lastly, we have some methods that allow Rational instances to be used properly i
    :end-before: RationalClass
    
 
-We also provide a definition of hashcode() by taking the numerator and denominator and placing them in a Scala tuple and then punting the actual hash code computation to the tuple. Although a simple idea, this little session in sbt console shows how it works:
+We also provide a definition of hashcode() by taking the numerator and denominator and placing them in a Scala tuple and then punting the actual hash code computation to the tuple. Although a simple idea, this little session in |sbt-console| shows how it works:
 
 .. code-block:: scala
 
@@ -419,7 +439,7 @@ Testing whether the comparisons involving rational numbers work as expected.
    :start-after: RationalJUnitTests.Comparisons
    :end-before: RationalJUnitTest
 
-Testing ScalaTest using FlatSpec Style
+Behavior-Driven Testing using ScalaTest 
 ------------------------------------------
 
 The following is an example of one of the ScalaTest styles, known as FlatSpec. FlatSpec is an example of *behavior-driven development* or BDD. You write FlatSpec tests with the idea of *describing* the *requirements* and/or expected behavior. As software engineers, behavior-driven development allows us to ensure that the stated requirements match the expected behavior. When we think in terms of BDD as opposed to TDD, we can express our tests at a much higher level, often in plain (English) language. As we consider each of the of the following groups of tests, therefore, we'll go back to what we *said* a rational number should *do*.
@@ -555,18 +575,7 @@ If this test works as expected, ``Rational(2, 4)`` and ``Rational(1, 2)`` (two d
 
    Add pattern-matching case? I'm still a bit concerned that this is making the example too complicated for a first chapter.
 
-Conclusions and Discussion
----------------------------------
 
-.. note::
-
-   This text came from Joe's early comments during chapter brainstorming.
-
-In production code, there are stable methods and classes. These classes have a high ratio of afferent coupling to efferent coupling. In some cases you may see 20:1 or 30:1.
-
-Unit tests can drive this ratio up even higher. I've seen cases where tests contribute to a 500:1 ratio. What is worse is that only moderately stable classes or methods such as those with a ratio of 5:1 might move into an area of 40:1 if used in enough test fixtures.
-
-This can lead to challenges in refactoring and to false-positive unit test failures. It is important in these cases to make use of a factory pattern or a facade pattern to isolate test from classes and methods that are not directly under tests. It can also assist readability to make these factories / facades follow a fluent development pattern to help improve readability in unit tests.
 
 Discussion
 ---------------
@@ -607,6 +616,20 @@ Code Coverage
 
 The third of our general questions about testing is to know "How could the code be improved?" For this question, we may need to look at code coverage tools. This can help us to understand whether the tests we have written really coverage all of the code in our domain. For example, do we honeslty know that every single method and line of code in the Rational class has beeen *touched* by the tests we have written. We don't know that by looking at JUnit or FlatSpec output directly. We'll look at tools that can help us with this later in the book.
 
+Coupling
+~~~~~~~~~~~~~~~~~~
+
+
+.. todo::
+
+   Have Joe look at this and possibly improve it.
+
+In production code, there are stable methods and classes. These classes have a high ratio of afferent coupling to efferent coupling. In some cases you may see 20:1 or 30:1 as the degree/ratio of coupling.
+
+Unit tests can drive this ratio up even higher. We've seen cases where tests contribute to a 500:1 ratio. What is worse is that only moderately stable classes or methods such as those with a ratio of 5:1 might move into an area of 40:1 if used in enough test fixtures.
+
+This can lead to challenges in refactoring and to false-positive unit test failures. It is important in these cases to make use of a factory pattern or a facade pattern to isolate test from classes and methods that are not directly under tests. It can also assist readability to make these factories / facades follow a fluent development pattern to help improve readability in unit tests.
+
 
 .. note::
 
@@ -615,9 +638,9 @@ The third of our general questions about testing is to know "How could the code 
    - refactoring
    - CI/CD
 
-.. [#SBE] Martin Odersky, Scala by Example, http://www.scala-lang.org/docu/files/ScalaByExample.pdf.
+.. [#SBE] Martin Odersky, *Scala by Example*, http://www.scala-lang.org/docu/files/ScalaByExample.pdf.
 
-.. [#IntroCS] Andrew N. Harrington and George K. Thiruvathukal, http://introcs.cs.luc.edu.
+.. [#IntroCS] Andrew N. Harrington and George K. Thiruvathukal, *Introduction to Computer Science with C# and Mono*, http://introcs.cs.luc.edu.
 
 .. [#BDDSeparatingConcerns] http://stackoverflow.com/questions/15389490/bdd-in-scala-does-it-have-to-be-ugly
 
