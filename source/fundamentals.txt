@@ -80,7 +80,7 @@ In our tests, we make use of assertion method, e.g. ``Assert.assert()``, to dete
 
 Here are some examples of assertions, JUnit style. Readers should consult [#junit]_ for details of all supported methods. Although these are Java, we will be using them in Scala (Scala can use any Java class, a salient feature of the language).
 
-|sbt-console| replace:: ``sbt test:console``
+.. |sbt-console| replace:: ``sbt test:console``
 
 Let's take a look at how to test drive the API via |sbt-console|. The details of |sbt| are covered in the :doc:`environment` chapter.
 
