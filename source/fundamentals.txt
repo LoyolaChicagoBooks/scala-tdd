@@ -56,36 +56,13 @@ You'll see a number of lines that begin with ``[info]``. This indicates that inf
 
 While the aforementioned might sound a bit *vague*, it is deliberate on our part. There is a *mindset* to testing. When you do testing right, you should be able to check out someone's code, compile it, and run the tests.
 
-dimensions of testing
--------------------------
-
-- correctness
-- performance: express runtime expectations as assertions
-- level: unit, integration, system, acceptance
-- visibility: white, gray, black box
-- code coverage: measures (statement, branch, path, etc.), tools (->
-  environment)
-
-style: bdd versus tdd
----------------------
-
-- http://blog.andolasoft.com/2014/06/rails-things-you-must-know-about-tdd-and-bdd.html
-- http://stackoverflow.com/questions/15389490/bdd-in-scala-does-it-have-to-be-ugly
-- http://blog.knoldus.com/2013/01/15/atdd-cucumber-and-scala/
-- cucumber-jvm https://github.com/cucumber/cucumber-jvm, jbehave http://jbehave.org
-- specs2: very powerful and expressive, covers broad range of styles, http://etorreborre.github.io/specs2
-
-The role of automated testing in the development process (see Fowler)
-  - testing
-  - refactoring
-  - CI/CD
 
 Let's get started with looking at some code!
 
 Assertions
 -------------
 
-A key notion of testing (and test-driven development) is the ability to make a logical assertion about something that generally must hold *true* if the test is to pass.
+A key notion of test-driven development and behavior-driven development is the ability to make a logical assertion about something that generally must hold *true* if the test is to pass. Because this is so fundamental to a *testing mindset*, we cover it separately before diving into various testing approaches.
 
 Assertions are not a standard language feature in Scala. (They are in other languages but often without the other good stuff.) Instead, there are a number of classes that provide functions for assertion handling. In the framework we are using to introduce unit testing (JUnit), a class named Assert supports assertion testing (class) methods. When we move to ScalaTest (for good), we'll find that the need for explicit assertions is significantly reduced but they can still be useful.
 
@@ -94,7 +71,6 @@ In our tests, we make use of assertion method, e.g. ``Assert.assert()``, to dete
 Here are some examples of assertions, JUnit style. Readers should consult [#junit]_ for details of all supported methods. Although these are Java, we will be using them in Scala (Scala can use any Java class, a salient feature of the language).
 
 Let's take a look at how to test drive the API in the Scala sbt test:console. This is covered in the :doc:`environment` chapter.
-
 
 Let's fire up the Scala test console:
 
@@ -232,7 +208,6 @@ Luckily, a unit-testing framework allows you to avoid looking at the dreaded sta
 .. todo::
 
    Add demonstrations of a few others here, especially those that are useful to our actual test cases.
-
 
 A Basic Example: Rational Arithmetic
 ---------------------------------------------
@@ -393,8 +368,10 @@ We also provide a definition of hashcode() by taking the numerator and denominat
 
 Two different tuples containing the same integers (numerator and denominator) do, indeed, result in the same hash code! Whew!
 
-Testing JUnit Style
----------------------------------------------
+Test-driven development with JUnit and Scala
+----------------------------------------------
+
+In this section, we're going to take a look at the first of two general ways of thinking about testing: test driven development, or TDD [#TDDvsBDD]_. In test-driven development, you typically think in terms of the tests you need to write and then write the implementation code expressly with the idea of making the tests pass. (In the interests of disclosure, the author wrote the test code and the implementation code somewhat simultaneously after starting with a spartan implementation of the Rational class.) TDD is a valuable way of thinking, because for some classes, it is virtually impossible to envision the entire set of interfaces that are needed. If you look at many class libraries (e.g. collections), it is clear that there was often an organic process that led to their creation.
 
 Java programmers nowadays write JUnit tests by creating a test class and using the @Test annotation for each intended test method. Each method is written by using the various and sundry assertion methods covered earlier in this chapter. 
 
@@ -445,7 +422,7 @@ Testing whether the comparisons involving rational numbers work as expected.
 Testing ScalaTest using FlatSpec Style
 ------------------------------------------
 
-The following is an example of one of the ScalaTest styles, known as FlatSpec. FlatSpec is an example of *behavior-driven development* You write FlatSpec tests with the idea of *describing* an expected behavior. As software engineers, behavior-driven development allows us to ensure that the stated requirements match the expected behavior. As we consider each of the of the following groups of tests, we'll go back to what we *said* a rational number should *do*.
+The following is an example of one of the ScalaTest styles, known as FlatSpec. FlatSpec is an example of *behavior-driven development* or BDD. You write FlatSpec tests with the idea of *describing* the *requirements* and/or expected behavior. As software engineers, behavior-driven development allows us to ensure that the stated requirements match the expected behavior. When we think in terms of BDD as opposed to TDD, we can express our tests at a much higher level, often in plain (English) language. As we consider each of the of the following groups of tests, therefore, we'll go back to what we *said* a rational number should *do*.
 
 One thing we *said* that rational numbers should *do* is to maintain their representation in a reduced form. When combined with other rational numbers (via arithmetic), we also expect this behavior to be observed.
 
@@ -578,7 +555,6 @@ If this test works as expected, ``Rational(2, 4)`` and ``Rational(1, 2)`` (two d
 
    Add pattern-matching case? I'm still a bit concerned that this is making the example too complicated for a first chapter.
 
-
 Conclusions and Discussion
 ---------------------------------
 
@@ -592,9 +568,62 @@ Unit tests can drive this ratio up even higher. I've seen cases where tests cont
 
 This can lead to challenges in refactoring and to false-positive unit test failures. It is important in these cases to make use of a factory pattern or a facade pattern to isolate test from classes and methods that are not directly under tests. It can also assist readability to make these factories / facades follow a fluent development pattern to help improve readability in unit tests.
 
+Discussion
+---------------
+
+In the interests of following the tradition of Packt books and providing highly hands-on treatment from the beginning, we focused our energy in this chapter on introducing the basics of testing by introducting a fairly well-known OO example, Rational numbers, and elaborating it completely by writing tests in TDD style (using JUnit, a fairly low-level testing framework) and BDD style (using one of the ScalaTest frameworks, known as FlatSpec). While TDD will continue to have a place in your toolset, we expect that you'll find BDD the more compelling alternative, especially when you want to show your customers that you have incorporated direct testing their requirements in your code.
+
+It is worth taking a few moments to consider what sort of things we might want to test in practice. Three rather general questions tend to guide the way we think of testing:
+
+- Does the code work?
+
+- Does the code work well?
+
+- How could the code be improved?
+
+In the general theory of testing, these three questions tend to be informed by some general ideas of software engineering, some of which can get rather theoretical.
+
+Correctness
+~~~~~~~~~~~~~~~~~~~
+
+The first of our three questions definitely falls into this category. When we talk about correctness, we are fundamentally talking about whether the code (algorithms) are correct in a formal sense. While there is still hope that formal verification systems will eventually be able to prove any piece of code correct, testing is a *pragmatic* approach to correctness. With the work we have put into testing the Rational number class, we are confident that it is correct. We've tested every dimension that a math-inclined person would expect us to test.
+
+But it is interesting to ponder: Have we *exhaustively* tested Rational yet? The answer is firmly in the negative. We've tested various combinations of things that should (and should not) appear in the numerator and denominator. But we haven't thrown random data both to know whether anything breaks. More importantly, we haven't done anything that appears to break performance. 
+
+Performance
+~~~~~~~~~~~~~~~~~~~
+
+We all are authors with interests in high-performance computing and related genres (e.g. embedded systems, mobile computing, covered later in this book). One thing our tests in this chapter haven't covered is related to our second question, "Does the code run well?" For something as simple as Rational, we hope the answer is yes, but these tests do nothing to inform us of same.
+
+Performance testing is a huge challenge in general and something beyond the scope of this book to cover in depth.  But we still need to know in many situations. If we were implementing a collection class, we'd like to know if the running time of certain methods tracks the known theoretical running time. For example, if we were inserting an item into a (mutable) set, we'd expect the performance to track the running time of the underlying structure. If this were a red/black tree, we'd hope to see time proportional to :math:`O(log(n))`. We'll look at these aspects later in the book by testing and exploring built-in collection classes, which provide a great case study for performance testing that doesn't become unwieldy or overly domain-specific.
+
+Lifecycle Testing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+At present, we are taking a rather limited view of testing in this first chapter. We're very much focused on unit testing and some aspects of acceptance testing. Complex software engineering includes other in-process testing, including integration testing (do all pieces of code work when put together?) to system and acceptance testing. When testing web and mobile applications, you interact with forms that accept data and interact in a black-box way with domain objects. We're going to do a bit of user-interface testing in this book, especially when it comes to Android examples, but there are presentation-level tiers that we're unlikely to cover, owing to the fact that we're not writing those tiers in Scala (e.g. a web app, which is probably using some sort of JavaScript library).
+
+Code Coverage
+~~~~~~~~~~~~~~~~
+
+The third of our general questions about testing is to know "How could the code be improved?" For this question, we may need to look at code coverage tools. This can help us to understand whether the tests we have written really coverage all of the code in our domain. For example, do we honeslty know that every single method and line of code in the Rational class has beeen *touched* by the tests we have written. We don't know that by looking at JUnit or FlatSpec output directly. We'll look at tools that can help us with this later in the book.
+
+
+.. note::
+
+   The role of automated testing in the development process (see Fowler)
+   - testing
+   - refactoring
+   - CI/CD
+
 .. [#SBE] Martin Odersky, Scala by Example, http://www.scala-lang.org/docu/files/ScalaByExample.pdf.
 
 .. [#IntroCS] Andrew N. Harrington and George K. Thiruvathukal, http://introcs.cs.luc.edu.
+
+.. [#BDDSeparatingConcerns] http://stackoverflow.com/questions/15389490/bdd-in-scala-does-it-have-to-be-ugly
+
+.. [#ATDDCucumber] http://blog.knoldus.com/2013/01/15/atdd-cucumber-and-scala/
+
+.. [#TDDvsBDD] http://blog.andolasoft.com/2014/06/rails-things-you-must-know-about-tdd-and-bdd.html
 
 .. [#SBT] Scala Build Tool, http://www.scala-sbt.org/
 
