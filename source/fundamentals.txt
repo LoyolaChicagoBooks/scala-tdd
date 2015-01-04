@@ -623,11 +623,6 @@ The third of our general questions about testing is to know "How could the code 
 Coupling
 ~~~~~~~~~~~~~~~~~~
 
-
-.. todo::
-
-   Have Joe look at this and possibly improve it.
-
 Test driven development is an important part of incremental development. Because code is continuously changing as new requirements are introduced or refined, refactoring is also an important part of incremental development. 
 
 Two important metrics to determine how easy it is to refactor code are afferent and efferent coupling. Afferent coupling describes the number of types that refer to a class. Efferent coupling describes the number of types a class refers to. Stable classes have a high ratio of afferent coupling to efferent coupling. These types of classes are considered ‘stable’. A ratio of 10:1 or 15:1 is commonly considered stable. When refactoring, it is simpler to refactor less stable classes and more challenging to refactor more stable classes. 
