@@ -439,7 +439,7 @@ Testing whether the comparisons involving rational numbers work as expected.
    :start-after: RationalJUnitTests.Comparisons
    :end-before: RationalJUnitTest
 
-Testing ScalaTest using FlatSpec Style
+Behavior-Driven Testing using ScalaTest 
 ------------------------------------------
 
 The following is an example of one of the ScalaTest styles, known as FlatSpec. FlatSpec is an example of *behavior-driven development* or BDD. You write FlatSpec tests with the idea of *describing* the *requirements* and/or expected behavior. As software engineers, behavior-driven development allows us to ensure that the stated requirements match the expected behavior. When we think in terms of BDD as opposed to TDD, we can express our tests at a much higher level, often in plain (English) language. As we consider each of the of the following groups of tests, therefore, we'll go back to what we *said* a rational number should *do*.
@@ -575,18 +575,7 @@ If this test works as expected, ``Rational(2, 4)`` and ``Rational(1, 2)`` (two d
 
    Add pattern-matching case? I'm still a bit concerned that this is making the example too complicated for a first chapter.
 
-Conclusions and Discussion
----------------------------------
 
-.. note::
-
-   This text came from Joe's early comments during chapter brainstorming.
-
-In production code, there are stable methods and classes. These classes have a high ratio of afferent coupling to efferent coupling. In some cases you may see 20:1 or 30:1.
-
-Unit tests can drive this ratio up even higher. I've seen cases where tests contribute to a 500:1 ratio. What is worse is that only moderately stable classes or methods such as those with a ratio of 5:1 might move into an area of 40:1 if used in enough test fixtures.
-
-This can lead to challenges in refactoring and to false-positive unit test failures. It is important in these cases to make use of a factory pattern or a facade pattern to isolate test from classes and methods that are not directly under tests. It can also assist readability to make these factories / facades follow a fluent development pattern to help improve readability in unit tests.
 
 Discussion
 ---------------
@@ -626,6 +615,20 @@ Code Coverage
 ~~~~~~~~~~~~~~~~
 
 The third of our general questions about testing is to know "How could the code be improved?" For this question, we may need to look at code coverage tools. This can help us to understand whether the tests we have written really coverage all of the code in our domain. For example, do we honeslty know that every single method and line of code in the Rational class has beeen *touched* by the tests we have written. We don't know that by looking at JUnit or FlatSpec output directly. We'll look at tools that can help us with this later in the book.
+
+Coupling
+~~~~~~~~~~~~~~~~~~
+
+
+.. todo::
+
+   Have Joe look at this and possibly improve it.
+
+In production code, there are stable methods and classes. These classes have a high ratio of afferent coupling to efferent coupling. In some cases you may see 20:1 or 30:1 as the degree/ratio of coupling.
+
+Unit tests can drive this ratio up even higher. We've seen cases where tests contribute to a 500:1 ratio. What is worse is that only moderately stable classes or methods such as those with a ratio of 5:1 might move into an area of 40:1 if used in enough test fixtures.
+
+This can lead to challenges in refactoring and to false-positive unit test failures. It is important in these cases to make use of a factory pattern or a facade pattern to isolate test from classes and methods that are not directly under tests. It can also assist readability to make these factories / facades follow a fluent development pattern to help improve readability in unit tests.
 
 
 .. note::
