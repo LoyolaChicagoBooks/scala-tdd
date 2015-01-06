@@ -19,13 +19,13 @@ To do the examples in this chapter, you must install both of these. Installation
 Cloning the Exemplar
 ----------------------
 
-An important defining principle of our book is that the text and examples should remain relevant long after you have decided the book is no longer needed. We keep all of our examples under version control. In addition to our dear readers, countless students, research collaborators, and we, oursevles, depend on the examples continuing to work long after we create them. It might go without saying, but we think there's nothing worse than getting a book where there is a typo or compilation error and having to waste time trying to convince the author to cough up the latest code (or fix it).
+An important defining principle of our book is that the text and examples should remain relevant long after you have decided the book is no longer needed. We keep all of our examples under version control. In addition to our dear readers, countless students, research collaborators, and we, ourselves, depend on the examples continuing to work long after we create them. It might go without saying, but we think there's nothing worse than getting a book where there is a typo or compilation error and having to waste time trying to convince the author to cough up the latest code (or fix it).
 
 So without further ado, let's get the code for this chapter.
 
 .. todo:: 
 
-   Investigate URL shortening for GitHub URLs. I tried git.io but the end result cannot be used with git clone. Thoughts?
+   Investigate URL shortening for GitHub URLs. I tried git.io but the end result cannot be used with git clone. Thoughts? (joe - is this due to the HTTPS?)
    
 .. code-block:: shell
 
@@ -65,7 +65,7 @@ Again there is a *lot* of output generated, and what you see may differ from wha
 
 You'll see a number of lines that begin with ``[info]``. This indicates that informative messages about tests are being written to the console. For our example, there are various tests being performed on our domain model (rational numbers). We have organized the tests according to the different methods in our implementation. Here, you can observe that we test everything from an internal helper method (the greatest common divisor), to initializer (construction) methods, and the each related groups of methods (for arithmetic, helpers, and equality/hashcode for use with other Scala classes).
 
-While the approach to checking out code and tesitng it without knowing any details might appear a bit odd at first, it is deliberate on our part. There is a *mindset* to testing. When you do testing right, you should be able to check out someone's code, compile it, and run the tests. We'd also like to hope that when we checkout your code, the first thing we can do is to run tests and see evidence of good software engineering!
+While the approach to checking out code and testing it without knowing any details might appear a bit odd at first, it is deliberate on our part. There is a *mindset* to testing. When you do testing right, you should be able to check out someone's code, compile it, and run the tests. We'd also like to hope that when we checkout your code, the first thing we can do is to run tests and see evidence of good software engineering!
 
 Without further ado, let's get started by looking at some code.
 
@@ -73,6 +73,10 @@ Assertions
 -------------
 
 A key notion of test-driven development and behavior-driven development is the ability to make a logical assertion about something that generally must hold *true* if the test is to pass. Because this is so fundamental to a *testing mindset*, we cover it separately before diving into various testing approaches.
+
+.. todo::
+
+	Joe - In my experience, the built in language assertions are usually a debug-build only sanity check that wouldn’t make sense for the cases where you’d normally use exceptions. There is a strong case for being able to run unit tests in debug, release, and obfuscated release modes to validate your product. Sometimes these language level asserts don’t work in these cases.
 
 Assertions are not a standard language feature in Scala. (They are in other languages but often without the other good stuff.) Instead, there are a number of classes that provide functions for assertion handling. In the framework we are using to introduce unit testing (JUnit), a class named Assert supports assertion testing (class) methods. When we move to ScalaTest (for good), we'll find that the need for explicit assertions is significantly reduced but they can still be useful.
 
@@ -614,21 +618,16 @@ At present, we are taking a rather limited view of testing in this first chapter
 Code Coverage
 ~~~~~~~~~~~~~~~~
 
-The third of our general questions about testing is to know "How could the code be improved?" For this question, we may need to look at code coverage tools. This can help us to understand whether the tests we have written really coverage all of the code in our domain. For example, do we honeslty know that every single method and line of code in the Rational class has beeen *touched* by the tests we have written. We don't know that by looking at JUnit or FlatSpec output directly. We'll look at tools that can help us with this later in the book.
+The third of our general questions about testing is to know "How could the code be improved?" For this question, we may need to look at code coverage tools. This can help us to understand whether the tests we have written really coverage all of the code in our domain. For example, do we honestly know that every single method and line of code in the Rational class has been *touched* by the tests we have written. We don't know that by looking at JUnit or FlatSpec output directly. We'll look at tools that can help us with this later in the book.
 
 Coupling
 ~~~~~~~~~~~~~~~~~~
 
+Test driven development is an important part of incremental development. Because code is continuously changing as new requirements are introduced or refined, refactoring is also an important part of incremental development. 
 
-.. todo::
+Two important metrics to determine how easy it is to refactor code are afferent and efferent coupling. Afferent coupling describes the number of types that refer to a class. Efferent coupling describes the number of types a class refers to. Stable classes have a high ratio of afferent coupling to efferent coupling. These types of classes are considered ‘stable’. A ratio of 10:1 or 15:1 is commonly considered stable. When refactoring, it is simpler to refactor less stable classes and more challenging to refactor more stable classes. 
 
-   Have Joe look at this and possibly improve it.
-
-In production code, there are stable methods and classes. These classes have a high ratio of afferent coupling to efferent coupling. In some cases you may see 20:1 or 30:1 as the degree/ratio of coupling.
-
-Unit tests can drive this ratio up even higher. We've seen cases where tests contribute to a 500:1 ratio. What is worse is that only moderately stable classes or methods such as those with a ratio of 5:1 might move into an area of 40:1 if used in enough test fixtures.
-
-This can lead to challenges in refactoring and to false-positive unit test failures. It is important in these cases to make use of a factory pattern or a facade pattern to isolate test from classes and methods that are not directly under tests. It can also assist readability to make these factories / facades follow a fluent development pattern to help improve readability in unit tests.
+When writing unit tests, be sure to pay attention to how they effect efferent coupling. In our experience we’ve seen cases where tests will raise the stability from a 20:1 ratio to over a 100:1 ratio. It is our recommendation that if unit tests are introducing excessive efferent coupling that you introduce a factory or builder pattern for your tests to make use of. This will allow you to preserve the production stability of your code and make refactoring and incremental development more productive.
 
 
 .. note::
