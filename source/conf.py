@@ -39,7 +39,7 @@ extensions = [
 templates_path = ['_templates']
 
 # The suffix of source filenames.
-source_suffix = '.txt'
+source_suffix = '.rst'
 
 # The encoding of source files.
 #source_encoding = 'utf-8-sig'
@@ -73,7 +73,7 @@ release = '1.0'
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 
-exclude_patterns = [ 'images/**/*.txt' ]
+#exclude_patterns = [ 'images/**/*.txt' ]
 
 # Folders to exclude
 
