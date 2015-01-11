@@ -2,6 +2,12 @@ Continuous Integration
 ========================
 
 
+.. |JetBrains| unicode:: JetBrains
+
+.. |Team City| unicode:: Team City U+2122
+
+.. |Jenkins| unicode:: Jenkins
+
 .. note:: 
 	All of this is copied from our notes on Trello.
 
@@ -17,4 +23,34 @@ Continuous Integration
 
 
 In this chapter, we will discuss your choices for establishing an effective continuous integration system for your Scala Software. We will explore how to best configure a continuous integration server for two different continuous integration products. We will also explore best practices for writing unit tests to minimize false positives in your automated testing.
+
+
+Continuous Integration Products
+-------------------------------
+
+The two products we will present in this chapter are |JetBrains| |Team City| and |Jenkins|. |Team City] is developed by the same company that develops IntelliJ IDEA and other products in the Java eco-system. |Jenkins| is an award winning product that has a long history with the Java community. Both are good options for implementing a continuous integration system.
+
+
+Team City
+---------
+
+
+Jenkins
+-------
+
+
+Scaling Continuous Integration
+------------------------------
+
+
+
+Continuous Integration and Third Party Technologies
+---------------------------------------------------
+
+
+False Positives and Periodic Failure in Test Automation
+-------------------------------------------------------
+
+
+
 
