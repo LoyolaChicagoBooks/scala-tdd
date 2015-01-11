@@ -9,14 +9,14 @@ Test-Driven Development in Scala
 .. toctree::
    :maxdepth: 2
 
-   fundamentals.txt 
-   environment.txt 
-   basicjava.txt
-   mocking.txt 
-   advanced.txt 
-   ci.txt
-   uitesting.txt
-   cpdctesting.txt
+   fundamentals.rst 
+   environment.rst 
+   basicjava.rst
+   mocking.rst 
+   advanced.rst 
+   ci.rst
+   uitesting.rst
+   cpdctesting.rst
 
 Indices and tables
 --------------------
