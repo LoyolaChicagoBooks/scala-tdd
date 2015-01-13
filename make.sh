@@ -13,5 +13,6 @@ if [ -f ~/.env/sphinx/bin/activate ]; then
 fi
 
 rm -rf build
+make -C source/images/ci
 make html
 make latexpdf
