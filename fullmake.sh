@@ -5,5 +5,6 @@ if [ -f ~/.env/sphinx/bin/activate ]; then
 fi
 
 python get-examples.py
+make -C source/images/ci
 make html
 make latexpdf
