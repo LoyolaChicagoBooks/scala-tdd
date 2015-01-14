@@ -2,7 +2,7 @@ Continuous Integration
 ========================
 
 
-.. |JetBrains| replace:: JetBrains U+2122
+.. |JetBrains| unicode:: JetBrains U+2122
 
 .. |Team City| unicode:: Team City U+2122 .. trademark sign
 
@@ -45,6 +45,32 @@ Team City
 Jenkins
 -------
 
+First you will need to install Jenkins. The following instructions are for Ubuntu. The first step is to install the Jenkins package.
+
+.. code-block:: shell
+
+	$ wget -q -O - https://jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
+	$ sudo sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/' > /etc/apt/sources.list.d/jenkins.list'
+	$ sudo apt-get update
+	$ sudo apt-get install jenkins
+
+
+After this step you should be able to log into your jenkins server. Next we will add a user that can log into Jenkins. To do this, you will open the ``Jenkins`` menu and click on ``Credentials``. On the next screen you will select Global Credentials and then add a user.
+
+.. image:: images/ci/Jenkins_Installed.png
+	:width: 60%
+
+.. image:: images/ci/Jenkins_add_user.png
+	:width: 60%
+
+Next you will have to setup security. To do this, click on the ``Jenkins`` menu and click ``Manage Jenkins``. You will be presented with a screen where you can click ``Setup Security``. On this screen, for demo purposes we will select ``Logged-in users can do anything`` and ``Jenkins' own user database``
+
+.. image:: images/ci/Jenkins_manage_setup_security.png
+	:width: 60%
+
+.. image:: images/ci/Jenkins_global_security.png
+	:width: 60%
+
 .. todo:: installation walkthrough
 
 .. todo:: build configuration
@@ -66,7 +92,7 @@ Many build systems and test frameworks are single threaded systems. With modern 
 A demonstration of this can be seen with a compilation of the Linux kernel. In this test, a system with 24 logical cores and a RAID-10 SSD storage system was used. A test was performed with one, two, four, and six virtual machines with four virtual cores each. Each VM ran a single build of the Linux kernel. In the figure below, we can see that there is no noticable difference between having one build server and having two. Also, performance only decreases by about 20% when the VM count is increased to four VMs. A greater loss of performance of about 40% occurs with six virtual machines.
 
 .. figure:: images/ci/build_perf.png
-	:width: 350px
+	:width: 50%
 
 We recommend that when scaling your continuous integration system to include more build servers, to consider the current utilization of the existing physical servers. In many cases, modern hardware is able to support more than one build server per physical server.
 
