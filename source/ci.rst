@@ -34,9 +34,28 @@ The two products we will present in this chapter are |JetBrains|, |Team City| an
 Team City
 ---------
 
+.. todo:: installation walkthrough
+
+.. todo:: build configuration
+
+.. todo:: build results notification
+
+.. todo:: IntelliJ IDEA plugin
 
 Jenkins
 -------
+
+.. todo:: installation walkthrough
+
+.. todo:: build configuration
+
+.. todo:: build results notification
+
+.. todo:: scala plugin installation
+
+.. todo:: plugin based build vs. scripted build vs. build system stability
+
+.. todo:: IntelliJ IDEA plugin
 
 
 Scaling Continuous Integration
@@ -47,16 +66,45 @@ Many build systems and test frameworks are single threaded systems. With modern 
 A demonstration of this can be seen with a compilation of the Linux kernel. In this test, a system with 24 logical cores and a RAID-10 SSD storage system was used. A test was performed with one, two, four, and six virtual machines with four virtual cores each. Each VM ran a single build of the Linux kernel. In the figure below, we can see that there is no noticable difference between having one build server and having two. Also, performance only decreases by about 20% when the VM count is increased to four VMs. A greater loss of performance of about 40% occurs with six virtual machines.
 
 .. figure:: images/ci/build_perf.png
-	:width: 500px
+	:width: 350px
 
 We recommend that when scaling your continuous integration system to include more build servers, to consider the current utilization of the existing physical servers. In many cases, modern hardware is able to support more than one build server per physical server.
+
+.. todo:: Shared storage and build artifact management
+
+.. todo:: deploying 3rd party technologies. centralized vs on each build server vs licensing costs
+
+
+Continuous Integration Frequency
+--------------------------------
+
+.. todo:: Not all tests need to be run every time. Quick tests vs. slower tests
+
+.. todo:: Nightly automated regression tests
+
+.. todo:: Frequency of build vs. size of component
+
+.. todo:: Agile development. Check in early, often.
+
 
 Continuous Integration and Third Party Technologies
 ---------------------------------------------------
 
+.. todo:: Testing with the database vs. not testing with the database.
+
+.. todo:: artifact management, componentized software and incremental building
+
 
 False Positives and Periodic Failure in Test Automation
 -------------------------------------------------------
+
+.. todo:: false positives due to scaling. the 10x scaling rule. 3rd party technology reliability
+
+.. todo:: false positives due to scaling vs production scaling
+
+.. todo:: false positives due to timeouts (somewhat related to scaling)
+
+.. todo:: false positives due to time-sensitive or order sensitive assertions
 
 
 
