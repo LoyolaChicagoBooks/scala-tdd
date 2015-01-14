@@ -2,11 +2,11 @@ Continuous Integration
 ========================
 
 
-.. |JetBrains| unicode:: JetBrains
+.. |JetBrains| replace:: JetBrains U+2122
 
-.. |Team City| unicode:: Team City U+2122
+.. |Team City| unicode:: Team City U+2122 .. trademark sign
 
-.. |Jenkins| unicode:: Jenkins
+.. |Jenkins| replace:: Jenkins
 
 .. note:: 
 	All of this is copied from our notes on Trello.
@@ -28,7 +28,7 @@ In this chapter, we will discuss your choices for establishing an effective cont
 Continuous Integration Products
 -------------------------------
 
-The two products we will present in this chapter are |JetBrains| |Team City| and |Jenkins|. |Team City] is developed by the same company that develops IntelliJ IDEA and other products in the Java eco-system. |Jenkins| is an award winning product that has a long history with the Java community. Both are good options for implementing a continuous integration system.
+The two products we will present in this chapter are |JetBrains|, |Team City| and |Jenkins|. |Team City| is developed by the same company that develops IntelliJ IDEA and other products in the Java eco-system. |Jenkins| is an award winning product that has a long history with the Java community. Both are good options for implementing a continuous integration system.
 
 
 Team City
