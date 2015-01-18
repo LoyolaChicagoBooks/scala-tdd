@@ -45,6 +45,9 @@ Team City
 Jenkins
 -------
 
+Installation
+~~~~~~~~~~~~
+
 First you will need to install Jenkins. The following instructions are for Ubuntu. The first step is to install the Jenkins package.
 
 .. code-block:: shell
@@ -54,8 +57,10 @@ First you will need to install Jenkins. The following instructions are for Ubunt
 	$ sudo apt-get update
 	$ sudo apt-get install jenkins
 
+Configuring Security
+~~~~~~~~~~~~~~~~~~~~
 
-After this step you should be able to log into your jenkins server. Next we will add a user that can log into Jenkins. To do this, you will open the ``Jenkins`` menu and click on ``Credentials``. On the next screen you will select Global Credentials and then add a user.
+After this step you should be able to log into your jenkins server. Next we will add a user that can log into Jenkins. To do this, you will open the ``Jenkins`` menu and click on ``Credentials``. On the next screen you will select Global Credentials and then add credentials.
 
 .. image:: images/ci/Jenkins_Installed.png
 	:width: 60%
@@ -71,7 +76,10 @@ Next you will have to setup security. To do this, click on the ``Jenkins`` menu 
 .. image:: images/ci/Jenkins_global_security.png
 	:width: 60%
 
-.. todo:: installation walkthrough
+After configuring security, you can begin to create users. At the homepage, you can click on ``Sign Up`` on the upper-right hand of the page.
+
+Adding Build Configurations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. todo:: build configuration
 
