@@ -81,9 +81,12 @@ After configuring security, you can begin to create users. At the homepage, you 
 Adding Build Configurations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. todo:: build configuration
+After you log into Jenkins, you will be able to click ``Create Item``. From this page you will be able to create a new build configuration. An example of the scala-tdd-fundamentals build configuration can be seen below. In this example, we're using GitHub so we've installed the GitBucket plugin into Jenkins.
 
-.. todo:: build results notification
+.. image:: images/ci/Jenkins_build_config.png
+	:width: 60%
+
+After you have saved this configuration, Jenkins will be able to watch your version control system for changes, perform builds, and run all of your unit tests on each checkin. Everyone working on the software will be able to see that all of the changes that are checked in, that they compile, and that tests pass.
 
 .. todo:: scala plugin installation
 
