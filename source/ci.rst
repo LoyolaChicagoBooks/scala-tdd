@@ -124,24 +124,10 @@ For the third category, tests that interact with third party technologies and da
 So, what's the solution for these two categories? Our recommended solution is to put these tests into a continuously running rolling build instead of a per-checkin build that faster tests run in. Such a build could be triggered every thirty minutes, or be queued each time the previous one completes. The advantage to this approach is that it places an upper limit on the number of tests making use of I/O and/or third party technologies in a frame of time. Whether 10 checkins were made or 1 checkin was made in the last thirty minutes, the same number of slower running tests will be run regardless. This approach reduces the load put on third party services and on the continuous integration system in general. Also, by running these tests continuously, you will be able to see results from these tests several times a day.
 
 
-Continuous Integration and Third Party Technologies
----------------------------------------------------
+False Positives and Periodic Failure in Computationally or Memory Bound Tests
+-----------------------------------------------------------------------------
 
-.. todo:: Testing with the database vs. not testing with the database.
-
-.. todo:: artifact management, componentized software and incremental building
-
-
-False Positives and Periodic Failure in Test Automation
--------------------------------------------------------
-
-.. todo:: false positives due to scaling. the 10x scaling rule. 3rd party technology reliability
-
-.. todo:: false positives due to scaling vs production scaling
-
-.. todo:: false positives due to timeouts (somewhat related to scaling)
-
-.. todo:: false positives due to time-sensitive or order sensitive assertions
+In computationally and/or memory bound tests, there are a few categories of priodic failures that need to be considered. These categories include tests that involve time, multi-threading, and the order stability of collections and results from computations.
 
 
 
