@@ -127,8 +127,7 @@ So, what's the solution for these two categories? Our recommended solution is to
 False Positives and Periodic Failure in Computationally or Memory Bound Tests
 -----------------------------------------------------------------------------
 
-In computationally and/or memory bound tests, there are a few categories of priodic failures that need to be considered. These categories include tests that involve time, multi-threading, and the order stability of collections and results from computations.
-
+In computationally and/or memory bound tests, there are a few categories of priodic failures that need to be considered. These categories include tests that involve time, multi-threading, and the order stability of collections and results from computations. For each of these categories we will explore ways to write assertions to be tolerant of reasonable differences in individual executions of a unit test.
 
 
 
