@@ -152,6 +152,15 @@ There are often differences between a developer's computer, a customer's compute
 There are two important things to consider when testing such code. One is whether or not to test your code in a multi threaded execution environment. It is possible to test its individual components in one thread each to verify each component without assembling them all together for a more integrated test in a multi-threaded environment. There is value in both types of tests. Another consideration is how you respond to failure in the multi-threaded tests that run on the continuous integration environment. A great advantage of these tests running on a continuous integration environment is that they get executed often. So, multi-threading problems that will only reliably occur 0.1% of the time will show up as failures at least a few times over the course of a few days. While this is not the immediate feedback we'd like in continuous builds, it does give us a larger sample size and a larger number of permutations of the multi-threaded execution. The longer a test is running successfully, the more confident we can be in the correctness of our programs.
 
 
+Tests and Code Concerning Time
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In your application you may need to interact with library functions to retreive the current clock time from the operating system. When this type of code is tested, there are some special considerations to make. Before proceeding, it is important to discuss the behavior of clocks on different systems. One example is the difference between the scheduler quantumn on server and client operating systems. Often it is the case that the scheduler quantumn is longer, on the order of 100ms, for server operating systems, and is much shorter on mobile devices, and destktop computers, typically on the order of 10-20ms. When the time is retreived from the operating system, if there is other code that makes a call to the operating system before your assertions, there can be differing behavior on user system sand server systems. 
+
+For example, you may be able to assert that a recently retreived time value is the same as a subsequently retreived time value and get get a positive result 99% of the time on a desktop system. However, when the timing changes on a server system, which may be the system you're using in your continuous integration system, these assertions may break down.
+
+When possible, it is a best practice to work with fixed time values in your tests. If you can pass into your code under test a fixed time value, then you can be sure that your tests' assertions will always be valid.
+
 
 
 
