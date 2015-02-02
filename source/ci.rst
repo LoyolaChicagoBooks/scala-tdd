@@ -132,6 +132,8 @@ The final step will be to create build triggers. These can be added to trigger b
 	:width: 60%
 
 
+.. todo:: agent configuration
+
 
 Jenkins
 -------
@@ -169,6 +171,7 @@ Next you will have to setup security. To do this, click on the ``Jenkins`` menu 
 
 After configuring security, you can begin to create users. At the homepage, you can click on ``Sign Up`` on the upper-right hand of the page.
 
+
 Adding Build Configurations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -193,10 +196,6 @@ A demonstration of this can be seen with a compilation of the Linux kernel. In t
 	:width: 50%
 
 We recommend that when scaling your continuous integration system to include more build servers, to consider the current utilization of the existing physical servers. In many cases, modern hardware is able to support more than one build server per physical server.
-
-.. todo:: Shared storage and build artifact management
-
-.. todo:: deploying 3rd party technologies. centralized vs on each build server vs licensing costs
 
 
 Continuous Integration Frequency
