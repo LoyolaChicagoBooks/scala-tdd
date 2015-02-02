@@ -8,6 +8,8 @@ Continuous Integration
 
 .. |Jenkins| replace:: Jenkins
 
+.. |Git Hub| replace:: Git Hub
+
 
 In this chapter, we will discuss your choices for establishing an effective continuous integration system for your Scala Software. We will explore how to best configure a continuous integration server for two different continuous integration products. We will also explore best practices for writing unit tests to minimize false positives in your automated testing.
 
@@ -64,6 +66,71 @@ Then, after rebooting the server, you should have a working installation of |Tea
 
 Initial Configuration
 ~~~~~~~~~~~~~~~~~~~~~
+
+After the initial installation, you will need to perform some configuration for security and the |Team City| server database. Start by directing your browser to your |Team City| isntallation. You will be first asked for where your local data directory will be stored. This will be a folder where configuration settings will be stored and should be regularly backed up.
+
+.. image:: images/ci/tc/01.png
+	:width: 60%
+
+
+On the next page, you will select your database provider. If your site only has a few developers, HSQLDB will suffice, but if you are planning on supporting more than 10 developers, one of the other database providers is recommended. 
+
+
+.. image:: images/ci/tc/02.png
+	:width: 60%
+
+
+After you select your provider, you will have to accept the |Team City| license agreement. On the following page, you will be able to create an Administrator account for |Team City|. 
+
+
+.. image:: images/ci/tc/04.png
+	:width: 60%
+
+
+Creating a Project and Build Configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Now you should be able to create projects in |Team City|. |Team City| projects are orginizational concepts that allow you to reuse version control connections, and to control more fine grained permissions. Every build configuration belongs to a project. To create your first project, you will need to log into your |Team City| server and click ``Create project``.
+
+.. image:: images/ci/tc/proj_01.png
+	:width: 60%
+
+
+After creating the project, you will be able to create a build configuration. The free version of |Team City| allows for a maximum of 20 build configurations. To create the build configuration, you will click the ``Create build configuration`` button.
+
+.. image:: images/ci/tc/proj_02.png
+	:width: 60%
+
+.. image:: images/ci/tc/proj_03.png
+	:width: 60%
+
+
+After creating the build configuration, you will be asked to supply the version control information for your project. |Team City| supports many of the version control systems available today. Here we will use the book's sample code which is available on |Git Hub|
+
+
+.. image:: images/ci/tc/proj_04.png
+	:width: 60%
+
+
+The next step will be to create the build script for the project. This script is fairly simple. The exit statement at the end of the script is there to communicate back to the build server whether the previous call to ``sbt`` succeeded or not.
+
+.. image:: images/ci/tc/proj_05.png
+	:width: 60%
+
+
+After creating the compilation step, you will next create the step to run all of your unit tests. This script is also very straight forward:
+
+
+.. image:: images/ci/tc/proj_06.png
+	:width: 60%
+
+
+The final step will be to create build triggers. These can be added to trigger builds every time a change is checked into version control or can be configured to build periodically. Later in this chapter, we will dicuss how to choose between these two.
+
+
+.. image:: images/ci/tc/proj_07.png
+	:width: 60%
+
 
 
 Jenkins
