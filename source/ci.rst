@@ -8,18 +8,7 @@ Continuous Integration
 
 .. |Jenkins| replace:: Jenkins
 
-.. note:: 
-	All of this is copied from our notes on Trello.
-
-	Good things to cover: - Testing with or without a database.
-	- Scaling CI to 10s or 100s of developers
-	- I/O tests vs scalability
-	- Importance of having a componentized architecture and doing smaller builds / test runs
-	- Automated GUI testing systems.
-
-	Another area important to cover here is periodically failing unit tests. A test that throws up a false positive at a 0.5% rate will cause a lot of headaches when there are thousands of unit tests and hundreds of builds each day.
-
-	CI systems that serve 20 or more developers tend to be distributed systems. The same problems that exist in distributed systems exist in CI systems, but some are unique. It would be a good idea to cover hardware / network considerations along with how I/O is managed.
+.. |Git Hub| replace:: Git Hub
 
 
 In this chapter, we will discuss your choices for establishing an effective continuous integration system for your Scala Software. We will explore how to best configure a continuous integration server for two different continuous integration products. We will also explore best practices for writing unit tests to minimize false positives in your automated testing.
@@ -34,13 +23,175 @@ The two products we will present in this chapter are |JetBrains|, |Team City| an
 Team City
 ---------
 
-.. todo:: installation walkthrough
+Installation
+~~~~~~~~~~~~
 
-.. todo:: build configuration
+First you will need to install |Team City|. The following instructions are for Ubuntu. You will need to install the OpenJDK package from the ubuntu package manager as a prerequisite.
 
-.. todo:: build results notification
+.. code-block:: shell
 
-.. todo:: IntelliJ IDEA plugin
+	$ wget http://download.jetbrains.com/teamcity/TeamCity-9.0.2.tar.gz
+	$ tar -xzf TeamCity-9.0.2.tar.gz
+
+
+Then, to configure |Team City| to launch on startup, you can save the following script into the /etc/init.d folder with the file name ``teamcity``. This script assumes you are going to run the server under the user account also named ``teamcity``:
+
+
+.. code-block:: shell
+
+	#!/bin/bash
+	case $1 in 
+	start)
+		cd /home/teamcity/TeamCity/bin
+		su teamcity -c "./teamcity-server.sh start"
+	;;
+	stop)
+		PID=`ps aux | gawk '{printf("%s %s\n", $1, $2);}' | grep -i "teamcity" | gawk '{printf("%s\n", $2);}'`
+		kill $PID
+	;;
+	esac
+
+
+After creating this script, you can run the following command to configure Ubuntu to start |Team City| on startup.
+
+
+.. code-block:: shell
+
+	$ sudo chmod +x /etc/init.d/teamcity
+	$ sudo update-rc.d teamcity defaults
+
+
+Then, after rebooting the server, you should have a working installation of |Team City|. You can access the server at http://server:8111/
+
+
+Initial Configuration
+~~~~~~~~~~~~~~~~~~~~~
+
+After the initial installation, you will need to perform some configuration for security and the |Team City| server database. Start by directing your browser to your |Team City| isntallation. You will be first asked for where your local data directory will be stored. This will be a folder where configuration settings will be stored and should be regularly backed up.
+
+.. image:: images/ci/tc/01.png
+	:width: 60%
+
+
+On the next page, you will select your database provider. If your site only has a few developers, HSQLDB will suffice, but if you are planning on supporting more than 10 developers, one of the other database providers is recommended. 
+
+
+.. image:: images/ci/tc/02.png
+	:width: 60%
+
+
+After you select your provider, you will have to accept the |Team City| license agreement. On the following page, you will be able to create an Administrator account for |Team City|. 
+
+
+.. image:: images/ci/tc/04.png
+	:width: 60%
+
+
+Installing a Build Agent
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+To install a build agent on Ubuntu, you will need to have the Java runtime and Scala SBT installed as prerequisites. The following code snippit shows how to download and install a |Team City| build agent.
+
+.. code-block:: shell
+
+	$ mkdir TeamCityBuildAgent
+	$ cd TeamCityBuildAgent
+	$ wget http://server:8111/update/buildAgent.zip
+	$ unzip buildAgent.zip
+	$ cd bin
+	$ chmod +x install.sh
+	$ ./install.sh http://server:8111
+
+
+
+To enable the build agent on startup, you can create the following script under /etc/init.d/teamcity-buildagent:
+
+.. code-block:: shell
+
+	#!/bin/bash
+	case $1 in 
+	start)
+		cd /home/teamcity/TeamCityBuildAgent/bin
+		su teamcity -c "./agent.sh start"
+	;;
+	stop)
+		PID=`ps aux | gawk '{printf("%s %s\n", $1, $2);}' | grep -i "teamcity" | gawk '{printf("%s\n", $2);}'`
+		kill $PID
+	;;
+	esac
+
+
+After creating the script, you will need to refresh your system services:
+
+
+.. code-block:: shell
+
+	$ sudo chmod +x /etc/init.d/teamcity-buildagent
+	$ sudo update-rc.d teamcity-buildagent defaults
+
+
+Once the build agent is up and running, you will need to authorize it through the |Team City| site. The agent should show up under the Agents tab and Unauthorized tab. To authorize it, click on ``unauthorize`` and then click ``authorize``. After a few seconds, the build agent should show up under the connected tab.
+
+
+.. image:: images/ci/tc/agent_01.png
+	:width: 60%
+
+
+.. image:: images/ci/tc/agent_02.png
+	:width: 60%
+
+
+.. image:: images/ci/tc/agent_03.png
+	:width: 60%
+
+
+Creating a Project and Build Configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Now you should be able to create projects in |Team City|. |Team City| projects are orginizational concepts that allow you to reuse version control connections, and to control more fine grained permissions. Every build configuration belongs to a project. To create your first project, you will need to log into your |Team City| server and click ``Create project``.
+
+.. image:: images/ci/tc/proj_01.png
+	:width: 60%
+
+
+After creating the project, you will be able to create a build configuration. The free version of |Team City| allows for a maximum of 20 build configurations. To create the build configuration, you will click the ``Create build configuration`` button.
+
+.. image:: images/ci/tc/proj_02.png
+	:width: 60%
+
+.. image:: images/ci/tc/proj_03.png
+	:width: 60%
+
+
+After creating the build configuration, you will be asked to supply the version control information for your project. |Team City| supports many of the version control systems available today. Here we will use the book's sample code which is available on |Git Hub|
+
+
+.. image:: images/ci/tc/proj_04.png
+	:width: 60%
+
+
+The next step will be to create the build script for the project. This script is fairly simple. The exit statement at the end of the script is there to communicate back to the build server whether the previous call to ``sbt`` succeeded or not.
+
+.. image:: images/ci/tc/proj_05.png
+	:width: 60%
+
+
+After creating the compilation step, you will next create the step to run all of your unit tests. This script is also very straight forward:
+
+
+.. image:: images/ci/tc/proj_06.png
+	:width: 60%
+
+
+The final step will be to create build triggers. These can be added to trigger builds every time a change is checked into version control or can be configured to build periodically. Later in this chapter, we will dicuss how to choose between these two.
+
+
+.. image:: images/ci/tc/proj_07.png
+	:width: 60%
+
+
+.. todo:: agent configuration
+
 
 Jenkins
 -------
@@ -78,6 +229,7 @@ Next you will have to setup security. To do this, click on the ``Jenkins`` menu 
 
 After configuring security, you can begin to create users. At the homepage, you can click on ``Sign Up`` on the upper-right hand of the page.
 
+
 Adding Build Configurations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -102,10 +254,6 @@ A demonstration of this can be seen with a compilation of the Linux kernel. In t
 	:width: 50%
 
 We recommend that when scaling your continuous integration system to include more build servers, to consider the current utilization of the existing physical servers. In many cases, modern hardware is able to support more than one build server per physical server.
-
-.. todo:: Shared storage and build artifact management
-
-.. todo:: deploying 3rd party technologies. centralized vs on each build server vs licensing costs
 
 
 Continuous Integration Frequency
