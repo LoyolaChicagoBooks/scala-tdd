@@ -87,6 +87,64 @@ After you select your provider, you will have to accept the |Team City| license 
 	:width: 60%
 
 
+Installing a Build Agent
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+To install a build agent on Ubuntu, you will need to have the Java runtime and Scala SBT installed as prerequisites. The following code snippit shows how to download and install a |Team City| build agent.
+
+.. code-block:: shell
+
+	$ mkdir TeamCityBuildAgent
+	$ cd TeamCityBuildAgent
+	$ wget http://server:8111/update/buildAgent.zip
+	$ unzip buildAgent.zip
+	$ cd bin
+	$ chmod +x install.sh
+	$ ./install.sh http://server:8111
+
+
+
+To enable the build agent on startup, you can create the following script under /etc/init.d/teamcity-buildagent:
+
+.. code-block:: shell
+
+	#!/bin/bash
+	case $1 in 
+	start)
+		cd /home/teamcity/TeamCityBuildAgent/bin
+		su teamcity -c "./agent.sh start"
+	;;
+	stop)
+		PID=`ps aux | gawk '{printf("%s %s\n", $1, $2);}' | grep -i "teamcity" | gawk '{printf("%s\n", $2);}'`
+		kill $PID
+	;;
+	esac
+
+
+After creating the script, you will need to refresh your system services:
+
+
+.. code-block:: shell
+
+	$ sudo chmod +x /etc/init.d/teamcity-buildagent
+	$ sudo update-rc.d teamcity-buildagent defaults
+
+
+Once the build agent is up and running, you will need to authorize it through the |Team City| site. The agent should show up under the Agents tab and Unauthorized tab. To authorize it, click on ``unauthorize`` and then click ``authorize``. After a few seconds, the build agent should show up under the connected tab.
+
+
+.. image:: images/ci/tc/agent_01.png
+	:width: 60%
+
+
+.. image:: images/ci/tc/agent_02.png
+	:width: 60%
+
+
+.. image:: images/ci/tc/agent_03.png
+	:width: 60%
+
+
 Creating a Project and Build Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
