@@ -98,6 +98,14 @@ system. The exact way of doing so depends on your platform.
 
        $ sudo port install sbt
 
+- On Linux, the recommended way is to use the installer for your platform available in the sbt setup instructions. For Linux:
+
+  .. code-block:: bash 
+       $ wget https://dl.bintray.com/sbt/native-packages/sbt/0.13.7/sbt-0.13.7.tgz
+       $ sudo tar xzf sbt-0.13.7.tgz -C /opt
+
+- On Windows, there is an MSI (Microsoft Installer) file. Download and install as you normally would any installer on Windows.
+
 - On Windows and Linux, the recommended way is to use the installer
   for your platform available in the `sbt setup instructions
   <http://www.scala-sbt.org/0.13/tutorial/Setup.html>`_. 
@@ -278,186 +286,152 @@ ScalaTest, which also supports some techniques from ScalaCheck. In the
 advanced chapter, we will also take advantage of specs2.
 
 
-Example: Trapezoidal Integration
+Rational Numbers Recap
 --------------------------------
 
-Before we discuss how to use sbt in more detail, let's introduce a
-brief example. Our subject under test (SUT) is a Scala object that
-defines three different integration methods
+Before we discuss how to use sbt in more detail, recap our example from chapter :doc:`fundamentals`. Our subject under test (SUT) is a Scala class that represents rational numbers. The complete code is available at https://github.com/LoyolaChicagoCode/scala-tdd-fundamentals.
 
-.. literalinclude:: ../examples/integration/src/main/scala/edu/luc/etl/sigcse13/scala/integration/Integration.scala
-   :language: scala
-   :linenos:
-   :lines: 11,19,27
+The example also includes JRational, a similar class implemented in Java, as a second SUT and various test suites for each of these implementations:
 
-.. todo:: Problem here with super-long lines of source code! Will have
-	  to reformat source!
-
-The first two take the boundaries of the integration interval and the
-function to be integrated of type
-
-.. literalinclude:: ../examples/integration/src/main/scala/edu/luc/etl/sigcse13/scala/integration/Integration.scala
-   :language: scala
-   :linenos:
-   :lines: 7
-
-The third one also takes a grain size that controls the granularity of
-parallelism. 
-
-In addition, we have a couple of test fixtures: an identity function
-(corresponding to the :math:`y = x` diagonal line) and a square
-function.
-
-.. literalinclude:: ../examples/integration/src/main/scala/edu/luc/etl/sigcse13/scala/integration/Fixtures.scala
-   :language: scala
-   :start-after: begin-object-Fixtures
-   :end-before: end-object-Fixtures
-   :linenos:
-
-The following test case includes three methods, one for each
-integration method. The arguments are the same in each case (except
-for the additional grain size in the third test), and so is the
-expected result.
-
-.. literalinclude:: ../examples/integration/src/test/scala/edu/luc/etl/sigcse13/scala/integration/TestId.scala
-   :language: scala
-   :linenos:
-
-There is another, very similar, test case that uses the ``sqr``
-fixture instead of the ``id`` one to test whether our integration
-methods work as expected.
+- JavaRationalJUnitTests
+- JavaRationalScalaTestFlatSpecMatchers
+- RationalJUnitTests
+- RationalScalaTestFlatSpecFixtures
+- RationalScalaTestFlatSpecMatchers
       
 
 Testing with sbt
 ----------------
+In this section, we’ll continue our sbt explorations with a bit more explanation. As we indicated in chapter 1-Testing Fundamentals, we used sbt with the idea of tying up loose ends in this chapter. This approach works ideally for tools like sbt, which emphasizes convention over configuration, so you can just use sbt without knowing all of the (sometimes gory) details. So please make sure you have checked out the scala-tdd-fundamentals repository.
 
-.. todo:: mention parallel task execution including tests!
-      
-In this section, we'll take a look at test organization and the key
-sbt tasks (commands) for testing.
-
-In ScalaTest, a *test* is an atomic unit of testing that is either
-executed during a particular test run or it is not; a test is usually
-a method or other program element that stands for a method. A *test
-suite* is a collection of zero or more tests. (In JUnit, a *test
-class* corresponding to a test suite in ScalaTest, and a test suite is
-a collection of test classes.)
-
-The sbt testing tasks correspond to this test organization
-hierarchy. In general, to run one or more sbt tasks ``task1``,
-``task2``, ... ``taskN``, we either specify them on the sbt command
-line in the desired order separated by spaces
+In ScalaTest, a test is an atomic unit of testing that is either executed during a particular test run or it is not; a test is usually a method or other program element that stands for a method. A test suite is a collection of zero or more tests. (In JUnit, a test class corresponding to a test suite in ScalaTest, and a test suite is a collection of test classes.)
+The sbt testing tasks correspond to this test organization hierarchy. In general, to run one or more sbt tasks task1, task2, ... taskN, we either specify them on the sbt command line in the desired order separated by spaces
 
 .. code-block:: bash
 
-   $ sbt task1 task2 ... taskN
+  $ sbt task1 task2 ... taskN
 
-or we launch sbt's interactive mode and then enter the tasks one by
-one
+
+or we launch sbt’s interactive mode and then enter the tasks one by one
 
 .. code-block:: bash
 
-   $ sbt
-   ...some output...
-   > task1
-   ...some more output...
-   > task2
-   ...etc...
+  $ sbt
+  ...some output...
+  > task1
+  ...some more output...
+  > task2
+  ...etc...
 
 
 The following are the most important sbt tasks for testing:
-   
-- ``test`` runs all tests in all available test suites.
+The test task
+This task runs all tests in all available test suites. In our example, it would simply run the six tests (two times three).
 
-  In our example, it would simply run the six tests (two times three)
+.. code-block:: bash
 
-  .. code-block:: bash
+  $ sbt test
+  [info] Loading global plugins from /Users/laufer/.sbt/0.13/plugins
+  [info] Loading project definition from /Users/laufer/Cloud/Dropbox/laufer/Work/scala-tdd-examples/scala-tdd-fundamentals/project
+  [info] Set current project to SimpleTesting (in build file:/Users/laufer/Cloud/Dropbox/laufer/Work/scala-tdd-examples/scala-tdd-fundamentals/)
+  [info] RationalScalaTestFlatSpecFixtures:
+  [info] GCD involving 0
+  [info] - should give y for gcd(0, y)
+  [info] - should give x for gcd(x, 0)
+  [info] GCD not involving 0
+  [info] - should be 3
+  [info] - should be 5
+  ...more output...
+  [info] RationalScalaTestFlatSpecMatchers:
+  [info] GCD involving 0
+  [info] - should give y for gcd(0, y)
+  [info] - should give x for gcd(x, 0)
+  [info] GCD not involving 0
+  [info] - should be 3
+  [info] - should be 5
+  ...lots more output...
+  [info] ScalaTest
+  [info] Run completed in 657 milliseconds.
+  [info] Total number of tests run: 62
+  [info] Suites: completed 3, aborted 0
+  [info] Tests: succeeded 62, failed 0, canceled 0, ignored 0, pending 0
+  [info] All tests passed.
+  [info] Passed: Total 73, Failed 0, Errors 0, Passed 73
+  [success] Total time: 2 s, completed Mar 6, 2015 4:46:56 PM
 
-     $ sbt test
-     ...some output...
-     [info] Passed: Total 6, Failed 0, Errors 0, Passed 6
-     [success] Total time: 1 s, completed Dec 14, 2014 8:04:54 PM
+with the most important information on the third-last line: all tests have passed.
 
-  with the most important information on the second-last line: all
-  six tests have passed.
-   
+For each ScalaTest-based test suite, we see a heading for that suite and output indicating the result of each test, even when the test has passed. The fourth through sixth lines from the bottom indicate how many ScalaTest suites and tests ran and what results they produced.
 
-- ``testOnly``: During development, to save time, we may want to run
-  only a subset of the available tests. The ``testOnly`` task allows
-  us to specify zero or more test classes to run.
+For each JUnit-based suite, we only see output if there is a failure or an error. Because all of them passed, the only indication that they ran is the higher total number of tests on the second-last line.
 
-  For example, we can run only the test with the square function:
+The testOnly task
 
-  .. code-block:: bash
+During development, to save time, we may want to run only a subset of the available tests. The testOnly task allows us to specify zero or more test classes to run.
+For example, we can run only the test with the square function:
 
-     $ sbt 'testOnly edu.luc.etl.sigcse13.scala.integration.TestSqr'
-     ...some output...
-     [info] Passed: Total 3, Failed 0, Errors 0, Passed 3
-     [success] Total time: 1 s, completed Dec 14, 2014 9:03:38 PM
+.. code-block:: bash
 
-  This task also supports wildcards, so
+  $ sbt 'testOnly RationalScalaTestFlatSpecMatchers'
+  ...some output...
+  [info] Run completed in 445 milliseconds.
+  [info] Total number of tests run: 22
+  [info] Suites: completed 1, aborted 0
+  [info] Tests: succeeded 22, failed 0, canceled 0, ignored 0, pending 0
+  [info] All tests passed.
+  [info] Passed: Total 22, Failed 0, Errors 0, Passed 22
 
-  .. code-block:: bash
+This task also supports wildcards, so
 
-     $ sbt 'testOnly *Sqr'
+.. code-block:: bash
 
-  will run only ``TestSqr``, while
+  $ sbt 'testOnly *Fix*'
 
-  .. code-block:: bash
 
-     $ sbt 'testOnly *Test*'
+will run only RationalScalaTestFlatSpecFixtures, while
 
-  will run both of them.
-  
-- ``testQuick`` is similar to ``testOnly`` in giving you the option to select
-  the matching tests to run. In addition, it runs only those tests
-  that meet at least one of the following conditions:
+.. code-block:: bash
 
-  - the test failed in the previous run
-  - the test has not been run before
-  - the tests has one or more transitive dependencies that have been recompiled
-  
-- ``test:console`` allows you to enter an interactive Scala REPL
-  (read-eval-print loop) just like ``sbt console`` but with the test
-  code and its library dependencies for the ``Test`` configuration
-  (along with any transitive dependencies) on the class path.
+  $ sbt 'testOnly *Java*'
 
-  This is useful when you want to explore any code in
-  ``src/test/scala`` or the library dependencies for the ``Test``
-  configuration interactively.
 
-- The ``test:`` prefix is optional for the other tasks we discussed
-  above because their names are unambiguous. There are various other
-  tasks, however, that also apply to the main sources. In those cases,
-  the ``test:`` prefix will allow you to disambiguate.
+will run both JavaRationalJUnitTests and JavaRationalScalaTestFlatSpecMatchers.
 
-  For example,
+The testQuick task
 
-  .. code-block:: bash
+This task is similar to testOnly in giving you the option to select the matching tests to run. In addition, it runs only those tests that meet at least one of the following conditions:
+the test failed in the previous run
+the test has not been run before
+the tests has one or more transitive dependencies that have been recompiled
+The test:console task
+This task allows you to enter an interactive Scala REPL (read-eval-print loop), just like sbt console, but with the test code and its library dependencies for the Test configuration (along with any transitive dependencies) conveniently on the class path.
+This is useful when you want to explore any code in src/test/scala or the library dependencies for the Test configuration interactively.
+The test: prefix
+This prefix is optional for the other tasks we discussed above because their names are unambiguous. There are various other tasks, however, that also apply to the main sources. In those cases, the test: prefix will allow you to disambiguate.
+For example,
 
-     $ sbt test:compile
+.. code-block:: bash
 
-  will compile the test sources along with the main sources, while
+  $ sbt test:compile
 
-  .. code-block:: bash
+will compile the test sources along with the main sources, while
 
-     $ sbt compile
+.. code-block:: bash
 
-  will compile only the main sources.
+  $ sbt compile
 
-  Similarly, if you have a main program in your test sources, you can
-  run it with
+will compile only the main sources. Similarly, if you have a main program in your test sources, you can run it with
 
-  .. code-block:: bash
+.. code-block:: bash
 
-     $ sbt test:run
+  $ sbt test:run
 
-  or
+or
 
-  .. code-block:: bash
 
-     $ sbt test:runMain
-  
+.. code-block:: bash
+
+  $ sbt test:runMain
 
 Plugin Ecosystem
 ----------------
@@ -582,12 +556,126 @@ Tips
 IDE Option: Eclipse Scala IDE
 ------------------------------
 
-The official Scala IDE is provided as an Eclipse bundle that has Scala
-already installed. It will work on all platforms with very minor
-differences and provides similar functionality to IntelliJ IDEA. The
-following link will take you there.
+The official Scala IDE is provided as an Eclipse bundle that has Scala already installed, based on the current Luna release. It will work on all platforms with very minor differences and provides similar functionality to IntelliJ IDEA. The following link will take you there.
 
-- http://scala-ide.org/download/sdk.html
+http://scala-ide.org/download/sdk.html
 
-This is based on the Eclipse Juno release, which is two full releases
-behind the current Luna release.
+If you are already using Eclipse, you can add the Scala IDE as a plugin to your existing installation. The steps for this are described here.
+
+  http://scala-ide.org/docs/current-user-doc/gettingstarted/index.html
+
+Perhaps the key difference between IntelliJ IDEA and Eclipse from a Scala developer’s point of view is the support for sbt. While IntelliJ IDEA can directly open sbt-based projects in most cases, Eclipse requires you to to first generate an Eclipse project from sbt on the command line and then import this into Eclipse as an existing project.
+Importing an sbt project into Eclipse
+To enable sbt to generate an Eclipse project definition, we add the sbteclipse plugin to your project by placing the following line into our project/plugins.sbt file (or installing it globally in $HOME/.sbt/0.13/plugins/build.sbt, where $HOME stands for your home directory.)
+
+  addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "3.0.0")
+
+This defines the sbt task eclipse, which we can use as follows:
+
+$ sbt eclipse
+[info] Loading global plugins from /Users/laufer/.sbt/0.13/plugins
+[info] Updating {file:/Users/laufer/.sbt/0.13/plugins/}global-plugins...
+...
+[info] Loading project definition from /Users/laufer/Cloud/Dropbox/laufer/Work/scala-tdd-examples/scala-tdd-fundamentals/project
+[info] Updating {file:/Users/laufer/Cloud/Dropbox/laufer/Work/scala-tdd-examples/scala-tdd-fundamentals/project/}scala-tdd-fundamentals-build...
+...
+[info] Set current project to SimpleTesting (in build file:/Users/laufer/Cloud/Dropbox/laufer/Work/scala-tdd-examples/scala-tdd-fundamentals/)
+[info] About to create Eclipse project files for your project(s).
+...
+[info] Done updating.
+[info] Successfully created Eclipse project files for project(s):
+[info] SimpleTesting
+
+We are now ready to import the project into Eclipse in three steps. We first choose File > Import from the top-level menu and tell Eclipse that we want to import an existing project. We then navigate to the root folder of our project. Finally, we confirm the import, making sure our desired existing project shows up in the list and has been checked off.
+
+
+
+
+
+
+
+You should now see your project tree in the Eclipse Package Explorer view to the left. In particular, the Referenced Libraries section will include the library dependencies from your build.sbt along with their direct and indirect dependencies (transitive closure).
+
+
+
+TIP: To make sure you always have a working command-line configuration of your project, you should consider sbt’s build.sbt the “single source of truth” and make any configuration changes there. Then, every time you do make a change, re-run sbt eclipse and then refresh your project within Eclipse to pick up the changes. For example, if you added scalacheck as a library dependency, it should now show up in Eclipse’s Package Explorer view under Referenced Libraries.
+
+
+
+Testing in Eclipse
+We can now run all JUnit-based test suites through the top-level menu 
+
+  Run > Run As… > Scala JUnit Test
+
+or the desired sub-hierarchy of our test through context menu (obtained by right-clicking on the desired node in the Package Explorer)
+
+  Run As… > Scala JUnit Test
+
+The test(s) then run in the graphical Eclipse JUnit test runner.
+
+
+
+To run ScalaTest-based test suites, we have to run them individually through the context menu
+
+  Run As… > ScalaTest - File
+
+The selected test suite will then run in the graphical Eclipse ScalaTest runner. Initially, Eclipse will show you the ScalaTest console.
+
+
+
+Once you switch to the ScalaTest tab, you will see the graphical ScalaTest runner displaying a hierarchical view of your test suite.
+
+
+
+TIP: Eclipse is pickier than sbt or IntelliJ IDEA about requiring the source folder hierarchy under test to match the logical package structure. If they don’t match, then Eclipse will not discover the JUnit tests therein.
+
+IDE Choice: Typesafe Activator
+Typesafe Activator is a lightweight IDE implemented as a browser-based front end to a local installation of sbt provided by Typesafe, the company behind Scala and related technologies. You can obtain Activator from here:
+
+https://typesafe.com/get-started
+
+For our needs, the “mini package” with no bundled dependencies is actually sufficient. 
+
+When you launch Activator from your file explorer or command line, the Activator home screen will show up in your default browser. From there, you can navigate to an existing sbt-based project using the navigation view on the right.
+
+TIP: Your sbt-based project must contain a project/build.properties file containing at least the single line 
+
+  sbt.version=0.13.7
+
+Otherwise Activator will not recognize your project as valid.
+
+You can now use the menu in the far left column to edit, run, and test your code. There is a file navigation menu on the near left and a syntax-directed editor as the main content of the window.
+
+
+Once you run the tests, you will see a flat list of results. Failures and/or errors will show up as a problem count in the far left column and within the flat list. So far, there is no navigation from the flat list directly to the source editor.
+
+
+
+IDE Choice: Codio Instant Cloud-Based Environment
+----------------------------------------------------------
+
+.. todo::
+
+   Konstantin needs to help me get all of the figures into the remaining sections.
+
+Codio is an entirely cloud-based hosted environment and enables you to develop without installing any software locally. The free starter tier provides modest but sufficient computational resources and unlimited public and/or private repositories. You can access Codio here:
+
+  https://codio.com
+
+From your personal Codio home screen, you can start creating a project. The first thing you will need to do is choose a suitable solution stack for Scala development:
+
+
+Then you can create a new empty project or, as we are showing here, import an existing one from any Git repository.
+
+
+Using the “Filetree” view on the left, you can navigate within your source files and open them in the syntax-directed editor.
+
+
+To run or test your code, you will use Tools > Terminal to open a Linux terminal where you can run sbt test or other commands. 
+
+
+At the time of this writing, Codio provides you with a persistent virtual Linux environment based on the Ubuntu 12.04.5 LTS (long-term support) release. This environment does not give you root access or access to the standard package manager, apt. Instead, it provides you with Codio’s own package manager called parts, which lets you add packages from a much more restricted list maintained by Codio. 
+
+Codio has emerged as our preferred and recommended way to get started with general Scala console app and web app/service development because it requires no local installation yet is fully sbt-based and integrates with Git. In addition, we have been able to create a custom Codio stack for Android development in Scala as well as Java.
+Summary
+In this chapter, we discussed how to test Scala code in various ways. We first covered  command-line testing using the simple build tool (sbt) and its test-specific tasks. We then covered several popular and emerging IDE choices, including Codio, our recommended choice to get started in the cloud without any local installation.
