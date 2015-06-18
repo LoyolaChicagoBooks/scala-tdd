@@ -1,7 +1,8 @@
 Testing Fundamentals
 =========================
 
-This chapter is focused on the essentials of testing. Because we know that most readers are likely to come to Scala from a Java (or similar) environment based on JUnit, which is one of the one of the *xUnit* variants See <http://en.wikipedia.org/wiki/XUnit>, we will begin this discussion with an example of how to use JUnit within Scala, since Java can be used and mixed into Scala programs. We'll then take a look at a couple of introductory (and integrated) Scala examples and how to write them using JUnit and ScalaTest.
+This chapter is focused on the essentials of testing. Because we know that most readers are likely to come to Scala from a Java (or similar) environment based on JUnit, which is one of the one of the xUnit variants. we will begin this discussion with an example of how to use JUnit within Scala, since Java can be used and mixed into Scala programs. We’ll then take a look at a couple of introductory (and integrated) Scala examples and how to write them using JUnit and ScalaTest.
+
 
 Dependencies
 ----------------------
@@ -22,10 +23,6 @@ Cloning the Exemplar
 An important defining principle of our book is that the text and examples should remain relevant long after you have decided the book is no longer needed. We keep all of our examples under version control. In addition to our dear readers, countless students, research collaborators, and we, ourselves, depend on the examples continuing to work long after we create them. It might go without saying, but we think there's nothing worse than getting a book where there is a typo or compilation error and having to waste time trying to convince the author to cough up the latest code (or fix it).
 
 So without further ado, let's get the code for this chapter.
-
-.. todo:: 
-
-   Investigate URL shortening for GitHub URLs. I tried git.io but the end result cannot be used with git clone. Thoughts? (joe - is this due to the HTTPS?)
    
 .. code-block:: shell
 
@@ -261,7 +258,7 @@ While we're reasonably certain you already know what a rational number is, it is
 Implementation
 ~~~~~~~~~~~~~~~~~
 
-Central to making rational numbers work is a famous algorithm, attributable to Euclid, that computes the greatest common divisor. While one of the most important algorithms, it isn't provided as a standard Scala function. Even so, it makes for kind of an interesting testing example, because in the case of Rational numbers, it really needs to work for positive and negative values (and all possible combinations in the numerator and denominator). We'll come back to this point shortly. Suffice it to say, we want to make sure it works reliably and is well-tested.
+Central to making rational numbers work is a famous algorithm, attributable to Euclid, that computes the greatest common divisor. While one of the most important algorithms, it isn’t provided as a standard Scala function. Even so, it makes for kind of an interesting testing example, because in the case of Rational numbers, it really needs to work for positive and negative values (and all possible combinations in the numerator and denominator) and do what is expected. 
 
 
 .. literalinclude:: ../examples/scala-tdd-fundamentals/src/main/scala/Rational.scala
@@ -270,7 +267,7 @@ Central to making rational numbers work is a famous algorithm, attributable to E
    :start-after: begin-RationalMathUtility-gcd
    :end-before: end-RationalMathUtility-gcd
 
-We won't rehash the details of how the ``gcd()`` actually does what it does. This is covered extensively in online resources. It is one of the most famous algorithms in computer science and is attributed to Euclid (who predates modern computer science).
+We won’t rehash the details of how Euclid’s algorithm actually does what it does. This is covered extensively in online resources. The following is the complete implementation of the Rational class. We will explore this in a bit of detail to ensure the ensuing discussion of unit testing makes complete sense.
 
 The following is the complete implementation of the Rational class. We will explore this in a bit of detail to ensure the ensuing discussion of unit testing makes complete sense.
 
@@ -283,7 +280,6 @@ class Rational(n: Int, d: Int) extends Ordered[Rational] {
    def gcd(x: Int, y: Int) = ...
 
    // initialization
-
    private val g = gcd(n, d)
    val numerator: Int = n / g
    val denominator: Int = d / g
@@ -358,13 +354,13 @@ This
 
 .. code-block:: scala
 
-   def compare(that: Rational) = _n * that._d - that._n * _d
+   def compare(that: Rational) = numerator * that.denominator - that.numerator * denominator
 
 is way more efficient than
 
 .. code-block:: scala
 
-   def compare(that: Rational) = (this - that)._n
+   def compare(that: Rational) = (this - that).numerator
 
 Nevertheless, because it is taking advantage of a bit of mathematical cleverness, there is great value to testing whether compare does what we expect. In our forthcoming JUnit and ScalaTest examples, it will be apparent that we took great care to test this, despite our confidence in the underlying mathematical thinking behind comparison.
 
