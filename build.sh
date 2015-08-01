@@ -129,7 +129,7 @@ while getopts "czwepgabh?" opt; do
     esac
 done
 
-#preconditions
+preconditions
 [ $CLEAN -ne 0 ] && clean_build
 [ $PULL -ne 0 ] && git_clone
 [ $HTML -ne 0 ] && bootstrap_html
