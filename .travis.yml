@@ -17,4 +17,4 @@ install:
 - pip install sphinx_bootstrap_theme
 - pip list
 script:
-- ./build.sh
+- ./build.sh -a
