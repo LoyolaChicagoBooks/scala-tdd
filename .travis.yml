@@ -1,0 +1,20 @@
+sudo: false
+language: python
+python:
+- '3.4'
+addons:
+  apt:
+    packages:
+    - gnuplot
+    - texlive-latex-base
+    - texlive-latex-recommended
+    - texlive-latex-extra
+    - texlive-fonts-recommended
+    - texinfo
+    - mercurial
+install:
+- pip install git+https://github.com/sphinx-doc/sphinx@stable
+- pip install sphinx_bootstrap_theme
+- pip list
+script:
+- ./build.sh
