@@ -249,7 +249,8 @@ latex_elements = {
 # Additional stuff for the LaTeX preamble.
 #'preamble': '',
 
-  'preamble': '\usepackage[paperwidth=7in, paperheight=9in]{geometry}'
+#  bootstrap is 8.5x11 (US Letter); createspace is 7x9 (will work on unifying later)
+#  'preamble': '\usepackage[paperwidth=7in, paperheight=9in]{geometry}'
 }
 
 # Grouping the document tree into LaTeX files. List of tuples

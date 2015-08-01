@@ -36,21 +36,21 @@ function preconditions {
 }
 
 function bootstrap_html {
-   make html
+   make CONFIG=bootstrap html
 }
 
 # build.sh -e
 # builds EPUB version using bootstrap/conf.py
 
 function bootstrap_epub {
-   make epub
+   make CONFIG=bootstrap epub
 }
 
 # build.sh -p
 # builds 8.5 x 11 PDF version using bootstrap/conf.py
 
 function bootstrap_pdf {
-   make LATEXOPTS=' -interaction=batchmode ' latexpdf
+   make CONFIG=bootstrap  LATEXOPTS=' -interaction=batchmode ' latexpdf
    rm -rf build/letterpdf
    mv -f build/latex build/letterpdf
 }
@@ -59,7 +59,7 @@ function bootstrap_pdf {
 # builds 7 x 9 PDF for CreateSpace (Amazon) using createspace/conf.py
 
 function createspace_pdf {
-   make LATEXOPTS=' -interaction=batchmode ' latexpdf
+   make CONFIG=createspace LATEXOPTS=' -interaction=batchmode ' latexpdf
    rm -rf build/bookpdf
    mv -f build/latex build/bookpdf
 }
@@ -129,7 +129,7 @@ while getopts "czwepgabh?" opt; do
     esac
 done
 
-preconditions
+#preconditions
 [ $CLEAN -ne 0 ] && clean_build
 [ $PULL -ne 0 ] && git_clone
 [ $HTML -ne 0 ] && bootstrap_html
