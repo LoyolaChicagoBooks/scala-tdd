@@ -100,7 +100,8 @@ system. The exact way of doing so depends on your platform.
 
 - On Linux, the recommended way is to use the installer for your platform available in the sbt setup instructions. For Linux:
 
-  .. code-block:: bash 
+  .. code-block:: bash
+
        $ wget https://dl.bintray.com/sbt/native-packages/sbt/0.13.7/sbt-0.13.7.tgz
        $ sudo tar xzf sbt-0.13.7.tgz -C /opt
 
@@ -226,7 +227,7 @@ exactly what to add to the ``libraryDependencies`` in your build file.
 For example, searching for ``scalatest`` results in a long list, of
 which we show only the top.
 
-.. image:: /images/environment/MavenSearchAll.png
+.. image:: images/environment/MavenSearchAll.png
    :alt: Maven Central Search Results for ``scalatest``
    :width: 100%
 	   
@@ -235,7 +236,7 @@ the available versions of this artifact. (The non-cross-built artifact
 ``scalatest`` without the added Scala version corresponds to much
 older versions of this framework.)
 
-.. image:: /images/environment/MavenSearchOne.png
+.. image:: images/environment/MavenSearchOne.png
    :alt: Maven Central Search Results for artifact ``scalatest_2.10``
    :width: 100%
 	   
@@ -246,7 +247,7 @@ version, we can go to the "dependency information" section of the
 page, select the "Scala SBT" tab, and will see the exact dependency
 definition we can copy and paste into our build file.
 
-.. image:: /images/environment/MavenArtifactDetails.png
+.. image:: images/environment/MavenArtifactDetails.png
    :alt: Maven Central Details for artifact ``scalatest_2.10`` version ``2.2.2``
    :width: 50%
    
@@ -483,7 +484,7 @@ it. When you make any changes to the sbt build file(s), IDEA reloads
 your project and updates the classpath and other IDEA-specific
 settings accordingly.
 
-.. image:: /images/environment/IntelliJProjectDependencies.png
+.. image:: images/environment/IntelliJProjectDependencies.png
    :alt: IntelliJ IDEA Scala project view with sbt dependencies expanded
    :width: 50%
 
@@ -502,27 +503,27 @@ IntelliJ IDEA gives you several options for running tests:
 - To run two or more specific tests, you can select them, pop up the
   context menu, and then run them.
 
-.. image:: /images/environment/IntelliJProjectView.png 
+.. image:: images/environment/IntelliJProjectView.png 
    :alt: IntelliJ IDEA Scala project view with test classes expanded 
    :width: 50%
 
 After you run the tests and they all passed, you will usually see a
 condensed view with the passed tests hidden.
 
-.. image:: /images/environment/IntelliJTestsCondensed.png 
+.. image:: images/environment/IntelliJTestsCondensed.png
    :alt: IntelliJ IDEA Scala test view with passed tests hidden 
    :width: 100%
 	   
 This is because the leftmost button, "hide passed", is enabled by
 default. You can turn this option off and drill into the tests.
 
-.. image:: /images/environment/IntelliJTestsExpanded.png  
+.. image:: images/environment/IntelliJTestsExpanded.png
    :alt: IntelliJ IDEA Scala test view with passed tests expanded  
-   :width: 100%
-	   
- Also, failed tests automatically show up in expanded fashion.
+   :width: 100 %
+   
+Also, failed tests automatically show up in expanded fashion.
 
-.. image:: /images/environment/IntelliJTestsFailed.png
+.. image:: images/environment/IntelliJTestsFailed.png
    :alt: IntelliJ IDEA Scala test view with failed/erroneous tests
    :width: 100%
 

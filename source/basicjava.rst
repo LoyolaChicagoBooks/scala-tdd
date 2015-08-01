@@ -118,7 +118,7 @@ Aside from a few differences, the tests look virtually identical to how we test 
 
 One key difference is related to Java style vs. Scala style. For our mathematical utiilty, ``gcd()``, which is a Java class (static) method, we cannot make a reference to the static member. Luckily, we can make use of these members by using a little Scala magic to import the method for use:
 
-.. codeblock:: scala
+.. code-block:: scala
 
    import JRational.gcd
 
