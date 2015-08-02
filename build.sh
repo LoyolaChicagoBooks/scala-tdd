@@ -50,7 +50,7 @@ function bootstrap_epub {
 # builds 8.5 x 11 PDF version using bootstrap/conf.py
 
 function bootstrap_pdf {
-   if [ $INTERACTVE -ne 0 ]; then
+   if [ $INTERACTVE -eq 0 ]; then
       make CONFIG=bootstrap  LATEXOPTS=' -interaction=batchmode ' latexpdf
    else
       make CONFIG=bootstrap latexpdf
@@ -63,7 +63,7 @@ function bootstrap_pdf {
 # builds 7 x 9 PDF for CreateSpace (Amazon) using createspace/conf.py
 
 function createspace_pdf {
-   if [ $INTERACTVE -ne 0 ]; then
+   if [ $INTERACTVE -eq 0 ]; then
       make CONFIG=createspace LATEXOPTS=' -interaction=batchmode ' latexpdf
    else
       make CONFIG=createspace latexpdf
