@@ -87,7 +87,7 @@ function htmlzip {
 # shows help
 
 function show_help {
-   echo 'build.sh [-h] [-?] [-w] [-p] [-e] [-b] [-g]'
+   echo 'build.sh (-h|-?) (-w) (-p) (-e) (-b) (-g) (-i) (-a)'
    echo '  -h or -?: help'
    echo '  -c: clean before building any of the following'
    echo '  -g: pull examples from introcs-csharp-examples, etc.'
@@ -97,6 +97,7 @@ function show_help {
    echo '  -b: build book PDF (createspace config)'
    echo '  -z: build HTML ZIP bundle'
    echo '  -a: all of -g, -w, -e, -p, -b and -z'
+   echo '  -i: run LaTeX building (-p, -b) interactively (for debugging only)'
 }
 
 
