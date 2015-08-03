@@ -50,11 +50,7 @@ function bootstrap_epub {
 # builds 8.5 x 11 PDF version using bootstrap/conf.py
 
 function bootstrap_pdf {
-   if [ $INTERACTVE -eq 0 ]; then
-      make CONFIG=bootstrap  LATEXOPTS=' -interaction=batchmode ' latexpdf
-   else
-      make CONFIG=bootstrap latexpdf
-   fi
+   make CONFIG=bootstrap  LATEXOPTS=' -interaction=batchmode ' latexpdf
    rm -rf build/letterpdf
    mv -f build/latex build/letterpdf
 }
@@ -63,11 +59,7 @@ function bootstrap_pdf {
 # builds 7 x 9 PDF for CreateSpace (Amazon) using createspace/conf.py
 
 function createspace_pdf {
-   if [ $INTERACTVE -eq 0 ]; then
-      make CONFIG=createspace LATEXOPTS=' -interaction=batchmode ' latexpdf
-   else
-      make CONFIG=createspace latexpdf
-   fi
+   make CONFIG=createspace LATEXOPTS=' -interaction=batchmode ' latexpdf
    rm -rf build/bookpdf
    mv -f build/latex build/bookpdf
 }
@@ -97,7 +89,6 @@ function show_help {
    echo '  -b: build book PDF (createspace config)'
    echo '  -z: build HTML ZIP bundle'
    echo '  -a: all of -g, -w, -e, -p, -b and -z'
-   echo '  -i: run LaTeX building (-p, -b) interactively (for debugging only)'
 }
 
 
@@ -112,7 +103,6 @@ PULL=0
 BOOK=0
 HTMLZIP=0
 CLEAN=0
-INTERACTIVE=0
 
 while getopts "czwepgabh?i" opt; do
     case "$opt" in
@@ -129,8 +119,6 @@ while getopts "czwepgabh?i" opt; do
     b)  BOOK=1
         ;;
     g)  PULL=1
-        ;;
-    i)  INTERACTIVE=1
         ;;
     z)  HTML=1; HTMLZIP=1
         ;;
