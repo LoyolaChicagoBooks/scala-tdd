@@ -1,24 +1,38 @@
-commit 4a94cad92414991f09f84bb7dd6af2ec1b17511b
+commit 34cbde054b31757a37c10f78d7dbfd2ee46979db
 Author: George K. Thiruvathukal <gkt@cs.luc.edu>
-Date:   Sun Aug 2 23:27:40 2015 -0500
+Date:   Mon Aug 3 12:51:41 2015 -0500
 
-    Generated gh-pages for commit 5e2c23e
-    Author: George K. Thiruvathukal <gkt@cs.luc.edu>
+    add Travis support
     
-        Generated gh-pages for commit df877ea
-        Author: George K. Thiruvathukal <gkt@cs.luc.edu>
+    Signed-off-by: George K. Thiruvathukal <gkt@cs.luc.edu>
 
-commit 5e2c23ef47f83ede6616eb7b66273e81e09587df
+commit f2751c43d915288e862d9d3f57e4993ce6fccfc0
 Author: George K. Thiruvathukal <gkt@cs.luc.edu>
-Date:   Sun Aug 2 23:21:34 2015 -0500
+Date:   Mon Aug 3 12:49:14 2015 -0500
 
-    Generated gh-pages for commit df877ea
-    Author: George K. Thiruvathukal <gkt@cs.luc.edu>
+    add build_perf.png until we can run gnuplot on Travis
     
-        update help
+    Signed-off-by: George K. Thiruvathukal <gkt@cs.luc.edu>
 
-commit 7136c428e421effee8cc428ec46ccaae60e854d0
+commit d6a998068737a2013f538d14bbcb6919650883ba
 Author: George K. Thiruvathukal <gkt@cs.luc.edu>
-Date:   Sun Aug 2 22:56:10 2015 -0500
+Date:   Sun Aug 2 23:53:50 2015 -0500
 
-    Create gh-pages orphan branch.
+    remove interactive mode (too complicated)
+    
+    Signed-off-by: George K. Thiruvathukal <gkt@cs.luc.edu>
+
+commit 551e25de5f1cfa3b470e82eb2d351c89773988ab
+Author: George K. Thiruvathukal <gkt@cs.luc.edu>
+Date:   Sun Aug 2 23:34:20 2015 -0500
+
+    don't push examples on gh-pages build
+    
+    Signed-off-by: George K. Thiruvathukal <gkt@cs.luc.edu>
+
+commit afd42314f4365c77eca8709da4a6fcdb5aec785e
+Merge: 8939444 df877ea
+Author: George K. Thiruvathukal <gkt@cs.luc.edu>
+Date:   Sun Aug 2 23:25:17 2015 -0500
+
+    Merge branch 'master' of github.com:LoyolaChicagoBooks/scala-tdd

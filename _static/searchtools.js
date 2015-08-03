@@ -10,6 +10,7 @@
  */
 
 
+/* Non-minified version JS is _stemmer.js if file is provided */ 
 /**
  * Porter Stemmer
  */
