@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Continuous Integration &mdash; Scala TDD 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootswatch-3.3.4/lumen/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="Scala TDD 1.0 documentation" href="index.html" />
+    <link rel="next" title="UI Testing" href="uitesting.html" />
+    <link rel="prev" title="Advanced" href="advanced.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          Test-Driven Development in Scala</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="fundamentals.html">Testing Fundamentals</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals.html#cloning-the-exemplar">Cloning the Exemplar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals.html#the-testing-mindset-running-tests-on-checkout">The Testing Mindset - Running Tests on Checkout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals.html#assertions">Assertions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals.html#a-basic-example-rational-arithmetic">A Basic Example: Rational Arithmetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals.html#test-driven-development-with-junit-and-scala">Test-driven development with JUnit and Scala</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals.html#behavior-driven-testing-using-scalatest">Behavior-Driven Testing using ScalaTest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals.html#discussion">Discussion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Testing Environment and the Simple Build Tool (SBT)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#brief-history-of-build-tools">Brief History of Build Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#installing-sbt">Installing sbt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#configuring-sbt">Configuring sbt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#rational-numbers-recap">Rational Numbers Recap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#testing-with-sbt">Testing with sbt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#plugin-ecosystem">Plugin Ecosystem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#ide-option-jetbrains-intellij-idea">IDE Option: JetBrains IntelliJ IDEA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#ide-option-eclipse-scala-ide">IDE Option: Eclipse Scala IDE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#ide-choice-codio-instant-cloud-based-environment">IDE Choice: Codio Instant Cloud-Based Environment</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="basicjava.html">Basic Testing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="basicjava.html#a-basic-example-rational-arithmetic">A Basic Example: Rational Arithmetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basicjava.html#scala-junit-to-test-java-rational-class">Scala + JUnit to Test Java Rational Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mocking.html">Mocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Continuous Integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#continuous-integration-products">Continuous Integration Products</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#team-city">Team City</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#jenkins">Jenkins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scaling-continuous-integration">Scaling Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#continuous-integration-frequency">Continuous Integration Frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#false-positives-and-periodic-failure-in-computationally-or-memory-bound-tests">False Positives and Periodic Failure in Computationally or Memory Bound Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="uitesting.html">UI Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cpdctesting.html">Advanced Topics</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Continuous Integration</a><ul>
+<li><a class="reference internal" href="#continuous-integration-products">Continuous Integration Products</a></li>
+<li><a class="reference internal" href="#team-city">Team City</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#initial-configuration">Initial Configuration</a></li>
+<li><a class="reference internal" href="#installing-a-build-agent">Installing a Build Agent</a></li>
+<li><a class="reference internal" href="#creating-a-project-and-build-configuration">Creating a Project and Build Configuration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#jenkins">Jenkins</a><ul>
+<li><a class="reference internal" href="#id1">Installation</a></li>
+<li><a class="reference internal" href="#configuring-security">Configuring Security</a></li>
+<li><a class="reference internal" href="#adding-build-configurations">Adding Build Configurations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#scaling-continuous-integration">Scaling Continuous Integration</a></li>
+<li><a class="reference internal" href="#continuous-integration-frequency">Continuous Integration Frequency</a></li>
+<li><a class="reference internal" href="#false-positives-and-periodic-failure-in-computationally-or-memory-bound-tests">False Positives and Periodic Failure in Computationally or Memory Bound Tests</a><ul>
+<li><a class="reference internal" href="#order-stability-in-tests">Order Stability in Tests</a></li>
+<li><a class="reference internal" href="#multi-threading-in-tests">Multi Threading in Tests</a></li>
+<li><a class="reference internal" href="#tests-and-code-concerning-time">Tests and Code Concerning Time</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="advanced.html" title="Previous Chapter: Advanced"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Advanced</span>
+    </a>
+  </li>
+  <li>
+    <a href="uitesting.html" title="Next Chapter: UI Testing"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">UI Testing &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="_sources/ci.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <div class="section" id="continuous-integration">
+<h1>Continuous Integration<a class="headerlink" href="#continuous-integration" title="Permalink to this headline">¶</a></h1>
+<p>In this chapter, we will discuss your choices for establishing an effective continuous integration system for your Scala Software. We will explore how to best configure a continuous integration server for two different continuous integration products. We will also explore best practices for writing unit tests to minimize false positives in your automated testing.</p>
+<div class="section" id="continuous-integration-products">
+<h2>Continuous Integration Products<a class="headerlink" href="#continuous-integration-products" title="Permalink to this headline">¶</a></h2>
+<p>The two products we will present in this chapter are JetBrains™, TeamCity™ and Jenkins. TeamCity™ is developed by the same company that develops IntelliJ IDEA and other products in the Java eco-system. Jenkins is an award winning product that has a long history with the Java community. Both are good options for implementing a continuous integration system.</p>
+</div>
+<div class="section" id="team-city">
+<h2>Team City<a class="headerlink" href="#team-city" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="installation">
+<h3>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h3>
+<p>First you will need to install TeamCity™. The following instructions are for Ubuntu. You will need to install the OpenJDK package from the ubuntu package manager as a prerequisite.</p>
+<div class="highlight-shell"><div class="highlight"><pre><span class="nv">$ </span>wget http://download.jetbrains.com/teamcity/TeamCity-9.0.2.tar.gz
+<span class="nv">$ </span>tar -xzf TeamCity-9.0.2.tar.gz
+</pre></div>
+</div>
+<p>Then, to configure TeamCity™ to launch on startup, you can save the following script into the /etc/init.d folder with the file name <code class="docutils literal"><span class="pre">teamcity</span></code>. This script assumes you are going to run the server under the user account also named <code class="docutils literal"><span class="pre">teamcity</span></code>:</p>
+<div class="highlight-shell"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
+<span class="k">case</span> <span class="nv">$1</span> in
+start<span class="o">)</span>
+        <span class="nb">cd</span> /home/teamcity/TeamCity/bin
+        su teamcity -c <span class="s2">&quot;./teamcity-server.sh start&quot;</span>
+<span class="p">;;</span>
+stop<span class="o">)</span>
+        <span class="nv">PID</span><span class="o">=</span><span class="sb">`</span>ps aux <span class="p">|</span> gawk <span class="s1">&#39;{printf(&quot;%s %s\n&quot;, $1, $2);}&#39;</span> <span class="p">|</span> grep -i <span class="s2">&quot;teamcity&quot;</span> <span class="p">|</span> gawk <span class="s1">&#39;{printf(&quot;%s\n&quot;, $2);}&#39;</span><span class="sb">`</span>
+        <span class="nb">kill</span> <span class="nv">$PID</span>
+<span class="p">;;</span>
+<span class="k">esac</span>
+</pre></div>
+</div>
+<p>After creating this script, you can run the following command to configure Ubuntu to start TeamCity™ on startup.</p>
+<div class="highlight-shell"><div class="highlight"><pre><span class="nv">$ </span>sudo chmod +x /etc/init.d/teamcity
+<span class="nv">$ </span>sudo update-rc.d teamcity defaults
+</pre></div>
+</div>
+<p>Then, after rebooting the server, you should have a working installation of TeamCity™. You can access the server at <a class="reference external" href="http://server:8111/">http://server:8111/</a></p>
+</div>
+<div class="section" id="initial-configuration">
+<h3>Initial Configuration<a class="headerlink" href="#initial-configuration" title="Permalink to this headline">¶</a></h3>
+<p>After the initial installation, you will need to perform some configuration for security and the TeamCity™ server database. Start by directing your browser to your TeamCity™ isntallation. You will be first asked for where your local data directory will be stored. This will be a folder where configuration settings will be stored and should be regularly backed up.</p>
+<a class="reference internal image-reference" href="_images/01.png"><img alt="_images/01.png" src="_images/01.png" style="width: 60%;" /></a>
+<p>On the next page, you will select your database provider. If your site only has a few developers, HSQLDB will suffice, but if you are planning on supporting more than 10 developers, one of the other database providers is recommended.</p>
+<a class="reference internal image-reference" href="_images/02.png"><img alt="_images/02.png" src="_images/02.png" style="width: 60%;" /></a>
+<p>After you select your provider, you will have to accept the TeamCity™ license agreement. On the following page, you will be able to create an Administrator account for TeamCity™.</p>
+<a class="reference internal image-reference" href="_images/04.png"><img alt="_images/04.png" src="_images/04.png" style="width: 60%;" /></a>
+</div>
+<div class="section" id="installing-a-build-agent">
+<h3>Installing a Build Agent<a class="headerlink" href="#installing-a-build-agent" title="Permalink to this headline">¶</a></h3>
+<p>To install a build agent on Ubuntu, you will need to have the Java runtime and Scala SBT installed as prerequisites. The following code snippit shows how to download and install a TeamCity™ build agent.</p>
+<div class="highlight-shell"><div class="highlight"><pre><span class="nv">$ </span>mkdir TeamCityBuildAgent
+<span class="nv">$ </span><span class="nb">cd </span>TeamCityBuildAgent
+<span class="nv">$ </span>wget http://server:8111/update/buildAgent.zip
+<span class="nv">$ </span>unzip buildAgent.zip
+<span class="nv">$ </span><span class="nb">cd </span>bin
+<span class="nv">$ </span>chmod +x install.sh
+<span class="nv">$ </span>./install.sh http://server:8111
+</pre></div>
+</div>
+<p>To enable the build agent on startup, you can create the following script under /etc/init.d/teamcity-buildagent:</p>
+<div class="highlight-shell"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
+<span class="k">case</span> <span class="nv">$1</span> in
+start<span class="o">)</span>
+        <span class="nb">cd</span> /home/teamcity/TeamCityBuildAgent/bin
+        su teamcity -c <span class="s2">&quot;./agent.sh start&quot;</span>
+<span class="p">;;</span>
+stop<span class="o">)</span>
+        <span class="nv">PID</span><span class="o">=</span><span class="sb">`</span>ps aux <span class="p">|</span> gawk <span class="s1">&#39;{printf(&quot;%s %s\n&quot;, $1, $2);}&#39;</span> <span class="p">|</span> grep -i <span class="s2">&quot;teamcity&quot;</span> <span class="p">|</span> gawk <span class="s1">&#39;{printf(&quot;%s\n&quot;, $2);}&#39;</span><span class="sb">`</span>
+        <span class="nb">kill</span> <span class="nv">$PID</span>
+<span class="p">;;</span>
+<span class="k">esac</span>
+</pre></div>
+</div>
+<p>After creating the script, you will need to refresh your system services:</p>
+<div class="highlight-shell"><div class="highlight"><pre><span class="nv">$ </span>sudo chmod +x /etc/init.d/teamcity-buildagent
+<span class="nv">$ </span>sudo update-rc.d teamcity-buildagent defaults
+</pre></div>
+</div>
+<p>Once the build agent is up and running, you will need to authorize it through the TeamCity™ site. The agent should show up under the Agents tab and Unauthorized tab. To authorize it, click on <code class="docutils literal"><span class="pre">unauthorize</span></code> and then click <code class="docutils literal"><span class="pre">authorize</span></code>. After a few seconds, the build agent should show up under the connected tab.</p>
+<a class="reference internal image-reference" href="_images/agent_01.png"><img alt="_images/agent_01.png" src="_images/agent_01.png" style="width: 60%;" /></a>
+<a class="reference internal image-reference" href="_images/agent_02.png"><img alt="_images/agent_02.png" src="_images/agent_02.png" style="width: 60%;" /></a>
+<a class="reference internal image-reference" href="_images/agent_03.png"><img alt="_images/agent_03.png" src="_images/agent_03.png" style="width: 60%;" /></a>
+</div>
+<div class="section" id="creating-a-project-and-build-configuration">
+<h3>Creating a Project and Build Configuration<a class="headerlink" href="#creating-a-project-and-build-configuration" title="Permalink to this headline">¶</a></h3>
+<p>Now you should be able to create projects in TeamCity™. TeamCity™ projects are orginizational concepts that allow you to reuse version control connections, and to control more fine grained permissions. Every build configuration belongs to a project. To create your first project, you will need to log into your TeamCity™ server and click <code class="docutils literal"><span class="pre">Create</span> <span class="pre">project</span></code>.</p>
+<a class="reference internal image-reference" href="_images/proj_01.png"><img alt="_images/proj_01.png" src="_images/proj_01.png" style="width: 60%;" /></a>
+<p>After creating the project, you will be able to create a build configuration. The free version of TeamCity™ allows for a maximum of 20 build configurations. To create the build configuration, you will click the <code class="docutils literal"><span class="pre">Create</span> <span class="pre">build</span> <span class="pre">configuration</span></code> button.</p>
+<a class="reference internal image-reference" href="_images/proj_02.png"><img alt="_images/proj_02.png" src="_images/proj_02.png" style="width: 60%;" /></a>
+<a class="reference internal image-reference" href="_images/proj_03.png"><img alt="_images/proj_03.png" src="_images/proj_03.png" style="width: 60%;" /></a>
+<p>After creating the build configuration, you will be asked to supply the version control information for your project. TeamCity™ supports many of the version control systems available today. Here we will use the book&#8217;s sample code which is available on Git Hub</p>
+<a class="reference internal image-reference" href="_images/proj_04.png"><img alt="_images/proj_04.png" src="_images/proj_04.png" style="width: 60%;" /></a>
+<p>The next step will be to create the build script for the project. This script is fairly simple. The exit statement at the end of the script is there to communicate back to the build server whether the previous call to <code class="docutils literal"><span class="pre">sbt</span></code> succeeded or not.</p>
+<a class="reference internal image-reference" href="_images/proj_05.png"><img alt="_images/proj_05.png" src="_images/proj_05.png" style="width: 60%;" /></a>
+<p>After creating the compilation step, you will next create the step to run all of your unit tests. This script is also very straight forward:</p>
+<a class="reference internal image-reference" href="_images/proj_06.png"><img alt="_images/proj_06.png" src="_images/proj_06.png" style="width: 60%;" /></a>
+<p>The final step will be to create build triggers. These can be added to trigger builds every time a change is checked into version control or can be configured to build periodically. Later in this chapter, we will dicuss how to choose between these two.</p>
+<a class="reference internal image-reference" href="_images/proj_07.png"><img alt="_images/proj_07.png" src="_images/proj_07.png" style="width: 60%;" /></a>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">agent configuration</p>
+</div>
+</div>
+</div>
+<div class="section" id="jenkins">
+<h2>Jenkins<a class="headerlink" href="#jenkins" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>Installation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>First you will need to install Jenkins. The following instructions are for Ubuntu. The first step is to install the Jenkins package.</p>
+<div class="highlight-shell"><div class="highlight"><pre>$ wget -q -O - https://jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
+$ sudo sh -c &#39;echo deb http://pkg.jenkins-ci.org/debian binary/&#39; &gt; /etc/apt/sources.list.d/jenkins.list&#39;
+$ sudo apt-get update
+$ sudo apt-get install jenkins
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuring-security">
+<h3>Configuring Security<a class="headerlink" href="#configuring-security" title="Permalink to this headline">¶</a></h3>
+<p>After this step you should be able to log into your jenkins server. Next we will add a user that can log into Jenkins. To do this, you will open the <code class="docutils literal"><span class="pre">Jenkins</span></code> menu and click on <code class="docutils literal"><span class="pre">Credentials</span></code>. On the next screen you will select Global Credentials and then add credentials.</p>
+<a class="reference internal image-reference" href="_images/Jenkins_Installed.png"><img alt="_images/Jenkins_Installed.png" src="_images/Jenkins_Installed.png" style="width: 60%;" /></a>
+<a class="reference internal image-reference" href="_images/Jenkins_add_user.png"><img alt="_images/Jenkins_add_user.png" src="_images/Jenkins_add_user.png" style="width: 60%;" /></a>
+<p>Next you will have to setup security. To do this, click on the <code class="docutils literal"><span class="pre">Jenkins</span></code> menu and click <code class="docutils literal"><span class="pre">Manage</span> <span class="pre">Jenkins</span></code>. You will be presented with a screen where you can click <code class="docutils literal"><span class="pre">Setup</span> <span class="pre">Security</span></code>. On this screen, for demo purposes we will select <code class="docutils literal"><span class="pre">Logged-in</span> <span class="pre">users</span> <span class="pre">can</span> <span class="pre">do</span> <span class="pre">anything</span></code> and <code class="docutils literal"><span class="pre">Jenkins'</span> <span class="pre">own</span> <span class="pre">user</span> <span class="pre">database</span></code></p>
+<a class="reference internal image-reference" href="_images/Jenkins_manage_setup_security.png"><img alt="_images/Jenkins_manage_setup_security.png" src="_images/Jenkins_manage_setup_security.png" style="width: 60%;" /></a>
+<a class="reference internal image-reference" href="_images/Jenkins_global_security.png"><img alt="_images/Jenkins_global_security.png" src="_images/Jenkins_global_security.png" style="width: 60%;" /></a>
+<p>After configuring security, you can begin to create users. At the homepage, you can click on <code class="docutils literal"><span class="pre">Sign</span> <span class="pre">Up</span></code> on the upper-right hand of the page.</p>
+</div>
+<div class="section" id="adding-build-configurations">
+<h3>Adding Build Configurations<a class="headerlink" href="#adding-build-configurations" title="Permalink to this headline">¶</a></h3>
+<p>After you log into Jenkins, you will be able to click <code class="docutils literal"><span class="pre">Create</span> <span class="pre">Item</span></code>. From this page you will be able to create a new build configuration. An example of the scala-tdd-fundamentals build configuration can be seen below. In this example, we&#8217;re using GitHub so we&#8217;ve installed the GitBucket plugin into Jenkins.</p>
+<a class="reference internal image-reference" href="_images/Jenkins_build_config.png"><img alt="_images/Jenkins_build_config.png" src="_images/Jenkins_build_config.png" style="width: 60%;" /></a>
+<p>After you have saved this configuration, Jenkins will be able to watch your version control system for changes, perform builds, and run all of your unit tests on each checkin. Everyone working on the software will be able to see that all of the changes that are checked in, that they compile, and that tests pass.</p>
+<div class="admonition-todo admonition" id="index-1">
+<p class="first admonition-title">Todo</p>
+<p class="last">IntelliJ IDEA plugin</p>
+</div>
+</div>
+</div>
+<div class="section" id="scaling-continuous-integration">
+<h2>Scaling Continuous Integration<a class="headerlink" href="#scaling-continuous-integration" title="Permalink to this headline">¶</a></h2>
+<p>Many build systems and test frameworks are single threaded systems. With modern servers that have multiple cores and RAID based storage systems that support parallel I/O, build servers are often under utilized.</p>
+<p>A demonstration of this can be seen with a compilation of the Linux kernel. In this test, a system with 24 logical cores and a RAID-10 SSD storage system was used. A test was performed with one, two, four, and six virtual machines with four virtual cores each. Each VM ran a single build of the Linux kernel. In the figure below, we can see that there is no noticable difference between having one build server and having two. Also, performance only decreases by about 20% when the VM count is increased to four VMs. A greater loss of performance of about 40% occurs with six virtual machines.</p>
+<div class="figure">
+<a class="reference internal image-reference" href="_images/build_perf.png"><img alt="_images/build_perf.png" src="_images/build_perf.png" style="width: 50%;" /></a>
+</div>
+<p>We recommend that when scaling your continuous integration system to include more build servers, to consider the current utilization of the existing physical servers. In many cases, modern hardware is able to support more than one build server per physical server.</p>
+</div>
+<div class="section" id="continuous-integration-frequency">
+<h2>Continuous Integration Frequency<a class="headerlink" href="#continuous-integration-frequency" title="Permalink to this headline">¶</a></h2>
+<p>Tests have different execution performance and purpose. Some tests execute quickly and verify one unit of code. Other tests execute more slowly and cover a larger segment of code. Still other tests will involve third party technologies such as web services or databases. All of these tests are important to run in your continuous integration system, but some of these types of tests have challenges that must be addressed.</p>
+<p>For this discussion, we divide unit tests into three categories. The first category is tests that are computationally or memory bound. The second category are I/O bound tests and tests that interact heavily with operating system services. The third category of tests are those that work with third party technology and database systems.</p>
+<p>An important goal for a continuous integration system is achieve rapid and continuous feedback for project contributors. Running tests with larger run times, tests that don&#8217;t scale well on the continuous integration system, or tests that have false positive failures interfere with this goal. Of the three categories mentioned above, tests that are computationally and/or memory bound are an excellent fit for this case. On modern systems, computational and memory performance scale quite well. As a suite of tests grows, performance for such tests should remain reasonable.</p>
+<p>The two other categories: I/O bound tests and tests involving third party technologies are a bit more complex to consider. For I/O bound tests it is important to consider issues of scale. If several hundred tests that are I/O bound run on a continuous integration system that supports 25 developers with a team average of 75 checkins per day, it does not take much to be running around several hundred thousand I/O bound tests in a day. These tests will often cause builds to queue in a continous integration system and work against the goal of getting rapid feedback.</p>
+<p>For the third category, tests that interact with third party technologies and database systems, there are additional considerations. The first consideration is the issue of periodic failures in third party technologies. Many third party systems have per-call failure rates of 0.1%. Most mature software will build in code aroudn these technologies to react to failures and intelligently retry requests. In a production environment this approach is typically sufficient. In continuous integration, you may experience a different level of scaling. For example, your production software might make occasional requests to a third party web service. To provide coverage to this code, you might write 20 or 30 unit tests to make sure your usage of this service is consistent with its behavior. When run in a continuous integration environment, these 20 or 30 unit tests could translate to tens or even a few hundreds of calls to the service over a short duration. With other builds running in parallel in the continuous integration system, the third party service may experience bursts of several hundred requests in a short period of time when it was only designed for tens of requests for production. When services like these don&#8217;t scale up, they can create difficult to reproduce false positive failures in your continuous builds.</p>
+<p>So, what&#8217;s the solution for these two categories? Our recommended solution is to put these tests into a continuously running rolling build instead of a per-checkin build that faster tests run in. Such a build could be triggered every thirty minutes, or be queued each time the previous one completes. The advantage to this approach is that it places an upper limit on the number of tests making use of I/O and/or third party technologies in a frame of time. Whether 10 checkins were made or 1 checkin was made in the last thirty minutes, the same number of slower running tests will be run regardless. This approach reduces the load put on third party services and on the continuous integration system in general. Also, by running these tests continuously, you will be able to see results from these tests several times a day.</p>
+</div>
+<div class="section" id="false-positives-and-periodic-failure-in-computationally-or-memory-bound-tests">
+<h2>False Positives and Periodic Failure in Computationally or Memory Bound Tests<a class="headerlink" href="#false-positives-and-periodic-failure-in-computationally-or-memory-bound-tests" title="Permalink to this headline">¶</a></h2>
+<p>In computationally and/or memory bound tests, there are a few categories of priodic failures that need to be considered. These categories include tests that involve time, multi-threading, and the order stability of collections and results from computations. For each of these categories we will explore ways to write assertions to be tolerant of reasonable differences in individual executions of a unit test.</p>
+<div class="section" id="order-stability-in-tests">
+<h3>Order Stability in Tests<a class="headerlink" href="#order-stability-in-tests" title="Permalink to this headline">¶</a></h3>
+<p>In many languages, and Scala is no exception, there are algorithms that do not preserve order stability. It is not uncommon to see sparse data structures like hash tables, built in sort algorithms, and others inconsistently manage stability. In the construction of algorithms the property of stability is sometimes important. For example, radix sort would not work correctly if its sorting subroutine was not itself a stable sort.</p>
+<p>When making assertions, make sure to note when your test is implying an order and whether that order is truly needed. For example, you may wish to assert that two items are in a list. One approach is to assert that the first element in the list is the first item and the second element in the list is the second item. A second approach is to assert for each item that the item is contained somewhere in the list. This second assertion does not depend on the stability of the algorithm that produces the list.</p>
+<p>This kind of behavior is also common for hash tables. When the default hash is the internal or managed memory address of an object, two different runs can produce two separate orders of items in the hash table. Where hashes are more deterministic, this is not the case.</p>
+<div class="admonition-todo admonition" id="index-2">
+<p class="first admonition-title">Todo</p>
+<p class="last">add examples for these kinds of assertions</p>
+</div>
+</div>
+<div class="section" id="multi-threading-in-tests">
+<h3>Multi Threading in Tests<a class="headerlink" href="#multi-threading-in-tests" title="Permalink to this headline">¶</a></h3>
+<p>Writing simple, correct, and efficient multi-threaded code requires a good deal of thought and attention to detail. When problems occur in multi-threaded code, they can be difficult to reproduce or rare to occur. Sometimes, a multi-threaded program will work just fine on a 2-CPU system, but run into trouble when it is put on a 8-CPU system. These kinds of issues are often encountered in a continuous integration environment.</p>
+<p>There are often differences between a developer&#8217;s computer, a customer&#8217;s computer, and a build server in a continuous integration system. These differences can be seen in the number of processor cores, the sizes of caches, the available memory and the software environment on these systems. Many of these factors can lead to quite different execution timing in multi-threaded code. Sometimes it is the case that a test will fail in continuous integration 10% of the time, but never fail on a developer&#8217;s machine. These kinds of failures can be quite frustrating to figure out.</p>
+<p>There are two important things to consider when testing such code. One is whether or not to test your code in a multi threaded execution environment. It is possible to test its individual components in one thread each to verify each component without assembling them all together for a more integrated test in a multi-threaded environment. There is value in both types of tests. Another consideration is how you respond to failure in the multi-threaded tests that run on the continuous integration environment. A great advantage of these tests running on a continuous integration environment is that they get executed often. So, multi-threading problems that will only reliably occur 0.1% of the time will show up as failures at least a few times over the course of a few days. While this is not the immediate feedback we&#8217;d like in continuous builds, it does give us a larger sample size and a larger number of permutations of the multi-threaded execution. The longer a test is running successfully, the more confident we can be in the correctness of our programs.</p>
+</div>
+<div class="section" id="tests-and-code-concerning-time">
+<h3>Tests and Code Concerning Time<a class="headerlink" href="#tests-and-code-concerning-time" title="Permalink to this headline">¶</a></h3>
+<p>In your application you may need to interact with library functions to retreive the current clock time from the operating system. When this type of code is tested, there are some special considerations to make. Before proceeding, it is important to discuss the behavior of clocks on different systems. One example is the difference between the scheduler quantumn on server and client operating systems. Often it is the case that the scheduler quantumn is longer, on the order of 100ms, for server operating systems, and is much shorter on mobile devices, and destktop computers, typically on the order of 10-20ms. When the time is retreived from the operating system, if there is other code that makes a call to the operating system before your assertions, there can be differing behavior on user system sand server systems.</p>
+<p>For example, you may be able to assert that a recently retreived time value is the same as a subsequently retreived time value and get get a positive result 99% of the time on a desktop system. However, when the timing changes on a server system, which may be the system you&#8217;re using in your continuous integration system, these assertions may break down.</p>
+<p>When possible, it is a best practice to work with fixed time values in your tests. If you can pass into your code under test a fixed time value, then you can be sure that your tests&#8217; assertions will always be valid.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2014, Kaylor, Läufer, and Thiruvathukal.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

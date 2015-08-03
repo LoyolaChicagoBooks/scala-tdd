@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Testing Environment and the Simple Build Tool (SBT) &mdash; Scala TDD 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootswatch-3.3.4/lumen/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="Scala TDD 1.0 documentation" href="index.html" />
+    <link rel="next" title="Basic Testing" href="basicjava.html" />
+    <link rel="prev" title="Testing Fundamentals" href="fundamentals.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          Test-Driven Development in Scala</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="fundamentals.html">Testing Fundamentals</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals.html#cloning-the-exemplar">Cloning the Exemplar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals.html#the-testing-mindset-running-tests-on-checkout">The Testing Mindset - Running Tests on Checkout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals.html#assertions">Assertions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals.html#a-basic-example-rational-arithmetic">A Basic Example: Rational Arithmetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals.html#test-driven-development-with-junit-and-scala">Test-driven development with JUnit and Scala</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals.html#behavior-driven-testing-using-scalatest">Behavior-Driven Testing using ScalaTest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals.html#discussion">Discussion</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Testing Environment and the Simple Build Tool (SBT)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#brief-history-of-build-tools">Brief History of Build Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-sbt">Installing sbt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuring-sbt">Configuring sbt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rational-numbers-recap">Rational Numbers Recap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing-with-sbt">Testing with sbt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plugin-ecosystem">Plugin Ecosystem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ide-option-jetbrains-intellij-idea">IDE Option: JetBrains IntelliJ IDEA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ide-option-eclipse-scala-ide">IDE Option: Eclipse Scala IDE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ide-choice-codio-instant-cloud-based-environment">IDE Choice: Codio Instant Cloud-Based Environment</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="basicjava.html">Basic Testing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="basicjava.html#a-basic-example-rational-arithmetic">A Basic Example: Rational Arithmetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basicjava.html#scala-junit-to-test-java-rational-class">Scala + JUnit to Test Java Rational Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mocking.html">Mocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ci.html">Continuous Integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ci.html#continuous-integration-products">Continuous Integration Products</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci.html#team-city">Team City</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci.html#jenkins">Jenkins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci.html#scaling-continuous-integration">Scaling Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci.html#continuous-integration-frequency">Continuous Integration Frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci.html#false-positives-and-periodic-failure-in-computationally-or-memory-bound-tests">False Positives and Periodic Failure in Computationally or Memory Bound Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="uitesting.html">UI Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cpdctesting.html">Advanced Topics</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Testing Environment and the Simple Build Tool (SBT)</a><ul>
+<li><a class="reference internal" href="#brief-history-of-build-tools">Brief History of Build Tools</a></li>
+<li><a class="reference internal" href="#installing-sbt">Installing sbt</a></li>
+<li><a class="reference internal" href="#configuring-sbt">Configuring sbt</a><ul>
+<li><a class="reference internal" href="#build-sbt-format">build.sbt format</a></li>
+<li><a class="reference internal" href="#build-scala-and-multi-project-formats">Build.scala and multi-project formats</a></li>
+<li><a class="reference internal" href="#finding-libraries-to-depend-on">Finding libraries to depend on</a></li>
+<li><a class="reference internal" href="#what-scala-test-framework-are-available-for-scala">What Scala test framework are available for Scala?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#rational-numbers-recap">Rational Numbers Recap</a></li>
+<li><a class="reference internal" href="#testing-with-sbt">Testing with sbt</a></li>
+<li><a class="reference internal" href="#plugin-ecosystem">Plugin Ecosystem</a></li>
+<li><a class="reference internal" href="#ide-option-jetbrains-intellij-idea">IDE Option: JetBrains IntelliJ IDEA</a><ul>
+<li><a class="reference internal" href="#testing-in-intellij-idea">Testing in IntelliJ IDEA</a></li>
+<li><a class="reference internal" href="#tips">Tips</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ide-option-eclipse-scala-ide">IDE Option: Eclipse Scala IDE</a></li>
+<li><a class="reference internal" href="#ide-choice-codio-instant-cloud-based-environment">IDE Choice: Codio Instant Cloud-Based Environment</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="fundamentals.html" title="Previous Chapter: Testing Fundamentals"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Testing Fundamen...</span>
+    </a>
+  </li>
+  <li>
+    <a href="basicjava.html" title="Next Chapter: Basic Testing"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Basic Testing &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="_sources/environment.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <div class="section" id="testing-environment-and-the-simple-build-tool-sbt">
+<h1>Testing Environment and the Simple Build Tool (SBT)<a class="headerlink" href="#testing-environment-and-the-simple-build-tool-sbt" title="Permalink to this headline">¶</a></h1>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">Consider evaluating and possibly discussing Typesafe
+Activator (sbt-based!).</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The main reference source for this chapter is
+<a class="reference external" href="http://www.scala-sbt.org/0.13/docs/">http://www.scala-sbt.org/0.13/docs/</a>, especially
+<a class="reference external" href="http://www.scala-sbt.org/0.13/docs/Testing.html">http://www.scala-sbt.org/0.13/docs/Testing.html</a></p>
+</div>
+<p>In this chapter, we&#8217;ll discuss your choices for setting up an
+effective development and testing environment for Scala. The main
+thing to keep in mind is that proper testing almost always involves
+dependencies on external libraries. Even if you are comfortable
+working with the Scala command-line tools and a text editor, you are
+responsible for setting the dreaded classpath. This can quickly become
+unwieldy even when only simple dependencies are involved, so this is
+not something you would usually want to do manually.</p>
+<p>Therefore, you will benefit greatly from upgrading to Scala&#8217;s Simple
+Build Tool (sbt), and the rest of this book relies heavily on
+this. After switching to sbt, you can continue to use your favorite
+text editor. And if you prefer to use an integrated development
+environment (IDE), you are in luck as well: JetBrains IntelliJ IDEA
+and Eclipse, both very popular IDEs for Scala, integrate well with
+sbt.</p>
+<div class="section" id="brief-history-of-build-tools">
+<h2>Brief History of Build Tools<a class="headerlink" href="#brief-history-of-build-tools" title="Permalink to this headline">¶</a></h2>
+<p>In general, build tools support the build process in several ways:</p>
+<ol class="arabic simple">
+<li>structured representation of the project dependency graph</li>
+<li>management of the build lifecycle (compile, test, run)</li>
+<li>management of external dependencies</li>
+</ol>
+<p>Some well-known build tools include:</p>
+<dl class="docutils">
+<dt>Unix make, Apache ant</dt>
+<dd>These earlier tools manage the build lifecycle but not external
+dependencies.</dd>
+<dt>Apache maven</dt>
+<dd><p class="first">This tool introduced several innovative capabilities. It supports
+convention over configuration in terms of project layout in the file
+system and build lifecycle. In addition, it automatically manages
+external dependencies by downloading them from centralized
+repositories. It relies on XML-based configuration files.</p>
+<div class="last highlight-xml"><div class="highlight"><pre><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>org.restlet<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>org.restlet.ext.spring<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>${restlet.version}<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
+</dd>
+<dt>Apache ivy, Gradle, sbt, etc.</dt>
+<dd><p class="first">These newer tools emphasize convention over configuration in support
+of agile development processes.  sbt is compatible with ivy and
+designed primarily for Scala development. For example, ivy uses a
+structured but lighter-weight format:</p>
+<div class="last highlight-xml"><div class="highlight"><pre><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;junit&quot;</span> <span class="na">name=</span><span class="s">&quot;junit&quot;</span> <span class="na">rev=</span><span class="s">&quot;4.11&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>We will focus on sbt in the remainder of this book, though the
+concepts equally apply to similar build systems and IDEs.</p>
+</div>
+<div class="section" id="installing-sbt">
+<h2>Installing sbt<a class="headerlink" href="#installing-sbt" title="Permalink to this headline">¶</a></h2>
+<p>The main prerequisite to Scala development is having a Java runtime,
+version 1.6 or later, installed on your system. We recommend that you
+install the <a class="reference external" href="http://www.oracle.com/technetwork/java/javase/downloads/">latest available Oracle Java 7 Development Kit</a>. While
+you can work with OpenJDK and other VM implementations to run Scala,
+we believe that that the best experience and performance comes from
+the latest stable release of the Java 7 Platform.</p>
+<p>Equally important is having an installation of sbt itself on your
+system. The exact way of doing so depends on your platform.</p>
+<ul>
+<li><p class="first">On the Mac, the recommended way is to use Homebrew</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>brew install sbt
+</pre></div>
+</div>
+<p>or MacPorts:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>sudo port install sbt
+</pre></div>
+</div>
+</li>
+<li><p class="first">On Linux, the recommended way is to use the installer for your platform available in the sbt setup instructions. For Linux:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>wget https://dl.bintray.com/sbt/native-packages/sbt/0.13.7/sbt-0.13.7.tgz
+<span class="nv">$ </span>sudo tar xzf sbt-0.13.7.tgz -C /opt
+</pre></div>
+</div>
+</li>
+<li><p class="first">On Windows, there is an MSI (Microsoft Installer) file. Download and install as you normally would any installer on Windows.</p>
+</li>
+<li><p class="first">On Windows and Linux, the recommended way is to use the installer
+for your platform available in the <a class="reference external" href="http://www.scala-sbt.org/0.13/tutorial/Setup.html">sbt setup instructions</a>.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="configuring-sbt">
+<h2>Configuring sbt<a class="headerlink" href="#configuring-sbt" title="Permalink to this headline">¶</a></h2>
+<p>In the simplest cases, sbt does not require any configuration and will
+use reasonable defaults. The project layout is the same as the one
+Maven uses:</p>
+<ul class="simple">
+<li>Main application or library code goes in <code class="docutils literal"><span class="pre">src/main/scala</span></code>.</li>
+<li>Test code goes in <code class="docutils literal"><span class="pre">src/test/scala</span></code>.</li>
+</ul>
+<p>In practice, however, we will want to include some automated testing
+in the build process, and this typically requires at least one build
+dependency, as we will see shortly.</p>
+<p>sbt supports two configuration styles, one based on a simple
+Scala-based domain-specific language, and one based on the full Scala
+language for configuring all aspects of a project.</p>
+<div class="section" id="build-sbt-format">
+<h3>build.sbt format<a class="headerlink" href="#build-sbt-format" title="Permalink to this headline">¶</a></h3>
+<p>A minimal sbt <code class="docutils literal"><span class="pre">build.sbt</span></code> file looks like this. The empty lines are
+required, and the file must be placed in the top-level root folder of
+your project.</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="n">name</span> <span class="o">:=</span> <span class="s">&quot;integration-scala&quot;</span>
+
+<span class="n">version</span> <span class="o">:=</span> <span class="s">&quot;0.2&quot;</span>
+</pre></div>
+</div>
+<p>Additional dependencies can be specified either one at a time</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;org.scalatest&quot;</span> <span class="o">%%</span> <span class="s">&quot;scalatest&quot;</span> <span class="o">%</span> <span class="s">&quot;2.2.2&quot;</span> <span class="o">%</span> <span class="nc">Test</span>
+</pre></div>
+</div>
+<p>or as a group</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="n">libraryDependencies</span> <span class="o">++=</span> <span class="nc">Seq</span><span class="o">(</span>
+  <span class="s">&quot;org.scalatest&quot;</span> <span class="o">%%</span> <span class="s">&quot;scalatest&quot;</span> <span class="o">%</span> <span class="s">&quot;2.2.2&quot;</span> <span class="o">%</span> <span class="nc">Test</span><span class="o">,</span>
+  <span class="s">&quot;org.mod4j.org.apache.commons&quot;</span> <span class="o">%</span> <span class="s">&quot;logging&quot;</span> <span class="o">%</span> <span class="s">&quot;1.0.4&quot;</span>
+<span class="o">)</span>
+</pre></div>
+</div>
+<p>The dependency format follows the same structure as the Maven example
+above:</p>
+<ul class="simple">
+<li>organization ID</li>
+<li>artifact ID</li>
+<li>version (of the artifact)</li>
+<li>configuration (within the sbt build lifecycle)</li>
+</ul>
+<p>In particular, the <code class="docutils literal"><span class="pre">Test</span></code> configuration indicates that this
+dependency is required to compile and run the tests for this project
+but to compile or run the main project code itself.</p>
+<p>Furthermore, some dependencies are &#8220;cross-built&#8221; against different
+versions of Scala. For example, the ScalaTest library comes in the
+form of two artifacts, <code class="docutils literal"><span class="pre">scalatest_2.10</span></code> and <code class="docutils literal"><span class="pre">scalatest_2.11</span></code>, for
+use with the corresponding versions of Scala. When we use <code class="docutils literal"><span class="pre">%%</span></code>
+between organization ID and artifact ID, sbt automatically appends an
+underscore and the Scala version to the artifact ID.</p>
+<p>For example, if our Scala version is 2.10, then</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="s">&quot;org.scalatest&quot;</span> <span class="o">%%</span> <span class="s">&quot;scalatest&quot;</span> <span class="o">%</span> <span class="s">&quot;2.2.2&quot;</span> <span class="o">%</span> <span class="nc">Test</span>
+</pre></div>
+</div>
+<p>is equivalent to</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="s">&quot;org.scalatest&quot;</span> <span class="o">%</span> <span class="s">&quot;scalatest_2.10&quot;</span> <span class="o">%</span> <span class="s">&quot;2.2.2&quot;</span> <span class="o">%</span> <span class="nc">Test</span>
+</pre></div>
+</div>
+<p>This allows us to rely on the default Scala version or indicate our
+choice in a single place, e.g.:</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="n">scalaVersion</span> <span class="o">:=</span> <span class="s">&quot;2.11.4&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="build-scala-and-multi-project-formats">
+<h3>Build.scala and multi-project formats<a class="headerlink" href="#build-scala-and-multi-project-formats" title="Permalink to this headline">¶</a></h3>
+<p>Though you are generally encouraged to use the <code class="docutils literal"><span class="pre">build.sbt</span></code> format,
+some complex projects may require build files that use the full Scala
+syntax. The main build file should be named <code class="docutils literal"><span class="pre">Build.scala</span></code>. It and
+other Scala-based build files must be placed in the <code class="docutils literal"><span class="pre">project</span></code>
+subfolder of your project root. Further details are available in the
+<a class="reference external" href="http://www.scala-sbt.org/0.13/tutorial/Full-Def.html">.scala build definition</a> section of
+the sbt reference manual.</p>
+<p>The new <a class="reference external" href="http://www.scala-sbt.org/0.13/tutorial/Basic-Def.html">multi-project .sbt build definition</a> format
+combines the strengths of the other two flavors and is recommended for
+complex projects instead of the <cite>.scala</cite> flavor.</p>
+</div>
+<div class="section" id="finding-libraries-to-depend-on">
+<h3>Finding libraries to depend on<a class="headerlink" href="#finding-libraries-to-depend-on" title="Permalink to this headline">¶</a></h3>
+<p>The default place where Maven and its descendents, including sbt, find
+their dependencies is Maven&#8217;s <em>Central Repository</em>, which you can
+search via <a class="reference external" href="http://search.maven.org">http://search.maven.org</a>. This search interface will allow
+you to drill down into the desired artifact and ultimately show you
+exactly what to add to the <code class="docutils literal"><span class="pre">libraryDependencies</span></code> in your build file.</p>
+<p>For example, searching for <code class="docutils literal"><span class="pre">scalatest</span></code> results in a long list, of
+which we show only the top.</p>
+<a class="reference internal image-reference" href="_images/MavenSearchAll.png"><img alt="Maven Central Search Results for ``scalatest``" src="_images/MavenSearchAll.png" style="width: 100%;" /></a>
+<p>Once we drill into the specific artifact <code class="docutils literal"><span class="pre">scalatest_2.10</span></code>, we see
+the available versions of this artifact. (The non-cross-built artifact
+<code class="docutils literal"><span class="pre">scalatest</span></code> without the added Scala version corresponds to much
+older versions of this framework.)</p>
+<a class="reference internal image-reference" href="_images/MavenSearchOne.png"><img alt="Maven Central Search Results for artifact ``scalatest_2.10``" src="_images/MavenSearchOne.png" style="width: 100%;" /></a>
+<p>Now we can choose the desired version of this artifact. For learning
+and production development, it is usually best to choose the latest
+released version, in this case, <code class="docutils literal"><span class="pre">2.2.2</span></code>. Once we select this
+version, we can go to the &#8220;dependency information&#8221; section of the
+page, select the &#8220;Scala SBT&#8221; tab, and will see the exact dependency
+definition we can copy and paste into our build file.</p>
+<a class="reference internal image-reference" href="_images/MavenArtifactDetails.png"><img alt="Maven Central Details for artifact ``scalatest_2.10`` version ``2.2.2``" src="_images/MavenArtifactDetails.png" style="width: 50%;" /></a>
+<p>To use any dependencies not in the central repo, you need to add
+custom resolvers (preferred) or perform a local install (discouraged).</p>
+</div>
+<div class="section" id="what-scala-test-framework-are-available-for-scala">
+<h3>What Scala test framework are available for Scala?<a class="headerlink" href="#what-scala-test-framework-are-available-for-scala" title="Permalink to this headline">¶</a></h3>
+<p>Concretely, sbt provides a common test interface that these main Scala
+testing frameworks support directly:</p>
+<ul class="simple">
+<li>ScalaTest</li>
+<li>specs2</li>
+<li>ScalaCheck</li>
+</ul>
+<p>What this means is that no additional support for the test interface
+is needed, and you can simply add the desired testing framework(s) as
+managed dependencies (<code class="docutils literal"><span class="pre">libraryDependencies</span></code>) in sbt.</p>
+<p>If you want to use JUnit or TestNG, however, you will also need to
+pull in a separate adapter for either of these to work with sbt&#8217;s
+common interface. For JUnit, this is a simple additional dependency in
+the build file:</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="s">&quot;com.novocode&quot;</span> <span class="o">%</span> <span class="s">&quot;junit-interface&quot;</span> <span class="o">%</span> <span class="s">&quot;0.10&quot;</span> <span class="o">%</span> <span class="nc">Test</span>
+</pre></div>
+</div>
+<p>For TestNG, there is an <a class="reference external" href="https://github.com/sbt/sbt-testng-interface">sbt plugin</a> that requires a couple
+of extra steps to add to your project.</p>
+<p>In this book, we will start you out with plain JUnit because we assume
+that most readers are familiar with it. Then we will focus on
+ScalaTest, which also supports some techniques from ScalaCheck. In the
+advanced chapter, we will also take advantage of specs2.</p>
+</div>
+</div>
+<div class="section" id="rational-numbers-recap">
+<h2>Rational Numbers Recap<a class="headerlink" href="#rational-numbers-recap" title="Permalink to this headline">¶</a></h2>
+<p>Before we discuss how to use sbt in more detail, recap our example from chapter <a class="reference internal" href="fundamentals.html"><em>Testing Fundamentals</em></a>. Our subject under test (SUT) is a Scala class that represents rational numbers. The complete code is available at <a class="reference external" href="https://github.com/LoyolaChicagoCode/scala-tdd-fundamentals">https://github.com/LoyolaChicagoCode/scala-tdd-fundamentals</a>.</p>
+<p>The example also includes JRational, a similar class implemented in Java, as a second SUT and various test suites for each of these implementations:</p>
+<ul class="simple">
+<li>JavaRationalJUnitTests</li>
+<li>JavaRationalScalaTestFlatSpecMatchers</li>
+<li>RationalJUnitTests</li>
+<li>RationalScalaTestFlatSpecFixtures</li>
+<li>RationalScalaTestFlatSpecMatchers</li>
+</ul>
+</div>
+<div class="section" id="testing-with-sbt">
+<h2>Testing with sbt<a class="headerlink" href="#testing-with-sbt" title="Permalink to this headline">¶</a></h2>
+<p>In this section, we’ll continue our sbt explorations with a bit more explanation. As we indicated in chapter 1-Testing Fundamentals, we used sbt with the idea of tying up loose ends in this chapter. This approach works ideally for tools like sbt, which emphasizes convention over configuration, so you can just use sbt without knowing all of the (sometimes gory) details. So please make sure you have checked out the scala-tdd-fundamentals repository.</p>
+<p>In ScalaTest, a test is an atomic unit of testing that is either executed during a particular test run or it is not; a test is usually a method or other program element that stands for a method. A test suite is a collection of zero or more tests. (In JUnit, a test class corresponding to a test suite in ScalaTest, and a test suite is a collection of test classes.)
+The sbt testing tasks correspond to this test organization hierarchy. In general, to run one or more sbt tasks task1, task2, ... taskN, we either specify them on the sbt command line in the desired order separated by spaces</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>sbt task1 task2 ... taskN
+</pre></div>
+</div>
+<p>or we launch sbt’s interactive mode and then enter the tasks one by one</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>sbt
+...some output...
+&gt; task1
+...some more output...
+&gt; task2
+...etc...
+</pre></div>
+</div>
+<p>The following are the most important sbt tasks for testing:
+The test task
+This task runs all tests in all available test suites. In our example, it would simply run the six tests (two times three).</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>sbt <span class="nb">test</span>
+<span class="o">[</span>info<span class="o">]</span> Loading global plugins from /Users/laufer/.sbt/0.13/plugins
+<span class="o">[</span>info<span class="o">]</span> Loading project definition from /Users/laufer/Cloud/Dropbox/laufer/Work/scala-tdd-examples/scala-tdd-fundamentals/project
+<span class="o">[</span>info<span class="o">]</span> Set current project to SimpleTesting <span class="o">(</span>in build file:/Users/laufer/Cloud/Dropbox/laufer/Work/scala-tdd-examples/scala-tdd-fundamentals/<span class="o">)</span>
+<span class="o">[</span>info<span class="o">]</span> RationalScalaTestFlatSpecFixtures:
+<span class="o">[</span>info<span class="o">]</span> GCD involving 0
+<span class="o">[</span>info<span class="o">]</span> - should give y <span class="k">for</span> gcd<span class="o">(</span>0, y<span class="o">)</span>
+<span class="o">[</span>info<span class="o">]</span> - should give x <span class="k">for</span> gcd<span class="o">(</span>x, 0<span class="o">)</span>
+<span class="o">[</span>info<span class="o">]</span> GCD not involving 0
+<span class="o">[</span>info<span class="o">]</span> - should be 3
+<span class="o">[</span>info<span class="o">]</span> - should be 5
+...more output...
+<span class="o">[</span>info<span class="o">]</span> RationalScalaTestFlatSpecMatchers:
+<span class="o">[</span>info<span class="o">]</span> GCD involving 0
+<span class="o">[</span>info<span class="o">]</span> - should give y <span class="k">for</span> gcd<span class="o">(</span>0, y<span class="o">)</span>
+<span class="o">[</span>info<span class="o">]</span> - should give x <span class="k">for</span> gcd<span class="o">(</span>x, 0<span class="o">)</span>
+<span class="o">[</span>info<span class="o">]</span> GCD not involving 0
+<span class="o">[</span>info<span class="o">]</span> - should be 3
+<span class="o">[</span>info<span class="o">]</span> - should be 5
+...lots more output...
+<span class="o">[</span>info<span class="o">]</span> ScalaTest
+<span class="o">[</span>info<span class="o">]</span> Run completed in <span class="m">657</span> milliseconds.
+<span class="o">[</span>info<span class="o">]</span> Total number of tests run: 62
+<span class="o">[</span>info<span class="o">]</span> Suites: completed 3, aborted 0
+<span class="o">[</span>info<span class="o">]</span> Tests: succeeded 62, failed 0, canceled 0, ignored 0, pending 0
+<span class="o">[</span>info<span class="o">]</span> All tests passed.
+<span class="o">[</span>info<span class="o">]</span> Passed: Total 73, Failed 0, Errors 0, Passed 73
+<span class="o">[</span>success<span class="o">]</span> Total <span class="nb">time</span>: <span class="m">2</span> s, completed Mar 6, <span class="m">2015</span> 4:46:56 PM
+</pre></div>
+</div>
+<p>with the most important information on the third-last line: all tests have passed.</p>
+<p>For each ScalaTest-based test suite, we see a heading for that suite and output indicating the result of each test, even when the test has passed. The fourth through sixth lines from the bottom indicate how many ScalaTest suites and tests ran and what results they produced.</p>
+<p>For each JUnit-based suite, we only see output if there is a failure or an error. Because all of them passed, the only indication that they ran is the higher total number of tests on the second-last line.</p>
+<p>The testOnly task</p>
+<p>During development, to save time, we may want to run only a subset of the available tests. The testOnly task allows us to specify zero or more test classes to run.
+For example, we can run only the test with the square function:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>sbt <span class="s1">&#39;testOnly RationalScalaTestFlatSpecMatchers&#39;</span>
+...some output...
+<span class="o">[</span>info<span class="o">]</span> Run completed in <span class="m">445</span> milliseconds.
+<span class="o">[</span>info<span class="o">]</span> Total number of tests run: 22
+<span class="o">[</span>info<span class="o">]</span> Suites: completed 1, aborted 0
+<span class="o">[</span>info<span class="o">]</span> Tests: succeeded 22, failed 0, canceled 0, ignored 0, pending 0
+<span class="o">[</span>info<span class="o">]</span> All tests passed.
+<span class="o">[</span>info<span class="o">]</span> Passed: Total 22, Failed 0, Errors 0, Passed 22
+</pre></div>
+</div>
+<p>This task also supports wildcards, so</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>sbt <span class="s1">&#39;testOnly *Fix*&#39;</span>
+</pre></div>
+</div>
+<p>will run only RationalScalaTestFlatSpecFixtures, while</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>sbt <span class="s1">&#39;testOnly *Java*&#39;</span>
+</pre></div>
+</div>
+<p>will run both JavaRationalJUnitTests and JavaRationalScalaTestFlatSpecMatchers.</p>
+<p>The testQuick task</p>
+<p>This task is similar to testOnly in giving you the option to select the matching tests to run. In addition, it runs only those tests that meet at least one of the following conditions:
+the test failed in the previous run
+the test has not been run before
+the tests has one or more transitive dependencies that have been recompiled
+The test:console task
+This task allows you to enter an interactive Scala REPL (read-eval-print loop), just like sbt console, but with the test code and its library dependencies for the Test configuration (along with any transitive dependencies) conveniently on the class path.
+This is useful when you want to explore any code in src/test/scala or the library dependencies for the Test configuration interactively.
+The test: prefix
+This prefix is optional for the other tasks we discussed above because their names are unambiguous. There are various other tasks, however, that also apply to the main sources. In those cases, the test: prefix will allow you to disambiguate.
+For example,</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>sbt <span class="nb">test</span>:compile
+</pre></div>
+</div>
+<p>will compile the test sources along with the main sources, while</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>sbt compile
+</pre></div>
+</div>
+<p>will compile only the main sources. Similarly, if you have a main program in your test sources, you can run it with</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>sbt <span class="nb">test</span>:run
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>sbt <span class="nb">test</span>:runMain
+</pre></div>
+</div>
+</div>
+<div class="section" id="plugin-ecosystem">
+<h2>Plugin Ecosystem<a class="headerlink" href="#plugin-ecosystem" title="Permalink to this headline">¶</a></h2>
+<p>sbt includes a rich and growing plugin community-based
+ecosystem. Plugins extend the capabilities of sbt, and you can install
+them per project or globally. More details are available in the <a class="reference external" href="http://www.scala-sbt.org/0.13.6/docs/Getting-Started/Using-Plugins.html">sbt
+reference</a>.</p>
+<p>In addition to the <a class="reference external" href="https://github.com/sbt/sbt-testng-interface">sbt-testng-interface</a> mentioned above, here
+are some useful examples relevant to testing:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/scoverage/sbt-scoverage">sbt-scoverage</a>:
+uses Scoverage to produce a test code coverage report</li>
+<li><a class="reference external" href="https://github.com/jrudolph/sbt-dependency-graph">sbt-dependency-graph</a>: creates a
+visual representation of library dependency tree</li>
+<li><a class="reference external" href="https://github.com/softprops/ls">ls-sbt</a>:  browse available
+libraries on GitHub using ls.implicit.ly</li>
+<li><a class="reference external" href="https://github.com/rtimush/sbt-updates">sbt-updates</a>: checks
+central repos for dependency updates</li>
+</ul>
+</div>
+<div class="section" id="ide-option-jetbrains-intellij-idea">
+<h2>IDE Option: JetBrains IntelliJ IDEA<a class="headerlink" href="#ide-option-jetbrains-intellij-idea" title="Permalink to this headline">¶</a></h2>
+<p>Many developers and students prefer an Integrated Development
+Environment (IDE) because of code completion and easier code
+comprehension for complex projects.</p>
+<p>Our preferred IDE is IntelliJ IDEA, which has had a lot of traction in
+the open-source and agile development communities for a long time. You
+can get the current version of IntelliJ IDEA Community edition for
+free from the following URL and then install the Scala plugin through
+the plugin manager.</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.jetbrains.com/idea/download">http://www.jetbrains.com/idea/download</a></li>
+</ul>
+<p>When you install the Scala plugin through the plugin manager, you will
+automatically get the version that matches that of IDEA. This plugin
+has become quite mature and usable as of December 2014. In particular,
+compilation (and execution of Scala worksheets) has become much
+faster.</p>
+<p>The IntelliJ IDEA Scala plugin also integrates directly with sbt:
+Instead of <em>importing</em> an sbt-based project, you simply <em>open</em>
+it. When you make any changes to the sbt build file(s), IDEA reloads
+your project and updates the classpath and other IDEA-specific
+settings accordingly.</p>
+<a class="reference internal image-reference" href="_images/IntelliJProjectDependencies.png"><img alt="IntelliJ IDEA Scala project view with sbt dependencies expanded" src="_images/IntelliJProjectDependencies.png" style="width: 50%;" /></a>
+<div class="section" id="testing-in-intellij-idea">
+<h3>Testing in IntelliJ IDEA<a class="headerlink" href="#testing-in-intellij-idea" title="Permalink to this headline">¶</a></h3>
+<p>IntelliJ IDEA gives you several options for running tests:</p>
+<ul class="simple">
+<li>To run all available tests, you can pop up the context menu (Windows
+and Linux: right-click, Mac: Control-click) for the project root
+node or <code class="docutils literal"><span class="pre">src/test/scala</span></code> and select &#8220;Run All Tests&#8221;.</li>
+<li>To run an individual test class, pop up the context menu for that
+test and run it.</li>
+<li>To run two or more specific tests, you can select them, pop up the
+context menu, and then run them.</li>
+</ul>
+<a class="reference internal image-reference" href="_images/IntelliJProjectView.png"><img alt="IntelliJ IDEA Scala project view with test classes expanded" src="_images/IntelliJProjectView.png" style="width: 50%;" /></a>
+<p>After you run the tests and they all passed, you will usually see a
+condensed view with the passed tests hidden.</p>
+<a class="reference internal image-reference" href="_images/IntelliJTestsCondensed.png"><img alt="IntelliJ IDEA Scala test view with passed tests hidden" src="_images/IntelliJTestsCondensed.png" style="width: 100%;" /></a>
+<p>This is because the leftmost button, &#8220;hide passed&#8221;, is enabled by
+default. You can turn this option off and drill into the tests.</p>
+<a class="reference internal image-reference" href="_images/IntelliJTestsExpanded.png"><img alt="IntelliJ IDEA Scala test view with passed tests expanded" src="_images/IntelliJTestsExpanded.png" style="width: 100%;" /></a>
+<p>Also, failed tests automatically show up in expanded fashion.</p>
+<a class="reference internal image-reference" href="_images/IntelliJTestsFailed.png"><img alt="IntelliJ IDEA Scala test view with failed/erroneous tests" src="_images/IntelliJTestsFailed.png" style="width: 100%;" /></a>
+<p>On these images, we recognize the three possible outcomes of a test
+from the fundamentals chapter [REF]:</p>
+<ul class="simple">
+<li>pass: green circle with the word &#8220;OK&#8221;</li>
+<li>fail: orange circle with an exclamation mark</li>
+<li>error: red circle with an exclamation mark</li>
+</ul>
+</div>
+<div class="section" id="tips">
+<h3>Tips<a class="headerlink" href="#tips" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first">IntelliJ IDEA has a built-in native terminal for your OS. This
+allows you to use, say, hg or sbt conveniently without leaving
+IDEA.</p>
+<div class="highlight-python"><div class="highlight"><pre>View &gt; Tool Windows &gt; Terminal
+</pre></div>
+</div>
+</li>
+<li><p class="first">To practice Scala in a light-weight, exploratory way, you can use
+Scala worksheets in IntelliJ IDEA. These will give you an
+interactive, console-like environment, but your work is saved and
+can be put under version control.</p>
+<div class="highlight-python"><div class="highlight"><pre>File &gt; New &gt; Scala Worksheet
+</pre></div>
+</div>
+<p><em>You can even make your worksheets test-driven by sprinkling assertions throughout them.</em></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="ide-option-eclipse-scala-ide">
+<h2>IDE Option: Eclipse Scala IDE<a class="headerlink" href="#ide-option-eclipse-scala-ide" title="Permalink to this headline">¶</a></h2>
+<p>The official Scala IDE is provided as an Eclipse bundle that has Scala already installed, based on the current Luna release. It will work on all platforms with very minor differences and provides similar functionality to IntelliJ IDEA. The following link will take you there.</p>
+<p><a class="reference external" href="http://scala-ide.org/download/sdk.html">http://scala-ide.org/download/sdk.html</a></p>
+<p>If you are already using Eclipse, you can add the Scala IDE as a plugin to your existing installation. The steps for this are described here.</p>
+<blockquote>
+<div><a class="reference external" href="http://scala-ide.org/docs/current-user-doc/gettingstarted/index.html">http://scala-ide.org/docs/current-user-doc/gettingstarted/index.html</a></div></blockquote>
+<p>Perhaps the key difference between IntelliJ IDEA and Eclipse from a Scala developer’s point of view is the support for sbt. While IntelliJ IDEA can directly open sbt-based projects in most cases, Eclipse requires you to to first generate an Eclipse project from sbt on the command line and then import this into Eclipse as an existing project.
+Importing an sbt project into Eclipse
+To enable sbt to generate an Eclipse project definition, we add the sbteclipse plugin to your project by placing the following line into our project/plugins.sbt file (or installing it globally in $HOME/.sbt/0.13/plugins/build.sbt, where $HOME stands for your home directory.)</p>
+<blockquote>
+<div>addSbtPlugin(&#8220;com.typesafe.sbteclipse&#8221; % &#8220;sbteclipse-plugin&#8221; % &#8220;3.0.0&#8221;)</div></blockquote>
+<p>This defines the sbt task eclipse, which we can use as follows:</p>
+<p>$ sbt eclipse
+[info] Loading global plugins from /Users/laufer/.sbt/0.13/plugins
+[info] Updating {<a class="reference external" href="file:/Users/laufer/.sbt/0.13/plugins/">file:/Users/laufer/.sbt/0.13/plugins/</a>}global-plugins...
+...
+[info] Loading project definition from /Users/laufer/Cloud/Dropbox/laufer/Work/scala-tdd-examples/scala-tdd-fundamentals/project
+[info] Updating {<a class="reference external" href="file:/Users/laufer/Cloud/Dropbox/laufer/Work/scala-tdd-examples/scala-tdd-fundamentals/project/">file:/Users/laufer/Cloud/Dropbox/laufer/Work/scala-tdd-examples/scala-tdd-fundamentals/project/</a>}scala-tdd-fundamentals-build...
+...
+[info] Set current project to SimpleTesting (in build <a class="reference external" href="file:/Users/laufer/Cloud/Dropbox/laufer/Work/scala-tdd-examples/scala-tdd-fundamentals/">file:/Users/laufer/Cloud/Dropbox/laufer/Work/scala-tdd-examples/scala-tdd-fundamentals/</a>)
+[info] About to create Eclipse project files for your project(s).
+...
+[info] Done updating.
+[info] Successfully created Eclipse project files for project(s):
+[info] SimpleTesting</p>
+<p>We are now ready to import the project into Eclipse in three steps. We first choose File &gt; Import from the top-level menu and tell Eclipse that we want to import an existing project. We then navigate to the root folder of our project. Finally, we confirm the import, making sure our desired existing project shows up in the list and has been checked off.</p>
+<p>You should now see your project tree in the Eclipse Package Explorer view to the left. In particular, the Referenced Libraries section will include the library dependencies from your build.sbt along with their direct and indirect dependencies (transitive closure).</p>
+<p>TIP: To make sure you always have a working command-line configuration of your project, you should consider sbt’s build.sbt the “single source of truth” and make any configuration changes there. Then, every time you do make a change, re-run sbt eclipse and then refresh your project within Eclipse to pick up the changes. For example, if you added scalacheck as a library dependency, it should now show up in Eclipse’s Package Explorer view under Referenced Libraries.</p>
+<p>Testing in Eclipse
+We can now run all JUnit-based test suites through the top-level menu</p>
+<blockquote>
+<div>Run &gt; Run As… &gt; Scala JUnit Test</div></blockquote>
+<p>or the desired sub-hierarchy of our test through context menu (obtained by right-clicking on the desired node in the Package Explorer)</p>
+<blockquote>
+<div>Run As… &gt; Scala JUnit Test</div></blockquote>
+<p>The test(s) then run in the graphical Eclipse JUnit test runner.</p>
+<p>To run ScalaTest-based test suites, we have to run them individually through the context menu</p>
+<blockquote>
+<div>Run As… &gt; ScalaTest - File</div></blockquote>
+<p>The selected test suite will then run in the graphical Eclipse ScalaTest runner. Initially, Eclipse will show you the ScalaTest console.</p>
+<p>Once you switch to the ScalaTest tab, you will see the graphical ScalaTest runner displaying a hierarchical view of your test suite.</p>
+<p>TIP: Eclipse is pickier than sbt or IntelliJ IDEA about requiring the source folder hierarchy under test to match the logical package structure. If they don’t match, then Eclipse will not discover the JUnit tests therein.</p>
+<p>IDE Choice: Typesafe Activator
+Typesafe Activator is a lightweight IDE implemented as a browser-based front end to a local installation of sbt provided by Typesafe, the company behind Scala and related technologies. You can obtain Activator from here:</p>
+<p><a class="reference external" href="https://typesafe.com/get-started">https://typesafe.com/get-started</a></p>
+<p>For our needs, the “mini package” with no bundled dependencies is actually sufficient.</p>
+<p>When you launch Activator from your file explorer or command line, the Activator home screen will show up in your default browser. From there, you can navigate to an existing sbt-based project using the navigation view on the right.</p>
+<p>TIP: Your sbt-based project must contain a project/build.properties file containing at least the single line</p>
+<blockquote>
+<div>sbt.version=0.13.7</div></blockquote>
+<p>Otherwise Activator will not recognize your project as valid.</p>
+<p>You can now use the menu in the far left column to edit, run, and test your code. There is a file navigation menu on the near left and a syntax-directed editor as the main content of the window.</p>
+<p>Once you run the tests, you will see a flat list of results. Failures and/or errors will show up as a problem count in the far left column and within the flat list. So far, there is no navigation from the flat list directly to the source editor.</p>
+</div>
+<div class="section" id="ide-choice-codio-instant-cloud-based-environment">
+<h2>IDE Choice: Codio Instant Cloud-Based Environment<a class="headerlink" href="#ide-choice-codio-instant-cloud-based-environment" title="Permalink to this headline">¶</a></h2>
+<div class="admonition-todo admonition" id="index-1">
+<p class="first admonition-title">Todo</p>
+<p class="last">Konstantin needs to help me get all of the figures into the remaining sections.</p>
+</div>
+<p>Codio is an entirely cloud-based hosted environment and enables you to develop without installing any software locally. The free starter tier provides modest but sufficient computational resources and unlimited public and/or private repositories. You can access Codio here:</p>
+<blockquote>
+<div><a class="reference external" href="https://codio.com">https://codio.com</a></div></blockquote>
+<p>From your personal Codio home screen, you can start creating a project. The first thing you will need to do is choose a suitable solution stack for Scala development:</p>
+<p>Then you can create a new empty project or, as we are showing here, import an existing one from any Git repository.</p>
+<p>Using the “Filetree” view on the left, you can navigate within your source files and open them in the syntax-directed editor.</p>
+<p>To run or test your code, you will use Tools &gt; Terminal to open a Linux terminal where you can run sbt test or other commands.</p>
+<p>At the time of this writing, Codio provides you with a persistent virtual Linux environment based on the Ubuntu 12.04.5 LTS (long-term support) release. This environment does not give you root access or access to the standard package manager, apt. Instead, it provides you with Codio’s own package manager called parts, which lets you add packages from a much more restricted list maintained by Codio.</p>
+<p>Codio has emerged as our preferred and recommended way to get started with general Scala console app and web app/service development because it requires no local installation yet is fully sbt-based and integrates with Git. In addition, we have been able to create a custom Codio stack for Android development in Scala as well as Java.
+Summary
+In this chapter, we discussed how to test Scala code in various ways. We first covered  command-line testing using the simple build tool (sbt) and its test-specific tasks. We then covered several popular and emerging IDE choices, including Codio, our recommended choice to get started in the cloud without any local installation.</p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2014, Kaylor, Läufer, and Thiruvathukal.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

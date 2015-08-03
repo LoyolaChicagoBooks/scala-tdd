@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Basic Testing &mdash; Scala TDD 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootswatch-3.3.4/lumen/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="Scala TDD 1.0 documentation" href="index.html" />
+    <link rel="next" title="Mocking" href="mocking.html" />
+    <link rel="prev" title="Testing Environment and the Simple Build Tool (SBT)" href="environment.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          Test-Driven Development in Scala</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="fundamentals.html">Testing Fundamentals</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals.html#cloning-the-exemplar">Cloning the Exemplar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals.html#the-testing-mindset-running-tests-on-checkout">The Testing Mindset - Running Tests on Checkout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals.html#assertions">Assertions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals.html#a-basic-example-rational-arithmetic">A Basic Example: Rational Arithmetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals.html#test-driven-development-with-junit-and-scala">Test-driven development with JUnit and Scala</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals.html#behavior-driven-testing-using-scalatest">Behavior-Driven Testing using ScalaTest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals.html#discussion">Discussion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Testing Environment and the Simple Build Tool (SBT)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#brief-history-of-build-tools">Brief History of Build Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#installing-sbt">Installing sbt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#configuring-sbt">Configuring sbt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#rational-numbers-recap">Rational Numbers Recap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#testing-with-sbt">Testing with sbt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#plugin-ecosystem">Plugin Ecosystem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#ide-option-jetbrains-intellij-idea">IDE Option: JetBrains IntelliJ IDEA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#ide-option-eclipse-scala-ide">IDE Option: Eclipse Scala IDE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#ide-choice-codio-instant-cloud-based-environment">IDE Choice: Codio Instant Cloud-Based Environment</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Basic Testing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#a-basic-example-rational-arithmetic">A Basic Example: Rational Arithmetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scala-junit-to-test-java-rational-class">Scala + JUnit to Test Java Rational Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mocking.html">Mocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ci.html">Continuous Integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ci.html#continuous-integration-products">Continuous Integration Products</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci.html#team-city">Team City</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci.html#jenkins">Jenkins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci.html#scaling-continuous-integration">Scaling Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci.html#continuous-integration-frequency">Continuous Integration Frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci.html#false-positives-and-periodic-failure-in-computationally-or-memory-bound-tests">False Positives and Periodic Failure in Computationally or Memory Bound Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="uitesting.html">UI Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cpdctesting.html">Advanced Topics</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Basic Testing</a><ul>
+<li><a class="reference internal" href="#a-basic-example-rational-arithmetic">A Basic Example: Rational Arithmetic</a><ul>
+<li><a class="reference internal" href="#jrational-the-java-version-of-rational">JRational - the Java version of Rational</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#scala-junit-to-test-java-rational-class">Scala + JUnit to Test Java Rational Class</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="environment.html" title="Previous Chapter: Testing Environment and the Simple Build Tool (SBT)"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Testing Environm...</span>
+    </a>
+  </li>
+  <li>
+    <a href="mocking.html" title="Next Chapter: Mocking"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Mocking &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="_sources/basicjava.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <div class="section" id="basic-testing">
+<h1>Basic Testing<a class="headerlink" href="#basic-testing" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>almost like a meta-framework that supports a broad range of testing styles</li>
+<li>great way to get started with Scala as a team</li>
+<li>nonfunctional code, similar to writing build scripts in, say, Groovy (as in Gradlle)</li>
+<li>agile way to do Java!</li>
+<li>status of [ScalaTest shell](<a class="reference external" href="http://www.artima.com/weblogs/viewpost.jsp?thread=326389">http://www.artima.com/weblogs/viewpost.jsp?thread=326389</a>)?</li>
+</ul>
+<div class="section" id="a-basic-example-rational-arithmetic">
+<h2>A Basic Example: Rational Arithmetic<a class="headerlink" href="#a-basic-example-rational-arithmetic" title="Permalink to this headline">¶</a></h2>
+<p>In the previous chapter, we discussed a <em>guiding example</em> (Rational numbers) that was written in Scala and tested using JUnit (Java implementation of xUnit) and ScalaTest. This begs an interesting question:</p>
+<p>Can we actually write a Java based version of the same class and test it using Scala?</p>
+<p>Of course, the answer is an emphatic yes. By now, it should be apparent that Scala and Java can, in fact, be used together or apart. In our own work, we rely extensively on the ability to make use of existing Java frameworks/libraries, some of which may not be given the Scala touch for awhile.</p>
+<div class="section" id="jrational-the-java-version-of-rational">
+<h3>JRational - the Java version of Rational<a class="headerlink" href="#jrational-the-java-version-of-rational" title="Permalink to this headline">¶</a></h3>
+<p>We&#8217;re mostly going to present this class <em>as is</em> with the following two assumptions:</p>
+<ul class="simple">
+<li>You&#8217;re already familiar with Java and have working knowledge of it.</li>
+<li>You can easily go back to chapter one to understand the details.</li>
+</ul>
+<p>We&#8217;ll cover the key differences, which will probably make you love Scala more than Java after reading this chapter. We&#8217;re going to present each of the fragments of code, which have been commented so you can see how the Scala and Java versions differ.</p>
+<p>Let&#8217;s start with the GCD implementation:</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="n">public</span> <span class="n">static</span> <span class="n">int</span> <span class="n">gcd</span><span class="o">(</span><span class="n">int</span> <span class="n">x</span><span class="o">,</span> <span class="n">int</span> <span class="n">y</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span>
+        <span class="k">return</span> <span class="n">y</span><span class="o">;</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span>
+        <span class="k">return</span> <span class="n">gcd</span><span class="o">(-</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">);</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">y</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">gcd</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="o">-</span><span class="n">y</span><span class="o">);</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="n">gcd</span><span class="o">(</span><span class="n">y</span> <span class="o">%</span> <span class="n">x</span><span class="o">,</span> <span class="n">x</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Here we have a static class method as opposed to a standalone Scala def. The logic for computing the GCD is identical to the Scala version.</p>
+<p>Initialization (construction) is similar to the Scala version. The only difference is that in Java all of the initialization code goes into a constructor method. In Scala, you initialize instances outside of any method. (There are no constructors.)</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="n">public</span> <span class="nc">JRational</span><span class="o">(</span><span class="n">int</span> <span class="n">initialNumerator</span><span class="o">,</span> <span class="n">int</span> <span class="n">initialDenominator</span><span class="o">)</span> <span class="n">throws</span> <span class="nc">ArithmeticException</span> <span class="o">{</span>
+    <span class="n">g</span> <span class="k">=</span> <span class="n">gcd</span><span class="o">(</span><span class="n">initialNumerator</span><span class="o">,</span> <span class="n">initialDenominator</span><span class="o">);</span>
+    <span class="n">numerator</span> <span class="k">=</span> <span class="n">initialNumerator</span> <span class="o">/</span> <span class="n">g</span><span class="o">;</span>
+    <span class="n">denominator</span> <span class="k">=</span> <span class="n">initialDenominator</span> <span class="o">/</span> <span class="n">g</span><span class="o">;</span>
+    <span class="n">testQuotient</span> <span class="k">=</span> <span class="n">initialNumerator</span> <span class="o">/</span> <span class="n">initialDenominator</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Arithmetic is where we see a few differences, owing to Java&#8217;s lack of support for operator overloading. So where you previously saw <code class="docutils literal"><span class="pre">+</span></code>, <code class="docutils literal"><span class="pre">-</span></code>, <code class="docutils literal"><span class="pre">*</span></code>, and <code class="docutils literal"><span class="pre">/</span></code>, here you see <code class="docutils literal"><span class="pre">add()</span></code>, <code class="docutils literal"><span class="pre">subtract()</span></code>, <code class="docutils literal"><span class="pre">multiply()</span></code>, and <code class="docutils literal"><span class="pre">divide()</span></code>.</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="n">public</span> <span class="nc">JRational</span> <span class="n">add</span><span class="o">(</span><span class="nc">JRational</span> <span class="n">that</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(</span><span class="n">numerator</span> <span class="o">*</span> <span class="n">that</span><span class="o">.</span><span class="n">denominator</span> <span class="o">+</span> <span class="n">that</span><span class="o">.</span><span class="n">numerator</span> <span class="o">*</span> <span class="n">denominator</span><span class="o">,</span>
+            <span class="n">denominator</span> <span class="o">*</span> <span class="n">that</span><span class="o">.</span><span class="n">denominator</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="n">public</span> <span class="nc">JRational</span> <span class="n">subtract</span><span class="o">(</span><span class="nc">JRational</span> <span class="n">that</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(</span><span class="n">numerator</span> <span class="o">*</span> <span class="n">that</span><span class="o">.</span><span class="n">denominator</span> <span class="o">-</span> <span class="n">that</span><span class="o">.</span><span class="n">numerator</span> <span class="o">*</span> <span class="n">denominator</span><span class="o">,</span>
+            <span class="n">denominator</span> <span class="o">*</span> <span class="n">that</span><span class="o">.</span><span class="n">denominator</span><span class="o">);</span>
+
+<span class="o">}</span>
+
+<span class="n">public</span> <span class="nc">JRational</span> <span class="n">multiply</span><span class="o">(</span><span class="nc">JRational</span> <span class="n">that</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(</span><span class="n">numerator</span> <span class="o">*</span> <span class="n">that</span><span class="o">.</span><span class="n">numerator</span><span class="o">,</span> <span class="n">denominator</span> <span class="o">*</span> <span class="n">that</span><span class="o">.</span><span class="n">denominator</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="n">public</span> <span class="nc">JRational</span> <span class="n">divide</span><span class="o">(</span><span class="nc">JRational</span> <span class="n">that</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(</span><span class="n">numerator</span> <span class="o">*</span> <span class="n">that</span><span class="o">.</span><span class="n">denominator</span><span class="o">,</span> <span class="n">denominator</span> <span class="o">*</span> <span class="n">that</span><span class="o">.</span><span class="n">numerator</span><span class="o">);</span>
+
+<span class="o">}</span>
+
+<span class="n">public</span> <span class="nc">JRational</span> <span class="n">reciprocal</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(</span><span class="n">denominator</span><span class="o">,</span> <span class="n">numerator</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="n">public</span> <span class="nc">JRational</span> <span class="n">negate</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(-</span><span class="n">numerator</span><span class="o">,</span> <span class="n">denominator</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>The comparison logic is similar to the Scala version.</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="nd">@Override</span>
+<span class="n">public</span> <span class="n">int</span> <span class="n">compareTo</span><span class="o">(</span><span class="nc">JRational</span> <span class="n">that</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">numerator</span> <span class="o">*</span> <span class="n">that</span><span class="o">.</span><span class="n">denominator</span> <span class="o">-</span> <span class="n">that</span><span class="o">.</span><span class="n">numerator</span> <span class="o">*</span> <span class="n">denominator</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>To make comparison work in Java, we immplement <code class="docutils literal"><span class="pre">Comparable&lt;JRational&gt;</span></code> and provide a definition that is virtually identical to the Scala version.</p>
+<p>Lastly, and similar to our intentions in the Scala version, we provide methods for allowing JRational instances to work properly in object containers, e.g. Java Collections.</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="nd">@Override</span>
+<span class="n">public</span> <span class="n">int</span> <span class="n">hashCode</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">int</span><span class="o">[]</span> <span class="n">pair</span> <span class="k">=</span> <span class="o">{</span> <span class="n">numerator</span><span class="o">,</span> <span class="n">denominator</span><span class="o">};</span>
+    <span class="k">return</span> <span class="nc">Arrays</span><span class="o">.</span><span class="n">hashCode</span><span class="o">(</span><span class="n">pair</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="nd">@Override</span>
+<span class="n">public</span> <span class="n">boolean</span> <span class="n">equals</span><span class="o">(</span><span class="nc">Object</span> <span class="n">that</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">that</span> <span class="n">instanceof</span> <span class="nc">JRational</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">compareTo</span><span class="o">(</span> <span class="o">(</span><span class="nc">JRational</span><span class="o">)</span> <span class="n">that</span><span class="o">)</span> <span class="o">==</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="o">}</span> <span class="k">else</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="nd">@Override</span>
+<span class="n">public</span> <span class="nc">String</span> <span class="n">toString</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="s">&quot;Rational(&quot;</span> <span class="o">+</span> <span class="n">numerator</span> <span class="o">+</span> <span class="s">&quot;/&quot;</span> <span class="o">+</span> <span class="n">denominator</span> <span class="o">+</span> <span class="s">&quot;;&quot;</span> <span class="o">+</span> <span class="o">(</span><span class="n">numerator</span> <span class="o">*</span> <span class="n">g</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;/&quot;</span> <span class="o">+</span> <span class="o">(</span><span class="n">denominator</span> <span class="o">*</span> <span class="n">g</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;)&quot;</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Object equality, e.g. <code class="docutils literal"><span class="pre">equals()</span></code>, basically requires us to use <code class="docutils literal"><span class="pre">isinstanceof</span></code> instead of a Scala pattern match expression.</p>
+<p>For computing <code class="docutils literal"><span class="pre">hashCode()</span></code>, we simulate a Scala tuple by putting the numerator and denominator into an array and using the convenient utility <code class="docutils literal"><span class="pre">Arrays.hashCode()</span></code> to compute the hash value based on the content of the <code class="docutils literal"><span class="pre">int[]</span></code> array.</p>
+<p>We wanted to be sure we believed it, so we fired up the <code class="docutils literal"><span class="pre">sbt</span> <span class="pre">console</span></code> to check <code class="docutils literal"><span class="pre">hashCode()</span></code> interactively.</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="n">scala</span><span class="o">&gt;</span> <span class="k">import</span> <span class="nn">scalatddpackt.JRational</span>
+<span class="k">import</span> <span class="nn">scalatddpackt.JRational</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">)</span>
+<span class="n">r1</span><span class="k">:</span> <span class="kt">scalatddpackt.JRational</span> <span class="o">=</span> <span class="n">scalatddpackt</span><span class="o">.</span><span class="nc">JRational</span><span class="k">@</span><span class="mi">3</span><span class="n">e2</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">r1</span><span class="o">.</span><span class="n">hashCode</span>
+<span class="n">res0</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">994</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="k">val</span> <span class="n">r2</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="mi">6</span><span class="o">)</span>
+<span class="n">r2</span><span class="k">:</span> <span class="kt">scalatddpackt.JRational</span> <span class="o">=</span> <span class="n">scalatddpackt</span><span class="o">.</span><span class="nc">JRational</span><span class="k">@</span><span class="mi">3</span><span class="n">e2</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">r2</span><span class="o">.</span><span class="n">hashCode</span>
+<span class="n">res1</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">994</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">r1</span><span class="o">.</span><span class="n">equals</span><span class="o">(</span><span class="n">r2</span><span class="o">)</span>
+<span class="n">res3</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="kc">true</span>
+</pre></div>
+</div>
+<p>Sure enough, it works as expected. <span class="math">\(\frac{1}{2}\)</span> and <span class="math">\(\frac{3}{6}\)</span> are indeed equal and have the same hash codes.</p>
+</div>
+</div>
+<div class="section" id="scala-junit-to-test-java-rational-class">
+<h2>Scala + JUnit to Test Java Rational Class<a class="headerlink" href="#scala-junit-to-test-java-rational-class" title="Permalink to this headline">¶</a></h2>
+<p>Here are the reworked versions to test our Java Rational (JRational) using JUnit and Scala!</p>
+<p>Aside from a few differences, the tests look virtually identical to how we test the Scala Rational.</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="nd">@Test</span>
+<span class="k">def</span> <span class="n">testInitialization</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="mi">4</span><span class="o">)</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">r1</span><span class="o">.</span><span class="n">getN</span><span class="o">)</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">r1</span><span class="o">.</span><span class="n">getD</span><span class="o">)</span>
+
+  <span class="k">val</span> <span class="n">r2</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(-</span><span class="mi">3</span><span class="o">,</span> <span class="mi">6</span><span class="o">)</span>
+  <span class="n">assertEquals</span><span class="o">(-</span><span class="mi">1</span><span class="o">,</span> <span class="n">r2</span><span class="o">.</span><span class="n">getN</span><span class="o">)</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">r2</span><span class="o">.</span><span class="n">getD</span><span class="o">)</span>
+
+  <span class="k">val</span> <span class="n">r3</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(-</span><span class="mi">3</span><span class="o">,</span> <span class="o">-</span><span class="mi">6</span><span class="o">)</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">r3</span><span class="o">.</span><span class="n">getN</span><span class="o">)</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">r3</span><span class="o">.</span><span class="n">getD</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>One key difference is related to Java style vs. Scala style. For our mathematical utiilty, <code class="docutils literal"><span class="pre">gcd()</span></code>, which is a Java class (static) method, we cannot make a reference to the static member. Luckily, we can make use of these members by using a little Scala magic to import the method for use:</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="k">import</span> <span class="nn">JRational.gcd</span>
+</pre></div>
+</div>
+<p>Once done, our JUnit code to test <code class="docutils literal"><span class="pre">gcd()</span></code> is identical to the Scala version.</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="nd">@Test</span>
+<span class="k">def</span> <span class="n">testInitialization</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="mi">4</span><span class="o">)</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">r1</span><span class="o">.</span><span class="n">getN</span><span class="o">)</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">r1</span><span class="o">.</span><span class="n">getD</span><span class="o">)</span>
+
+  <span class="k">val</span> <span class="n">r2</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(-</span><span class="mi">3</span><span class="o">,</span> <span class="mi">6</span><span class="o">)</span>
+  <span class="n">assertEquals</span><span class="o">(-</span><span class="mi">1</span><span class="o">,</span> <span class="n">r2</span><span class="o">.</span><span class="n">getN</span><span class="o">)</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">r2</span><span class="o">.</span><span class="n">getD</span><span class="o">)</span>
+
+  <span class="k">val</span> <span class="n">r3</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(-</span><span class="mi">3</span><span class="o">,</span> <span class="o">-</span><span class="mi">6</span><span class="o">)</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">r3</span><span class="o">.</span><span class="n">getN</span><span class="o">)</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">r3</span><span class="o">.</span><span class="n">getD</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>For testing initialization, our code is identical with the following notable difference: accessing private state in the Java class requires some magic. We introduce <em>getters</em> to access the numerator via <code class="docutils literal"><span class="pre">getN()</span></code> and denominator via <code class="docutils literal"><span class="pre">getD()</span></code>.</p>
+<p>When working with Java classes, only the <em>public</em> members can be accessed within Scala.</p>
+<p>Arithmetic works largely as expected with the only notable difference being that the Java version doesn&#8217;t support operators. So we need to turn infix expressions into the less-palatable form.</p>
+<p>That is, each occurrence of</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="n">r1</span> <span class="o">+</span> <span class="n">r2</span>
+<span class="n">r1</span> <span class="o">-</span> <span class="n">r2</span>
+<span class="n">r1</span> <span class="o">*</span> <span class="n">r2</span>
+<span class="n">r1</span> <span class="o">/</span> <span class="n">r2</span>
+</pre></div>
+</div>
+<p>becomes</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">r1</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">r2</span><span class="o">)</span>
+<span class="n">r1</span><span class="o">.</span><span class="na">subtract</span><span class="o">(</span><span class="n">r2</span><span class="o">)</span>
+<span class="n">r1</span><span class="o">.</span><span class="na">multiply</span><span class="o">(</span><span class="n">r2</span><span class="o">)</span>
+<span class="n">r1</span><span class="o">.</span><span class="na">divide</span><span class="o">(</span><span class="n">r2</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>The unary operators <code class="docutils literal"><span class="pre">reciprocal()</span></code> and <code class="docutils literal"><span class="pre">negate()</span></code> are the same in both of our implementations (that is, they don&#8217;t define an operator).</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="nd">@Test</span>
+<span class="k">def</span> <span class="n">testArithmetic</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(</span><span class="mi">47</span><span class="o">,</span> <span class="mi">64</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">r2</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(-</span><span class="mi">11</span><span class="o">,</span> <span class="mi">64</span><span class="o">)</span>
+
+  <span class="n">assert</span><span class="o">(</span><span class="n">r1</span><span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="n">r2</span><span class="o">)</span> <span class="o">==</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(</span><span class="mi">36</span><span class="o">,</span> <span class="mi">64</span><span class="o">))</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r1</span><span class="o">.</span><span class="n">subtract</span><span class="o">(</span><span class="n">r2</span><span class="o">)</span> <span class="o">==</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(</span><span class="mi">58</span><span class="o">,</span> <span class="mi">64</span><span class="o">))</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r1</span><span class="o">.</span><span class="n">multiply</span><span class="o">(</span><span class="n">r2</span><span class="o">)</span> <span class="o">==</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(</span><span class="mi">47</span> <span class="o">*</span> <span class="o">-</span><span class="mi">11</span><span class="o">,</span> <span class="mi">64</span> <span class="o">*</span> <span class="mi">64</span><span class="o">))</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r1</span><span class="o">.</span><span class="n">divide</span><span class="o">(</span><span class="n">r2</span><span class="o">)</span> <span class="o">==</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(</span><span class="mi">47</span><span class="o">,</span> <span class="o">-</span><span class="mi">11</span><span class="o">))</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r2</span><span class="o">.</span><span class="n">reciprocal</span><span class="o">()</span> <span class="o">==</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(</span><span class="mi">64</span><span class="o">,</span> <span class="o">-</span><span class="mi">11</span><span class="o">))</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r2</span><span class="o">.</span><span class="n">negate</span><span class="o">()</span> <span class="o">==</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(</span><span class="mi">11</span><span class="o">,</span> <span class="mi">64</span><span class="o">))</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>As for testing comparisons, our code simply needs to test what <code class="docutils literal"><span class="pre">compareTo()</span></code> does. Given that there&#8217;s no operator overloading in Java, we don&#8217;t need to test each of the operators and various combinations involving equality.</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="nd">@Test</span>
+<span class="k">def</span> <span class="n">testComparisons</span><span class="o">()</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(-</span><span class="mi">3</span><span class="o">,</span> <span class="mi">6</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">r2</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="mi">4</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">r3</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">JRational</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r1</span><span class="o">.</span><span class="n">compareTo</span><span class="o">(</span><span class="n">r2</span><span class="o">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r2</span><span class="o">.</span><span class="n">compareTo</span><span class="o">(</span><span class="n">r1</span><span class="o">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r2</span><span class="o">.</span><span class="n">compareTo</span><span class="o">(</span><span class="n">r3</span><span class="o">)</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Roadmap for the rest of this chapter</p>
+<ul class="simple">
+<li>A different example (so readers don&#8217;t get bored)</li>
+<li>ScalaTest and JRational</li>
+<li>More ScalaTest (looking at other ScalaTest styles)</li>
+<li>ScalaTest console?</li>
+</ul>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2014, Kaylor, Läufer, and Thiruvathukal.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

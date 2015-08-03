@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Testing Fundamentals &mdash; Scala TDD 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootswatch-3.3.4/lumen/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="Scala TDD 1.0 documentation" href="index.html" />
+    <link rel="next" title="Testing Environment and the Simple Build Tool (SBT)" href="environment.html" />
+    <link rel="prev" title="Test-Driven Development in Scala" href="index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          Test-Driven Development in Scala</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Testing Fundamentals</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cloning-the-exemplar">Cloning the Exemplar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-testing-mindset-running-tests-on-checkout">The Testing Mindset - Running Tests on Checkout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assertions">Assertions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#a-basic-example-rational-arithmetic">A Basic Example: Rational Arithmetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-driven-development-with-junit-and-scala">Test-driven development with JUnit and Scala</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#behavior-driven-testing-using-scalatest">Behavior-Driven Testing using ScalaTest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#discussion">Discussion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Testing Environment and the Simple Build Tool (SBT)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#brief-history-of-build-tools">Brief History of Build Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#installing-sbt">Installing sbt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#configuring-sbt">Configuring sbt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#rational-numbers-recap">Rational Numbers Recap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#testing-with-sbt">Testing with sbt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#plugin-ecosystem">Plugin Ecosystem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#ide-option-jetbrains-intellij-idea">IDE Option: JetBrains IntelliJ IDEA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#ide-option-eclipse-scala-ide">IDE Option: Eclipse Scala IDE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html#ide-choice-codio-instant-cloud-based-environment">IDE Choice: Codio Instant Cloud-Based Environment</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="basicjava.html">Basic Testing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="basicjava.html#a-basic-example-rational-arithmetic">A Basic Example: Rational Arithmetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basicjava.html#scala-junit-to-test-java-rational-class">Scala + JUnit to Test Java Rational Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mocking.html">Mocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ci.html">Continuous Integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ci.html#continuous-integration-products">Continuous Integration Products</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci.html#team-city">Team City</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci.html#jenkins">Jenkins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci.html#scaling-continuous-integration">Scaling Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci.html#continuous-integration-frequency">Continuous Integration Frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci.html#false-positives-and-periodic-failure-in-computationally-or-memory-bound-tests">False Positives and Periodic Failure in Computationally or Memory Bound Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="uitesting.html">UI Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cpdctesting.html">Advanced Topics</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Testing Fundamentals</a><ul>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li><a class="reference internal" href="#cloning-the-exemplar">Cloning the Exemplar</a></li>
+<li><a class="reference internal" href="#the-testing-mindset-running-tests-on-checkout">The Testing Mindset - Running Tests on Checkout</a></li>
+<li><a class="reference internal" href="#assertions">Assertions</a></li>
+<li><a class="reference internal" href="#a-basic-example-rational-arithmetic">A Basic Example: Rational Arithmetic</a><ul>
+<li><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test-driven-development-with-junit-and-scala">Test-driven development with JUnit and Scala</a></li>
+<li><a class="reference internal" href="#behavior-driven-testing-using-scalatest">Behavior-Driven Testing using ScalaTest</a></li>
+<li><a class="reference internal" href="#discussion">Discussion</a><ul>
+<li><a class="reference internal" href="#correctness">Correctness</a></li>
+<li><a class="reference internal" href="#performance">Performance</a></li>
+<li><a class="reference internal" href="#lifecycle-testing">Lifecycle Testing</a></li>
+<li><a class="reference internal" href="#code-coverage">Code Coverage</a></li>
+<li><a class="reference internal" href="#coupling">Coupling</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="index.html" title="Previous Chapter: Test-Driven Development in Scala"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Test-Driven Deve...</span>
+    </a>
+  </li>
+  <li>
+    <a href="environment.html" title="Next Chapter: Testing Environment and the Simple Build Tool (SBT)"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Testing Environm... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="_sources/fundamentals.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <div class="section" id="testing-fundamentals">
+<h1>Testing Fundamentals<a class="headerlink" href="#testing-fundamentals" title="Permalink to this headline">¶</a></h1>
+<p>This chapter is focused on the essentials of testing. Because we know that most readers are likely to come to Scala from a Java (or similar) environment based on JUnit, which is one of the one of the xUnit variants. we will begin this discussion with an example of how to use JUnit within Scala, since Java can be used and mixed into Scala programs. We’ll then take a look at a couple of introductory (and integrated) Scala examples and how to write them using JUnit and ScalaTest.</p>
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<p>You need to install the Scala Build Tool <a class="footnote-reference" href="#sbt" id="id1">[6]</a> - The details of this tool are covered in the <a class="reference internal" href="environment.html"><em>Testing Environment and the Simple Build Tool (SBT)</em></a>. There is no need to install Scala separately. What we&#8217;ll be doing in this chapter uses SBT to install Scala on demand.</p>
+<p>You must also install the Git distributed version control system (DVCS) but it is already on your computer if you are running OS X or Linux. Git is available for all major platforms <a class="footnote-reference" href="#git" id="id2">[7]</a>. Git is one of the preeminent version control systems and is used by GitHub <a class="footnote-reference" href="#github" id="id3">[8]</a>, one of the most popular&#8211;and we think, best&#8211;sites for hosting free and open source projects. We use it for almost all of our public-facing projects.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Many folks often think of Git (the tool) and GitHub (a social coding service built around Git) as being one in the same. You can use Git with or without a hosted service and might feel the need to do so, especially when your project isn&#8217;t open source or you wish to keep it private. We take advantage of one such service in our own work, Bitbucket <a class="footnote-reference" href="#bitbucket" id="id4">[9]</a>, which offers a number of features for corporate customers and academic software projects. For example, we write our papers in Markdown and LaTeX and often keep them private&#8211;at least until they are accepted for publication. Our book is also an example of where we use Git on two systems&#8211;one for the book chapters (our publisher wants to sell books) and several for the code examples.</p>
+</div>
+<p>To do the examples in this chapter, you must install both of these. Installation is not covered as it is platform-specific. However, we point you to web materials.</p>
+</div>
+<div class="section" id="cloning-the-exemplar">
+<h2>Cloning the Exemplar<a class="headerlink" href="#cloning-the-exemplar" title="Permalink to this headline">¶</a></h2>
+<p>An important defining principle of our book is that the text and examples should remain relevant long after you have decided the book is no longer needed. We keep all of our examples under version control. In addition to our dear readers, countless students, research collaborators, and we, ourselves, depend on the examples continuing to work long after we create them. It might go without saying, but we think there&#8217;s nothing worse than getting a book where there is a typo or compilation error and having to waste time trying to convince the author to cough up the latest code (or fix it).</p>
+<p>So without further ado, let&#8217;s get the code for this chapter.</p>
+<div class="highlight-shell"><div class="highlight"><pre><span class="nv">$ </span>git clone
+https://github.com/LoyolaChicagoCode/scala-tdd-fundamentals.git
+
+<span class="nv">$ </span><span class="nb">cd </span>scala-tdd-fundamentals
+<span class="nv">$ </span>ls
+</pre></div>
+</div>
+<p>At this point, it is worth noting that we do most of our work in a Unix style environment. You can also checkout our project using IntelliJ (covered int he next chapter) but we&#8217;re mostly going to operate at the command line in this chapter. It really does help to illuminate the principles.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is also worth noting at this point that we are command-line junkies. When it comes to things we are doing in a terminal session (e.g. entering commands and seeing output), at times we will need to break lines up for the purpose of formatting the book. Notably, the <code class="docutils literal"><span class="pre">git</span> <span class="pre">clone</span></code> command is entered entirely on one line without hitting the return (a.k.a. enter) key. Similarly, when we should you the output of a command, it is entirely possible the output you observe will be slightly different.</p>
+</div>
+</div>
+<div class="section" id="the-testing-mindset-running-tests-on-checkout">
+<h2>The Testing Mindset - Running Tests on Checkout<a class="headerlink" href="#the-testing-mindset-running-tests-on-checkout" title="Permalink to this headline">¶</a></h2>
+<p>As you now have the source code, let&#8217;s make sure we can compile and run the tests using <code class="docutils literal"><span class="pre">sbt</span></code>. We consider it a sign of a healthy project where you can immediately test the code as soon as you&#8217;ve downloaded it. We also think it can be part of a growth mindset when it comes to coding. If you think of testing as fun, you&#8217;re more likely to do it. Not to sound hokey, but when you see others having fun when they checkout your code and gleefully observe the tests passing, you are multiplying the fun!</p>
+<p>The following <em>compiles</em> the code we just checked out via <code class="docutils literal"><span class="pre">git</span></code>. <code class="docutils literal"><span class="pre">sbt</span></code>
+generates a lot of output, mainly aimed at <em>helping</em> you when something goes wrong. Because dependencies are being pulled from the internet for the unit testing frameworks (JUnit and ScalaText) there is a chance you could see an error message but it is extremely unlikely. We&#8217;re written the build file in such a way that it will evolve with Scala and its many moving parts.</p>
+<div class="highlight-python"><div class="highlight"><pre>[info] Set current project to SimpleTesting (in build 
+file:/Users/gkt/Dropbox/Work/LUC/scala-tdd-fundamentals/)
+[info] Updating 
+{file:/Users/gkt/Dropbox/Work/LUC/scala-tdd-fundamentals/}sc
+ala-tdd-fundamentals...
+[info] Resolving org.scala-lang#scala-library;2.11.4 ...
+[info] Resolving com.novocode#junit-interface;0.11 ...
+[info] Resolving junit#junit;4.11 ...
+[info] Resolving org.hamcrest#hamcrest-core;1.3 ...
+[info] Resolving org.scala-sbt#test-interface;1.0 ...
+[info] Resolving org.scalatest#scalatest_2.11;2.2.1 ...
+[info] Resolving org.scala-lang#scala-reflect;2.11.2 ...
+[info] Resolving 
+org.scala-lang.modules#scala-xml_2.11;1.0.2 ...
+[info] Resolving org.scala-lang#scala-compiler;2.11.4 ...
+[info] Resolving org.scala-lang#scala-reflect;2.11.4 ...
+[info] Resolving 
+org.scala-lang.modules#scala-parser-combinators_2.11;1.0.2 
+...
+[info] Resolving jline#jline;2.12 ...
+[info] Done updating.
+[info] Compiling 4 Scala sources to 
+/Users/gkt/Dropbox/Work/LUC/scala-tdd-fundamentals/target/sc
+ala-2.11/classes...
+[warn] there was one feature warning; re-run with -feature 
+for details
+[warn] one warning found
+[success] Total time: 3 s, completed Dec 16, 2014 3:41:07 PM
+</pre></div>
+</div>
+<p>The most important line to observe in this output is the one beginning with <code class="docutils literal"><span class="pre">[success]</span></code>. If for any reason you don&#8217;t see this line when running it yourself, it is likely that something failed, more than likely a network connectivity problem (or some repository became unavailable, we hope, temporarily).</p>
+<p>If you&#8217;ve indeed encountered success in building our code with <code class="docutils literal"><span class="pre">sbt</span></code>, the next step is to run the tests. This is achieved by running <code class="docutils literal"><span class="pre">sbt</span> <span class="pre">test</span></code>.</p>
+<div class="highlight-python"><div class="highlight"><pre>[info] RationalScalaTestFlatSpecMatchers:
+[info] GCD involving 0
+[info] - should give y for gcd(0, y)
+[info] - should give x for gcd(x, 0)
+[info] Initializing
+[info] - should reduce 2/4 to 1/2
+[info] - should reduce -2/4 to -1/2
+[info] - should reduce -3/-6 to 1/2
+[info] Arithmetic
+[info] - should perform addition
+[info] - should perform subtraction
+[info] - should perform multiplication
+[info] - should perform division
+[info] - should perform the reciprocal
+[info] - should perform negation
+[info] Comparisons
+[info] - should perform ==
+[info]   + numeric equality (==) works 
+[info]   + object equality works, e.g. equals() 
+[info]   + hashcode() works 
+[info] - should perform &lt;
+[info]   + operator &lt; works 
+[info] - should perform &gt;
+[info]   + operator &gt; works 
+[info] - should perform &lt;= for something &lt; and for 
+something =
+[info]   + operator &lt;= works for &lt; case 
+[info]   + operator &lt;= works for == case 
+[info] - should perform &gt;= for something &gt; and for 
+something =
+[info]   + operator &gt;= works for &gt; case 
+[info]   + operator &gt;= works for == case 
+[info] Passed: Total 37, Failed 0, Errors 0, Passed 37
+[success] Total time: 6 s, completed Dec 16, 2014 3:41:29 PM
+</pre></div>
+</div>
+<p>Again there is a <em>lot</em> of output generated, and what you see may differ from what you see in this console output, owing to changes that occur between the time a book is published and other changes that we or the Scala developers may make.</p>
+<p>You&#8217;ll see a number of lines that begin with <code class="docutils literal"><span class="pre">[info]</span></code>. This indicates that informative messages about tests are being written to the console. For our example, there are various tests being performed on our domain model (rational numbers). We have organized the tests according to the different methods in our implementation. Here, you can observe that we test everything from an internal helper method (the greatest common divisor), to initializer (construction) methods, and the each related groups of methods (for arithmetic, helpers, and equality/hashcode for use with other Scala classes).</p>
+<p>While the approach to checking out code and testing it without knowing any details might appear a bit odd at first, it is deliberate on our part. There is a <em>mindset</em> to testing. When you do testing right, you should be able to check out someone&#8217;s code, compile it, and run the tests. We&#8217;d also like to hope that when we checkout your code, the first thing we can do is to run tests and see evidence of good software engineering!</p>
+<p>Without further ado, let&#8217;s get started by looking at some code.</p>
+</div>
+<div class="section" id="assertions">
+<h2>Assertions<a class="headerlink" href="#assertions" title="Permalink to this headline">¶</a></h2>
+<p>A key notion of test-driven development and behavior-driven development is the ability to make a logical assertion about something that generally must hold <em>true</em> if the test is to pass. Because this is so fundamental to a <em>testing mindset</em>, we cover it separately before diving into various testing approaches.</p>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">Joe - In my experience, the built in language assertions are usually a debug-build only sanity check that wouldn’t make sense for the cases where you’d normally use exceptions. There is a strong case for being able to run unit tests in debug, release, and obfuscated release modes to validate your product. Sometimes these language level asserts don’t work in these cases.</p>
+</div>
+<p>Assertions are not a standard language feature in Scala. (They are in other languages but often without the other good stuff.) Instead, there are a number of classes that provide functions for assertion handling. In the framework we are using to introduce unit testing (JUnit), a class named Assert supports assertion testing (class) methods. When we move to ScalaTest (for good), we&#8217;ll find that the need for explicit assertions is significantly reduced but they can still be useful.</p>
+<p>In our tests, we make use of assertion method, e.g. <code class="docutils literal"><span class="pre">Assert.assert()</span></code>, to determine whether an assertion is successful. If the variable or expression passed to this method is <em>false</em>, the assertion fails.</p>
+<p>Here are some examples of assertions, JUnit style. Readers should consult <a class="footnote-reference" href="#junit" id="id5">[10]</a> for details of all supported methods. Although these are Java, we will be using them in Scala (Scala can use any Java class, a salient feature of the language).</p>
+<p>Let&#8217;s take a look at how to test drive the API via <code class="docutils literal"><span class="pre">sbt</span> <span class="pre">test:console</span></code>. The details of <code class="docutils literal"><span class="pre">sbt</span></code> are covered in the <a class="reference internal" href="environment.html"><em>Testing Environment and the Simple Build Tool (SBT)</em></a> chapter.</p>
+<p>Let&#8217;s fire up the Scala test console:</p>
+<div class="highlight-text"><div class="highlight"><pre>$ sbt test:console
+[info] Set current project to SimpleTesting (in build
+file:/Users/gkt/Dropbox/Work/LUC/scala-tdd-fundamentals/)
+[info] Starting scala interpreter...
+[info]
+Welcome to Scala version 2.11.4 (Java HotSpot(TM) 64-Bit
+Server VM, Java 1.8.0_25).
+Type in expressions to have them evaluated.
+Type :help for more information.
+</pre></div>
+</div>
+<p>Now let&#8217;s import JUnit and try out the assertion methods.</p>
+<div class="highlight-text"><div class="highlight"><pre>scala&gt; import org.junit.Assert._
+import org.junit.Assert._
+
+scala&gt; org.junit.Assert.&lt;tab&gt;
+asInstanceOf        assertNotEquals   assertSame   isInstanceOf
+assertArrayEquals   assertNotNull     assertThat   toString
+assertEquals        assertNotSame     assertTrue
+assertFalse         assertNull        fail
+</pre></div>
+</div>
+<p>Perhaps one of the most awesome things in Scala&#8217;s test console is that you can <em>discover</em> the available methods by using tab completion (a long-time favorite of Linux/Unix geeks like us).</p>
+<p>Let&#8217;s try an assertion that we know would be successful.</p>
+<div class="highlight-text"><div class="highlight"><pre>scala&gt; assertTrue(true)
+scala&gt; assertFalse(false)
+</pre></div>
+</div>
+<p>When an assertion is <em>successful</em>, you will see <em>no output</em>. On the other hand, when an assertion is <em>not successful</em> or <em>fails</em>, you see the dreaded <em>stack trace</em>.</p>
+<div class="highlight-text"><div class="highlight"><pre>scala&gt; assertTrue(false)
+java.lang.AssertionError
+at org.junit.Assert.fail(Assert.java:86)
+at org.junit.Assert.assertTrue(Assert.java:41)
+at org.junit.Assert.assertTrue(Assert.java:52)
+... 43 elided
+</pre></div>
+</div>
+<p>You can see more information about the exception as follows:</p>
+<div class="highlight-text"><div class="highlight"><pre>scala&gt; lastException.printStackTrace
+</pre></div>
+</div>
+<p>Let&#8217;s look at some of the other assertions. assertArrayEquals() is an interesting one!</p>
+<div class="highlight-text"><div class="highlight"><pre>scala&gt; val v1 = Array(1, 2, 3)
+v1: Array[Int] = Array(1, 2, 3)
+
+scala&gt; val v2 = Array(1, 2)
+v2: Array[Int] = Array(1, 2)
+
+scala&gt; assertArrayEquals(v1, v2)
+java.lang.AssertionError: array lengths differed,
+expected.length=3 actual.length=2
+  at org.junit.Assert.fail(Assert.java:88)
+  at org.junit.internal.ComparisonCriteria.assertArraysAreSame
+  Length(ComparisonCriteria.java:71)
+  at
+org.junit.internal.ComparisonCriteria.arrayEquals(Comparison
+Criteria.java:32)
+  at
+org.junit.Assert.internalArrayEquals(Assert.java:473)
+  at org.junit.Assert.assertArrayEquals(Assert.java:369)
+  at org.junit.Assert.assertArrayEquals(Assert.java:380)
+  ... 43 elided
+
+scala&gt; val v3 = Array(1, 2, 3)
+v3: Array[Int] = Array(1, 2, 3)
+
+scala&gt; assertArrayEquals(v1, v3)
+</pre></div>
+</div>
+<p>For arrays to be considered equal, they must match in type, length, and content. For this reason, only <code class="docutils literal"><span class="pre">v1</span></code> and <code class="docutils literal"><span class="pre">v3</span></code> compare equal as arrays.</p>
+<p>If we try to compare two arrays of <em>different</em> types, we won&#8217;t get very far. Consider:</p>
+<div class="highlight-text"><div class="highlight"><pre>scala&gt; val v4 = Array(1.0, 2.0)
+v4: Array[Double] = Array(1.0, 2.0)
+
+scala&gt; assertArrayEquals(v1, v4)
+&lt;console&gt;:13: error: overloaded method value assertArrayEquals
+with alternatives:
+  (x$1: Array[Long],x$2: Array[Long])Unit &lt;and&gt;
+  (x$1: Array[Int],x$2: Array[Int])Unit &lt;and&gt;
+  (x$1: Array[Short],x$2: Array[Short])Unit &lt;and&gt;
+  (x$1: Array[Char],x$2: Array[Char])Unit &lt;and&gt;
+  (x$1: Array[Byte],x$2: Array[Byte])Unit &lt;and&gt;
+  (x$1: Array[Object],x$2: Array[Object])Unit
+ cannot be applied to (Array[Int], Array[Double])
+              assertArrayEquals(v1, v4)
+              ^
+</pre></div>
+</div>
+<p>Remember that we&#8217;re trying out Scala&#8217;s assertion methods <em>interactively</em> in the REPL. The carat symbol just before <code class="docutils literal"><span class="pre">assertArrayEquals(v1,</span> <span class="pre">v4)</span></code> means that this is a <em>syntax error</em>. Why? The problem is that <code class="docutils literal"><span class="pre">v1</span></code> is a Scala <code class="docutils literal"><span class="pre">Array[Int]</span></code>, while v4 is a Scala <code class="docutils literal"><span class="pre">Array[Double]</span></code>&#8211;a problem! So this assertion neither passes nor fails. Luckily, when you write your unit tests normally, they will be within a Scala module (often within a class) and full syntactic and type checking will be performed before any test is run. The lowdown is that Scala requires your assertions to compile cleanly before they are actually executed&#8211;even within the REPL.</p>
+<p>So we know that <code class="docutils literal"><span class="pre">assertArrayEquals(v1,</span> <span class="pre">v3)</span></code> is successful. Let&#8217;s look at what happens when we use <code class="docutils literal"><span class="pre">assertEquals(v1,</span> <span class="pre">v3)</span></code>. The results may surprise you!</p>
+<div class="highlight-text"><div class="highlight"><pre>scala&gt; assertEquals(v1, v3)
+java.lang.AssertionError: expected:&lt;[I@3533e8ba&gt; but
+was:&lt;[I@386e9a04&gt;
+  at org.junit.Assert.fail(Assert.java:88)
+  at org.junit.Assert.failNotEquals(Assert.java:743)
+  at org.junit.Assert.assertEquals(Assert.java:118)
+  at org.junit.Assert.assertEquals(Assert.java:144)
+  ... 43 elided
+</pre></div>
+</div>
+<p>What&#8217;s going on here?</p>
+<p>Well, if you look carefully, there are two different object identifiers here. Although <code class="docutils literal"><span class="pre">v1</span></code> and <code class="docutils literal"><span class="pre">v3</span></code> have the same array values, they are by no means equal as in object equality. Further examination reveals what might be going on:</p>
+<div class="highlight-text"><div class="highlight"><pre>scala&gt; v1.hashCode
+res13: Int = 892594362
+
+scala&gt; v2.hashCode
+res14: Int = 1561484803
+
+scala&gt; v3.hashCode
+res15: Int = 946772484
+</pre></div>
+</div>
+<p>Aha! <code class="docutils literal"><span class="pre">v1</span></code> and <code class="docutils literal"><span class="pre">v3</span></code> refer to identical arrays, at least in terms of their content, but their hash codes don&#8217;t match. This is often a sign of <em>not being equal</em>, especially in object-oriented thinking.</p>
+<p>Luckily, a unit-testing framework allows you to avoid looking at the dreaded stack trace. It will cheerfully intercept the <code class="docutils literal"><span class="pre">AssertionError</span></code> in the test runner. (This chapter doesn&#8217;t use the IDE so everyone will have a common basis for thinking about tests that relies only on Scala&#8217;s standard toolset.)</p>
+<div class="admonition-todo admonition" id="index-1">
+<p class="first admonition-title">Todo</p>
+<p class="last">Add demonstrations of a few others here, especially those that are useful to our actual test cases.</p>
+</div>
+</div>
+<div class="section" id="a-basic-example-rational-arithmetic">
+<h2>A Basic Example: Rational Arithmetic<a class="headerlink" href="#a-basic-example-rational-arithmetic" title="Permalink to this headline">¶</a></h2>
+<p>We begin with a <em>guiding example</em> that has been conceived with the following objectives in mind:</p>
+<ul class="simple">
+<li>Easy to explain and (likely) familiar to most readers. It relies on mathematical ideas that are taught to us in childhood.</li>
+<li>Has sufficient complexity to make testing necessary.</li>
+<li>Plays to Scala&#8217;s strengths as a language.</li>
+<li>Allows us to introduce all of the testing styles without getting bogged down by domain-specific details.</li>
+</ul>
+<p>This example is also featured in Martin Odersky&#8217;s seminal introduction to Scala, a.k.a. Scala by Example <a class="footnote-reference" href="#sbe" id="id6">[1]</a>. Harrington and Thiruvathukal also present a version with are more complete API and robust unit testing in their introductory CS1 course <a class="footnote-reference" href="#introcs" id="id7">[2]</a>.</p>
+<p>While we&#8217;re reasonably certain you already know what a rational number is, it is helpful to understand its requirements. Later, we shall see that these requirements can be expressed in the various testing styles&#8211;a form of documentation.</p>
+<ol class="arabic simple">
+<li>A rational number is expressed as a quotient of integers with a <em>numerator</em> and a <em>denominator</em>.</li>
+<li>The <em>denominator</em> must not be zero.</li>
+<li>The <em>numerator</em> and <em>denominator</em> are always kept in a reduced form. That is, if the <em>numerator</em> is 2 and the <em>denominator</em> is 4, you would expect the reduced form to be <em>numerator</em> = 1 and <em>denominator</em> = 2.</li>
+<li>Rational numbers must be able to perform the usual rules of arithmetic, including binary operations such as +, -, *, and / (explained below) and various <em>convenience</em> operations such as negation and reciprocal.</li>
+<li>Any two rational numbers that are the same number should compare equally and be treated as the same number anywhere they might be used. For example, if you used a Scala set to keep a set of rational numbers (e.g. 1/2, 2/3, 2/4) you would expect this set to contain 1/2 and 2/3. 2/4 wouldn&#8217;t be expected to appear in the set.</li>
+</ol>
+<div class="section" id="implementation">
+<h3>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h3>
+<p>Central to making rational numbers work is a famous algorithm, attributable to Euclid, that computes the greatest common divisor. While one of the most important algorithms, it isn’t provided as a standard Scala function. Even so, it makes for kind of an interesting testing example, because in the case of Rational numbers, it really needs to work for positive and negative values (and all possible combinations in the numerator and denominator) and do what is expected.</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="k">def</span> <span class="n">gcd</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="n">y</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="n">gcd</span><span class="o">(-</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">)</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">y</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">-</span><span class="n">gcd</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="o">-</span><span class="n">y</span><span class="o">)</span>
+  <span class="k">else</span> <span class="n">gcd</span><span class="o">(</span><span class="n">y</span> <span class="o">%</span> <span class="n">x</span><span class="o">,</span> <span class="n">x</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>We won’t rehash the details of how Euclid’s algorithm actually does what it does. This is covered extensively in online resources. The following is the complete implementation of the Rational class. We will explore this in a bit of detail to ensure the ensuing discussion of unit testing makes complete sense.</p>
+<p>The following is the complete implementation of the Rational class. We will explore this in a bit of detail to ensure the ensuing discussion of unit testing makes complete sense.</p>
+<p>We&#8217;ll present this in pieces. Here is a general outline of how the Rational class is organized:</p>
+<p>class Rational(n: Int, d: Int) extends Ordered[Rational] {</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="k">def</span> <span class="n">gcd</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="o">...</span>
+
+<span class="c1">// initialization</span>
+<span class="k">private</span> <span class="k">val</span> <span class="n">g</span> <span class="k">=</span> <span class="n">gcd</span><span class="o">(</span><span class="n">n</span><span class="o">,</span> <span class="n">d</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">numerator</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">n</span> <span class="o">/</span> <span class="n">g</span>
+<span class="k">val</span> <span class="n">denominator</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">d</span> <span class="o">/</span> <span class="n">g</span>
+
+<span class="c1">// arithmetic</span>
+<span class="k">def</span> <span class="o">+(</span><span class="n">that</span><span class="k">:</span> <span class="kt">Rational</span><span class="o">)</span> <span class="k">=</span> <span class="o">...</span>
+<span class="k">def</span> <span class="o">-(</span><span class="n">that</span><span class="k">:</span> <span class="kt">Rational</span><span class="o">)</span> <span class="k">=</span> <span class="o">...</span>
+<span class="k">def</span> <span class="o">*(</span><span class="n">that</span><span class="k">:</span> <span class="kt">Rational</span><span class="o">)</span> <span class="k">=</span> <span class="o">...</span>
+<span class="k">def</span> <span class="o">/(</span><span class="n">that</span><span class="k">:</span> <span class="kt">Rational</span><span class="o">)</span> <span class="k">=</span> <span class="o">...</span>
+
+<span class="c1">// important unary operations</span>
+<span class="k">def</span> <span class="n">reciprocal</span><span class="o">()</span> <span class="k">=</span> <span class="o">...</span>
+<span class="k">def</span> <span class="n">negate</span><span class="o">()</span> <span class="k">=</span> <span class="o">...</span>
+
+<span class="c1">// comparisons</span>
+
+<span class="k">def</span> <span class="n">compare</span><span class="o">(</span><span class="n">that</span><span class="k">:</span> <span class="kt">Rational</span><span class="o">)</span> <span class="k">=</span> <span class="o">...</span>
+
+<span class="c1">// objects</span>
+<span class="k">override</span> <span class="k">def</span> <span class="n">equals</span><span class="o">(</span><span class="n">o</span><span class="k">:</span> <span class="kt">Any</span><span class="o">)</span> <span class="k">=</span> <span class="o">...</span>
+<span class="k">override</span> <span class="k">def</span> <span class="n">hashCode</span> <span class="k">=</span> <span class="o">...</span>
+
+<span class="c1">// companion object</span>
+
+<span class="k">object</span> <span class="nc">Rational</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>We think the Rational class is a great example that plays to Scala&#8217;s strengths, especially when it comes to clarity, conciseness, and correctness. Let&#8217;s take a look at the implementation of this class in detail.</p>
+<p>For readers new to Scala, you can start by thinking of Scala as &#8220;Java done more concisely&#8221;. The class definition basically gives us all we need to construct instances. A Rational number has a numerator and a denominator, <em>n</em> and <em>d</em>, respectively.</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="k">val</span> <span class="n">num</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">n</span> <span class="o">/</span> <span class="n">g</span>
+<span class="k">val</span> <span class="n">den</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">d</span> <span class="o">/</span> <span class="n">g</span>
+
+<span class="c1">// perform test quotient for possible ArithmeticException</span>
+<span class="k">val</span> <span class="n">testQuotient</span> <span class="k">=</span> <span class="n">num</span> <span class="o">/</span> <span class="n">den</span>
+</pre></div>
+</div>
+<p>Initializing <em>members</em> is a matter of creating Scala <code class="docutils literal"><span class="pre">val</span></code> definitions. Our Rational implementation is intended to be <em>side-effect free</em>. We initialize the <em>numerator</em> and <em>denominator</em> by dividing out the greatest-common divisor. This has the effect of reducing the fraction</p>
+<p>Let&#8217;s take a look at the methods that deal with basic arithmetic.</p>
+<p>Rational number arithmetic is interesting. One of the things that is fascinating about arithmetic involving rational numbers is that the addition (and subtraction) operations are in some ways <em>harder</em> than the multiplication (and division) operations. Why? Well, for one thing, when you do addition, you need to compute the product of the first rational&#8217;s numerator and the second rational&#8217;s denominator. Then you add this result to the product of second rational&#8217;s numerator and the first rational&#8217;s denominator. Once done, you divide this result by the product of the two rationals&#8217; demoninators. Of course, having seen children actually get confused by this (including myself), suffice it to say, you&#8217;re going to want to test it to believe it&#8211;even if you understand it.</p>
+<p>So more formally, when we have <span class="math">\(\frac{a}{b} + \frac{c}{d}\)</span>, addition is achieved by doing <span class="math">\(\frac{a d + b c}{b d}\)</span> and then using the normal methods (prayer, guessing factors, or using Euclid&#8217;s algorithm) to reduce the fraction to a final result.</p>
+<p>Now let&#8217;s look at it in Scala.</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="k">def</span> <span class="o">+(</span><span class="n">that</span><span class="k">:</span> <span class="kt">Rational</span><span class="o">)</span> <span class="k">=</span>
+  <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="n">num</span> <span class="o">*</span> <span class="n">that</span><span class="o">.</span><span class="n">den</span> <span class="o">+</span> <span class="n">that</span><span class="o">.</span><span class="n">num</span> <span class="o">*</span> <span class="n">den</span><span class="o">,</span> <span class="n">den</span> <span class="o">*</span> <span class="n">that</span><span class="o">.</span><span class="n">den</span><span class="o">)</span>
+
+<span class="k">def</span> <span class="o">-(</span><span class="n">that</span><span class="k">:</span> <span class="kt">Rational</span><span class="o">)</span> <span class="k">=</span>
+  <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="n">num</span> <span class="o">*</span> <span class="n">that</span><span class="o">.</span><span class="n">den</span> <span class="o">-</span> <span class="n">that</span><span class="o">.</span><span class="n">num</span> <span class="o">*</span> <span class="n">den</span><span class="o">,</span> <span class="n">den</span> <span class="o">*</span> <span class="n">that</span><span class="o">.</span><span class="n">den</span><span class="o">)</span>
+
+<span class="k">def</span> <span class="o">*(</span><span class="n">that</span><span class="k">:</span> <span class="kt">Rational</span><span class="o">)</span> <span class="k">=</span>
+  <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="n">num</span> <span class="o">*</span> <span class="n">that</span><span class="o">.</span><span class="n">num</span><span class="o">,</span> <span class="n">den</span> <span class="o">*</span> <span class="n">that</span><span class="o">.</span><span class="n">den</span><span class="o">)</span>
+
+<span class="k">def</span> <span class="o">/(</span><span class="n">that</span><span class="k">:</span> <span class="kt">Rational</span><span class="o">)</span> <span class="k">=</span>
+  <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="n">num</span> <span class="o">*</span> <span class="n">that</span><span class="o">.</span><span class="n">den</span><span class="o">,</span> <span class="n">den</span> <span class="o">*</span> <span class="n">that</span><span class="o">.</span><span class="n">num</span><span class="o">)</span>
+
+<span class="k">def</span> <span class="n">reciprocal</span><span class="o">()</span> <span class="k">=</span>
+  <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="n">den</span><span class="o">,</span> <span class="n">num</span><span class="o">)</span>
+
+<span class="k">def</span> <span class="n">negate</span><span class="o">()</span> <span class="k">=</span>
+  <span class="k">new</span> <span class="nc">Rational</span><span class="o">(-</span><span class="n">num</span><span class="o">,</span> <span class="n">den</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>Scala makes this particularly beautiful, given its robust support for <em>operator overloading</em> (a concept you may have missed when moving from C++ to Java as we did). In Scala, it&#8217;s just a matter of defining an operator function (+), which we are defining to work <em>only</em> with Rational on the left and right hand side in this example (again, with the intent of not driving to far from Martin Odersky&#8217;s example).</p>
+<p>We won&#8217;t go into the explanation of every operator. Subtraction (-) is essentially the same as addition (+).</p>
+<p>Multiplication of rational numbers is super simple by comparision. Multiply the numerators and denominators of each rational number. Reduce. Division follows similarly, where you basically are multiplying the first fraction by the reciprocal of the second fraction. Reduce. Done.</p>
+<p>To support the <code class="docutils literal"><span class="pre">Ordered[Rational]</span></code> trait, we need to implement comparison. This is shown in the following:</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="k">def</span> <span class="n">compare</span><span class="o">(</span><span class="n">that</span><span class="k">:</span> <span class="kt">Rational</span><span class="o">)</span> <span class="k">=</span> <span class="n">num</span> <span class="o">*</span> <span class="n">that</span><span class="o">.</span><span class="n">den</span> <span class="o">-</span> <span class="n">that</span><span class="o">.</span><span class="n">num</span> <span class="o">*</span> <span class="n">den</span>
+</pre></div>
+</div>
+<p>It is interesting to think about how rational numbers are properly compared. It is <em>essentially</em> the same as subtraction. The diference, however, is that we really don&#8217;t need to know the denominator. Why is this? A simple example is helpful. For example, if you had 1/4 and 1/4, subtraction gives 0/16. Of course, we only need the numerator of the subtraction result to know that the two fractions compared equally. More importantly, however, it is about not doing work that doesn&#8217;t need to be done.</p>
+<p>This</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="k">def</span> <span class="n">compare</span><span class="o">(</span><span class="n">that</span><span class="k">:</span> <span class="kt">Rational</span><span class="o">)</span> <span class="k">=</span> <span class="n">numerator</span> <span class="o">*</span> <span class="n">that</span><span class="o">.</span><span class="n">denominator</span> <span class="o">-</span> <span class="n">that</span><span class="o">.</span><span class="n">numerator</span> <span class="o">*</span> <span class="n">denominator</span>
+</pre></div>
+</div>
+<p>is way more efficient than</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="k">def</span> <span class="n">compare</span><span class="o">(</span><span class="n">that</span><span class="k">:</span> <span class="kt">Rational</span><span class="o">)</span> <span class="k">=</span> <span class="o">(</span><span class="k">this</span> <span class="o">-</span> <span class="n">that</span><span class="o">).</span><span class="n">numerator</span>
+</pre></div>
+</div>
+<p>Nevertheless, because it is taking advantage of a bit of mathematical cleverness, there is great value to testing whether compare does what we expect. In our forthcoming JUnit and ScalaTest examples, it will be apparent that we took great care to test this, despite our confidence in the underlying mathematical thinking behind comparison.</p>
+<p>Lastly, we have some methods that allow Rational instances to be used properly in Scala collections. We&#8217;ll keep this simple for now by saying that we define object equality on Rational numbers as follows:</p>
+<ul class="simple">
+<li>If a Rational is compared to another non-Rational object, the objects are not equal.</li>
+<li>Two Rationals are equal objects if (and only if) they compare equal using the compare method we just discussed. That is, this.compare(that) == 0.</li>
+</ul>
+<div class="highlight-scala"><div class="highlight"><pre><span class="k">override</span> <span class="k">def</span> <span class="n">equals</span><span class="o">(</span><span class="n">o</span><span class="k">:</span> <span class="kt">Any</span><span class="o">)</span> <span class="k">=</span> <span class="n">o</span> <span class="k">match</span> <span class="o">{</span>
+  <span class="k">case</span> <span class="n">that</span><span class="k">:</span> <span class="kt">Rational</span> <span class="o">=&gt;</span> <span class="n">compare</span><span class="o">(</span><span class="n">that</span><span class="o">)</span> <span class="o">==</span> <span class="mi">0</span>
+  <span class="k">case</span> <span class="k">_</span> <span class="k">=&gt;</span> <span class="kc">false</span>
+<span class="o">}</span>
+
+<span class="k">override</span> <span class="k">def</span> <span class="n">hashCode</span> <span class="k">=</span> <span class="o">(</span><span class="n">num</span><span class="o">.</span><span class="n">hashCode</span><span class="o">,</span> <span class="n">den</span><span class="o">.</span><span class="n">hashCode</span><span class="o">).</span><span class="n">hashCode</span>
+</pre></div>
+</div>
+<p>We also provide a definition of hashcode() by taking the numerator and denominator and placing them in a Scala tuple and then punting the actual hash code computation to the tuple. Although a simple idea, this little session in <code class="docutils literal"><span class="pre">sbt</span> <span class="pre">test:console</span></code> shows how it works:</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="n">scala</span><span class="o">&gt;</span> <span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">4</span><span class="o">).</span><span class="n">hashCode</span>
+<span class="n">res1</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1116984814</span>
+<span class="n">scala</span><span class="o">&gt;</span> <span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">4</span><span class="o">).</span><span class="n">hashCode</span>
+<span class="n">res2</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1116984814</span>
+</pre></div>
+</div>
+<p>Two different tuples containing the same integers (numerator and denominator) do, indeed, result in the same hash code! Whew!</p>
+</div>
+</div>
+<div class="section" id="test-driven-development-with-junit-and-scala">
+<h2>Test-driven development with JUnit and Scala<a class="headerlink" href="#test-driven-development-with-junit-and-scala" title="Permalink to this headline">¶</a></h2>
+<p>In this section, we&#8217;re going to take a look at the first of two general ways of thinking about testing: test driven development, or TDD <a class="footnote-reference" href="#tddvsbdd" id="id8">[5]</a>. In test-driven development, you typically think in terms of the tests you need to write and then write the implementation code expressly with the idea of making the tests pass. (In the interests of disclosure, the author wrote the test code and the implementation code somewhat simultaneously after starting with a spartan implementation of the Rational class.) TDD is a valuable way of thinking, because for some classes, it is virtually impossible to envision the entire set of interfaces that are needed. If you look at many class libraries (e.g. collections), it is clear that there was often an organic process that led to their creation.</p>
+<p>Java programmers nowadays write JUnit tests by creating a test class and using the &#64;Test annotation for each intended test method. Each method is written by using the various and sundry assertion methods covered earlier in this chapter.</p>
+<p>As the intention of this section is to show how you can take what you already know in Java and apply it immediately to Scala, we are assuming that you have previous experience working with JUnit and Java.</p>
+<p>Let&#8217;s start by looking at the tests for our greatest common divisor method.</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="nd">@Test</span>
+<span class="k">def</span> <span class="n">testMathUtilities</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="n">gcd</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="mi">6</span><span class="o">))</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="n">gcd</span><span class="o">(-</span><span class="mi">3</span><span class="o">,</span> <span class="mi">6</span><span class="o">))</span>
+  <span class="n">assertEquals</span><span class="o">(-</span><span class="mi">3</span><span class="o">,</span> <span class="n">gcd</span><span class="o">(-</span><span class="mi">3</span><span class="o">,</span> <span class="o">-</span><span class="mi">6</span><span class="o">))</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="n">gcd</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">5</span><span class="o">))</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="n">gcd</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="mi">0</span><span class="o">))</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">gcd</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">5</span><span class="o">))</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">gcd</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="mi">1</span><span class="o">))</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Our GCD tests are basically all encoded in one test method, because they&#8217;re all similar and very closely related. What we&#8217;re primarily trying to test here is whether various combinations of positive and negative numbers result in the expected behavior. It is worth pondering, however, what exactly is <em>expected</em> when it comes to Euclid&#8217;s algorithm. If you&#8217;ve never looked at it closely, the results may surprise (or scare) you.</p>
+<p>Let&#8217;s start with some easy examples. <span class="math">\(gcd(3, 6)\)</span> should produce 3. It&#8217;s easy to see why, because 3 divides into both 3 and 6. You&#8217;d expect these two numbers, when they appear in a Rational number (fraction) to be reduced to 1 and 2, respectively.</p>
+<p>What about when either or both of the numbers is/are negative? <span class="math">\(gcd(-3, -6)\)</span> should do what? Let&#8217;s start by thinking about what we <em>hope</em> it does. Ideally, we&#8217;d like a rational with -3 numerator and -6 denominator to be <em>reduced</em> to 1/2. So we <em>hope</em> that the greatest common divisor gives us -3. (Rest assured, it does, but we need to test this. It will only help to cure a bad headache later.)</p>
+<p>When either of the numbers is negative (but not both), we expect the greatest common divisor to be positive, though it doesn&#8217;t really matter in this case, because it will only affect whether the sign is negative in the numerator or the denominator. (Cosmetically, we prefer the sign to be in the numerator when writing fractions, but it doesn&#8217;t much matter to a computer as long as it works properly when doing arithmetic.</p>
+<p>Lastly, we need to look at what happens when zero appears in a greatest common divisor calculation. The last two tests <span class="math">\(gcd(0,5)\)</span> and <span class="math">\(gcd(5,0)\)</span> both check that the GCD is 5. Is this what we expect? Yes. If I had a rational number <span class="math">\(\frac{0}{5}\)</span>, it should be reduced to <span class="math">\(\frac{0}{1}\)</span>.</p>
+<p>So assuming all of our greatest common divisor tests work properly, it becomes much easier to think about whether the rest of our class Rational&#8217;s methods are working.</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="nd">@Test</span>
+<span class="k">def</span> <span class="n">testInitialization</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="mi">4</span><span class="o">)</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">r1</span><span class="o">.</span><span class="n">num</span><span class="o">)</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">r1</span><span class="o">.</span><span class="n">den</span><span class="o">)</span>
+
+  <span class="k">val</span> <span class="n">r2</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(-</span><span class="mi">3</span><span class="o">,</span> <span class="mi">6</span><span class="o">)</span>
+  <span class="n">assertEquals</span><span class="o">(-</span><span class="mi">1</span><span class="o">,</span> <span class="n">r2</span><span class="o">.</span><span class="n">num</span><span class="o">)</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">r2</span><span class="o">.</span><span class="n">den</span><span class="o">)</span>
+
+  <span class="k">val</span> <span class="n">r3</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(-</span><span class="mi">3</span><span class="o">,</span> <span class="o">-</span><span class="mi">6</span><span class="o">)</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">r3</span><span class="o">.</span><span class="n">num</span><span class="o">)</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">r3</span><span class="o">.</span><span class="n">den</span><span class="o">)</span>
+
+<span class="o">}</span>
+
+<span class="nd">@Test</span><span class="o">(</span><span class="n">expected</span> <span class="k">=</span> <span class="n">classOf</span><span class="o">[</span><span class="kt">ArithmeticException</span><span class="o">])</span>
+<span class="k">def</span> <span class="n">testZeroDenominator</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">r4</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span>
+  <span class="n">fail</span><span class="o">(</span><span class="s">&quot;Zero demoninator was accepted &quot;</span> <span class="o">+</span> <span class="n">r4</span><span class="o">.</span><span class="n">den</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Testing whether rational number arithmetic works as expected.</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="nd">@Test</span>
+<span class="k">def</span> <span class="n">testArithmetic</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">47</span><span class="o">,</span> <span class="mi">64</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">r2</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(-</span><span class="mi">11</span><span class="o">,</span> <span class="mi">64</span><span class="o">)</span>
+
+  <span class="n">assert</span><span class="o">(</span><span class="n">r1</span> <span class="o">+</span> <span class="n">r2</span> <span class="o">==</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">36</span><span class="o">,</span> <span class="mi">64</span><span class="o">))</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r1</span> <span class="o">-</span> <span class="n">r2</span> <span class="o">==</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">58</span><span class="o">,</span> <span class="mi">64</span><span class="o">))</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r1</span> <span class="o">*</span> <span class="n">r2</span> <span class="o">==</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">47</span> <span class="o">*</span> <span class="o">-</span><span class="mi">11</span><span class="o">,</span> <span class="mi">64</span> <span class="o">*</span> <span class="mi">64</span><span class="o">))</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r1</span> <span class="o">/</span> <span class="n">r2</span> <span class="o">==</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">47</span><span class="o">,</span> <span class="o">-</span><span class="mi">11</span><span class="o">))</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r2</span><span class="o">.</span><span class="n">reciprocal</span><span class="o">()</span> <span class="o">==</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">64</span><span class="o">,</span> <span class="o">-</span><span class="mi">11</span><span class="o">))</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r2</span><span class="o">.</span><span class="n">negate</span><span class="o">()</span> <span class="o">==</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">11</span><span class="o">,</span> <span class="mi">64</span><span class="o">))</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Testing whether the comparisons involving rational numbers work as expected.</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="nd">@Test</span>
+<span class="k">def</span> <span class="n">testComparisons</span><span class="o">()</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(-</span><span class="mi">3</span><span class="o">,</span> <span class="mi">6</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">r2</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="mi">4</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">r3</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r1</span> <span class="o">&lt;</span> <span class="n">r2</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r1</span> <span class="o">&lt;=</span> <span class="n">r2</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r2</span> <span class="o">&gt;</span> <span class="n">r1</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r2</span> <span class="o">&gt;=</span> <span class="n">r1</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r2</span> <span class="o">==</span> <span class="n">r3</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r2</span> <span class="o">&lt;=</span> <span class="n">r3</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r3</span> <span class="o">&gt;=</span> <span class="n">r2</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="behavior-driven-testing-using-scalatest">
+<h2>Behavior-Driven Testing using ScalaTest<a class="headerlink" href="#behavior-driven-testing-using-scalatest" title="Permalink to this headline">¶</a></h2>
+<p>The following is an example of one of the ScalaTest styles, known as FlatSpec. FlatSpec is an example of <em>behavior-driven development</em> or BDD. You write FlatSpec tests with the idea of <em>describing</em> the <em>requirements</em> and/or expected behavior. As software engineers, behavior-driven development allows us to ensure that the stated requirements match the expected behavior. When we think in terms of BDD as opposed to TDD, we can express our tests at a much higher level, often in plain (English) language. As we consider each of the of the following groups of tests, therefore, we&#8217;ll go back to what we <em>said</em> a rational number should <em>do</em>.</p>
+<p>One thing we <em>said</em> that rational numbers should <em>do</em> is to maintain their representation in a reduced form. When combined with other rational numbers (via arithmetic), we also expect this behavior to be observed.</p>
+<p>So let&#8217;s start with looking at how this style applies to the greatest-common divisor itself.</p>
+<p>What do we expect of the greatest common divisor algorithm? Well, our friend Euclid had something to say about this.</p>
+<ul class="simple">
+<li>When 0 is involved, e.g. <span class="math">\(gcd(x, 0)\)</span> or <span class="math">\(gcd(0, y)\)</span>, we expect <span class="math">\(x\)</span> or <span class="math">\(y\)</span> to be the result.</li>
+<li>When some multiple of a reduced fraction&#8217;s numerator and denominator are given, we expect that multiple to be the result. A good example is <span class="math">\(\frac{1}{3} \cdot \frac{3}{3}\)</span>. We&#8217;d expect the greatest common divisor to be this multiple.</li>
+</ul>
+<p>In a technical sense, this might be more of a pure testing style than behavior driven. However, the way we have expressed this is in terms of how we expect GCD to behave.</p>
+<p>As this is the first example of a FlatSpec style test, let&#8217;s introduce a few things. To create a FlatSpec style test that uses the features we&#8217;ll be showing in the remaining discussion, you need to put your tests in a Scala class:</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="k">import</span> <span class="nn">org.scalatest._</span>
+
+<span class="k">class</span> <span class="nc">RationalScalaTestFlatSpecMatchers</span> <span class="k">extends</span> <span class="nc">FlatSpec</span>
+  <span class="k">with</span> <span class="nc">Matchers</span> <span class="o">{</span>
+   <span class="c1">// Tests go here</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>You then write your tests (behavioral examples):</p>
+<p>Each test is written as follows:</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="s">&quot;Example&quot;</span> <span class="n">should</span> <span class="s">&quot;do something&quot;</span> <span class="n">in</span> <span class="o">{</span>
+   <span class="c1">// details of what it should do</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="n">it</span> <span class="n">sould</span> <span class="s">&quot;do something&quot;</span> <span class="n">in</span> <span class="o">{</span>
+   <span class="c1">// details of what it should do</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>When you write something like &#8220;Example&#8221;, the idea is to indicate that we are describing the behavior of a particular aspect under testing. When we use <em>it</em>, we are referring to the same aspect but breaking out a separate case. After seeing a few examples, it will become apparent how cool this is.</p>
+<p>Back to the actual GCD, here it is:</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="s">&quot;GCD involving 0&quot;</span> <span class="n">should</span> <span class="s">&quot;give y for gcd(0, y)&quot;</span> <span class="n">in</span> <span class="o">{</span>
+  <span class="n">gcd</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">5</span><span class="o">)</span> <span class="n">should</span> <span class="n">be</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="n">it</span> <span class="n">should</span> <span class="s">&quot;give x for gcd(x, 0)&quot;</span> <span class="n">in</span> <span class="o">{</span>
+  <span class="n">gcd</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">5</span><span class="o">)</span> <span class="n">should</span> <span class="n">be</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="s">&quot;GCD not involving 0&quot;</span> <span class="n">should</span> <span class="s">&quot;be 3&quot;</span> <span class="n">in</span> <span class="o">{</span>
+  <span class="n">gcd</span><span class="o">(</span><span class="mi">3</span> <span class="o">*</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">3</span> <span class="o">*</span> <span class="mi">3</span><span class="o">)</span> <span class="n">should</span> <span class="n">be</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="n">it</span> <span class="n">should</span> <span class="s">&quot;be 5&quot;</span> <span class="n">in</span> <span class="o">{</span>
+  <span class="n">gcd</span><span class="o">(</span><span class="mi">5</span> <span class="o">*</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">5</span><span class="o">)</span> <span class="n">should</span> <span class="n">be</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>As you can see, the code more or less follows the descriptions already given. We basically look at the different cases as written (GCD involving 0 and GCD not involving 0).</p>
+<p>Behavior-driven development, as mentioned earlier, tends to eschew (but not prohibit) explicit assertions. So we see this:</p>
+<p>instead of:</p>
+<p>We think both have value, but it is clear that one has a more <em>literate</em> style than the other.</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="s">&quot;Initializing&quot;</span> <span class="n">should</span> <span class="s">&quot;reduce fractions (+,+)&quot;</span> <span class="n">in</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="mi">4</span><span class="o">)</span>
+  <span class="n">r1</span><span class="o">.</span><span class="n">num</span> <span class="n">should</span> <span class="n">be</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+  <span class="n">r1</span><span class="o">.</span><span class="n">den</span> <span class="n">should</span> <span class="n">be</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="n">it</span> <span class="n">should</span> <span class="s">&quot;reduce fractions (-,+)&quot;</span> <span class="n">in</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(-</span><span class="mi">2</span><span class="o">,</span> <span class="mi">4</span><span class="o">)</span>
+  <span class="n">r1</span><span class="o">.</span><span class="n">num</span> <span class="n">should</span> <span class="n">be</span><span class="o">(-</span><span class="mi">1</span><span class="o">)</span>
+  <span class="n">r1</span><span class="o">.</span><span class="n">den</span> <span class="n">should</span> <span class="n">be</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="n">it</span> <span class="n">should</span> <span class="s">&quot;reduce fractions (-,-)&quot;</span> <span class="n">in</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(-</span><span class="mi">3</span><span class="o">,</span> <span class="o">-</span><span class="mi">6</span><span class="o">)</span>
+  <span class="n">r1</span><span class="o">.</span><span class="n">num</span> <span class="n">should</span> <span class="n">be</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+  <span class="n">r1</span><span class="o">.</span><span class="n">den</span> <span class="n">should</span> <span class="n">be</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="n">it</span> <span class="n">should</span> <span class="s">&quot;prohibit zero denominator&quot;</span> <span class="n">in</span> <span class="o">{</span>
+  <span class="n">a</span> <span class="o">[</span><span class="kt">ArithmeticException</span><span class="o">]</span> <span class="n">should</span> <span class="n">be</span> <span class="n">thrownBy</span> <span class="o">{</span>
+    <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Armed with the knowledge the GCD is working, testing initialization is fairly straightforward. We basically want to ensure that initialization of rational instances with any combination of positive and negative denominators results in a reduced fraction.</p>
+<div class="admonition-todo admonition" id="index-2">
+<p class="first admonition-title">Todo</p>
+<p class="last">We could also ensure that whole numbers represented as fractions have a one in the denominator. We could also ensure that 0 with any denominator reduces to 0/1. Need to add this to the code. Might also be a good exercise for the reader.</p>
+</div>
+<p>One of the interesting tests is to &#8220;not allow a zero denominator&#8221;. This shows easy it is to test for exceptions in Scala sans the familiar (dreaded?) try/catch syntax found in Java and other languages. The test fails if the <code class="docutils literal"><span class="pre">ArithmeticException</span></code> (actually, <code class="docutils literal"><span class="pre">java.lang.ArithmeticException</span></code>) is not successfully intercepted.</p>
+<p>The tests of Rational arithmetic are largely what we&#8217;d expect.</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="s">&quot;Arithmetic&quot;</span> <span class="n">should</span> <span class="s">&quot;perform addition&quot;</span> <span class="n">in</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">47</span><span class="o">,</span> <span class="mi">64</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">r2</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(-</span><span class="mi">11</span><span class="o">,</span> <span class="mi">64</span><span class="o">)</span>
+  <span class="n">r1</span> <span class="o">+</span> <span class="n">r2</span> <span class="n">should</span> <span class="o">===(</span><span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">36</span><span class="o">,</span> <span class="mi">64</span><span class="o">))</span>
+  <span class="n">r1</span> <span class="o">+</span> <span class="n">r2</span> <span class="n">should</span> <span class="n">be</span><span class="o">(</span><span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">36</span><span class="o">,</span> <span class="mi">64</span><span class="o">))</span>
+<span class="o">}</span>
+
+<span class="n">it</span> <span class="n">should</span> <span class="s">&quot;perform subtraction&quot;</span> <span class="n">in</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">47</span><span class="o">,</span> <span class="mi">64</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">r2</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(-</span><span class="mi">11</span><span class="o">,</span> <span class="mi">64</span><span class="o">)</span>
+  <span class="n">r1</span> <span class="o">-</span> <span class="n">r2</span> <span class="n">should</span> <span class="n">be</span><span class="o">(</span><span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">58</span><span class="o">,</span> <span class="mi">64</span><span class="o">))</span>
+<span class="o">}</span>
+
+<span class="n">it</span> <span class="n">should</span> <span class="s">&quot;perform multiplication&quot;</span> <span class="n">in</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">47</span><span class="o">,</span> <span class="mi">64</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">r2</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(-</span><span class="mi">11</span><span class="o">,</span> <span class="mi">64</span><span class="o">)</span>
+  <span class="n">r1</span> <span class="o">*</span> <span class="n">r2</span> <span class="n">should</span> <span class="n">be</span><span class="o">(</span><span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">47</span> <span class="o">*</span> <span class="o">-</span><span class="mi">11</span><span class="o">,</span> <span class="mi">64</span> <span class="o">*</span> <span class="mi">64</span><span class="o">))</span>
+<span class="o">}</span>
+
+<span class="n">it</span> <span class="n">should</span> <span class="s">&quot;perform division&quot;</span> <span class="n">in</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">47</span><span class="o">,</span> <span class="mi">64</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">r2</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(-</span><span class="mi">11</span><span class="o">,</span> <span class="mi">64</span><span class="o">)</span>
+  <span class="n">r1</span> <span class="o">/</span> <span class="n">r2</span> <span class="n">should</span> <span class="n">be</span><span class="o">(</span><span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">47</span><span class="o">,</span> <span class="o">-</span><span class="mi">11</span><span class="o">))</span>
+<span class="o">}</span>
+
+<span class="n">it</span> <span class="n">should</span> <span class="s">&quot;perform the reciprocal&quot;</span> <span class="n">in</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">47</span><span class="o">,</span> <span class="mi">64</span><span class="o">)</span>
+  <span class="n">r1</span><span class="o">.</span><span class="n">reciprocal</span><span class="o">()</span> <span class="n">should</span> <span class="n">be</span><span class="o">(</span><span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">64</span><span class="o">,</span> <span class="mi">47</span><span class="o">))</span>
+<span class="o">}</span>
+
+<span class="n">it</span> <span class="n">should</span> <span class="s">&quot;perform negation&quot;</span> <span class="n">in</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">47</span><span class="o">,</span> <span class="mi">64</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">r2</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(-</span><span class="mi">11</span><span class="o">,</span> <span class="mi">64</span><span class="o">)</span>
+  <span class="n">r1</span><span class="o">.</span><span class="n">negate</span><span class="o">()</span> <span class="n">should</span> <span class="n">be</span><span class="o">(</span><span class="k">new</span> <span class="nc">Rational</span><span class="o">(-</span><span class="mi">47</span><span class="o">,</span> <span class="mi">64</span><span class="o">))</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>We won&#8217;t go through every single one of these as they are largely similar, but let&#8217;s take a look at what is possible with the be-matching logic, thanks to our support (in Rational) for proper object equality.</p>
+<p>Clearly, <code class="docutils literal"><span class="pre">r1</span> <span class="pre">+</span> <span class="pre">r2</span></code> do not result in exactly the same object as <code class="docutils literal"><span class="pre">new</span> <span class="pre">Rational(36,</span> <span class="pre">64)</span></code>. In Scala, as in Java, and many other object-oriented language, it is important to know that equality is not a given. It depends on having defined equality. Because we&#8217;ve done this in the implementation of our Rational class, we are able to use the be matcher to write the test rather concisely. (In fact, we can use it in any situation where we want to assert equality, but having proper equality really comes in handy for be-matchers in ScalaTest FlatSpec style.)</p>
+<p>Let&#8217;s look at how we test the comparison operations.</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="s">&quot;Comparisons&quot;</span> <span class="n">should</span> <span class="s">&quot;perform ==&quot;</span> <span class="n">in</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="mi">4</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">r2</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">)</span>
+  <span class="n">info</span><span class="o">(</span><span class="s">&quot;numeric equality (==) works&quot;</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r1</span> <span class="o">==</span> <span class="n">r2</span><span class="o">)</span>
+  <span class="n">info</span><span class="o">(</span><span class="s">&quot;object equality works, e.g. equals()&quot;</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r1</span><span class="o">.</span><span class="n">equals</span><span class="o">(</span><span class="n">r2</span><span class="o">))</span>
+  <span class="n">info</span><span class="o">(</span><span class="s">&quot;hashcode() works&quot;</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r1</span><span class="o">.</span><span class="n">hashCode</span><span class="o">()</span> <span class="o">==</span> <span class="n">r2</span><span class="o">.</span><span class="n">hashCode</span><span class="o">())</span>
+
+<span class="o">}</span>
+<span class="n">it</span> <span class="n">should</span> <span class="s">&quot;perform &lt;&quot;</span> <span class="n">in</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(-</span><span class="mi">3</span><span class="o">,</span> <span class="mi">6</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">r2</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="mi">4</span><span class="o">)</span>
+  <span class="n">info</span><span class="o">(</span><span class="s">&quot;operator &lt; works&quot;</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r1</span> <span class="o">&lt;</span> <span class="n">r2</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="n">it</span> <span class="n">should</span> <span class="s">&quot;perform &gt;&quot;</span> <span class="n">in</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(-</span><span class="mi">3</span><span class="o">,</span> <span class="mi">6</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">r2</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="mi">4</span><span class="o">)</span>
+  <span class="n">info</span><span class="o">(</span><span class="s">&quot;operator &gt; works&quot;</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r2</span> <span class="o">&gt;</span> <span class="n">r1</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="n">it</span> <span class="n">should</span> <span class="s">&quot;perform &lt;= for something &lt; and for something =&quot;</span> <span class="n">in</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(-</span><span class="mi">3</span><span class="o">,</span> <span class="mi">6</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">r2</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="mi">4</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">r3</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">)</span>
+  <span class="n">info</span><span class="o">(</span><span class="s">&quot;operator &lt;= works for &lt; case&quot;</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r1</span> <span class="o">&lt;=</span> <span class="n">r2</span><span class="o">)</span>
+  <span class="n">info</span><span class="o">(</span><span class="s">&quot;operator &lt;= works for == case&quot;</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r2</span> <span class="o">&lt;=</span> <span class="n">r3</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="n">it</span> <span class="n">should</span> <span class="s">&quot;perform &gt;= for something &gt; and for something =&quot;</span> <span class="n">in</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(-</span><span class="mi">3</span><span class="o">,</span> <span class="mi">6</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">r2</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="mi">4</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">r3</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">)</span>
+  <span class="n">info</span><span class="o">(</span><span class="s">&quot;operator &gt;= works for &gt; case&quot;</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r2</span> <span class="o">&gt;=</span> <span class="n">r1</span><span class="o">)</span>
+  <span class="n">info</span><span class="o">(</span><span class="s">&quot;operator &gt;= works for == case&quot;</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">r2</span> <span class="o">&gt;=</span> <span class="n">r3</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>For testing equality, we test a number of different dimensions:</p>
+<ul class="simple">
+<li>Does == work as expected? We must always be able to compare two rational numbers, even when we are not thinking about object-oriented programming?</li>
+<li>Does object equality, <code class="docutils literal"><span class="pre">equals()</span></code>, work as expected?</li>
+<li>Does the object hash, <code class="docutils literal"><span class="pre">hashcode()</span></code>, work as expected?</li>
+</ul>
+<p>Knowing the answer to the first is particularly important to scientific programming types (one of us being among them) who want to know whether Rational behaves largely like a built-in datatype. Knowing the answer to the second and third questions is important for using Rational in non-computational situations, e.g. within a Scala collection (more on that shortly).</p>
+<p>This also shows another aspect of how BDD style testing goes <em>beyond</em> basic TDD testing. The <code class="docutils literal"><span class="pre">info()</span></code> method can be called to show how a test is breaking out different cases (the three cases above, in fact). The setup is largely the same for each, so we don&#8217;t want to repeat ourselves, because all three of these questions are addressing different ways of looking at equality. Taken as a group, we want all of them to work so equality is meaningful in both a numeric and object-oriented sense.</p>
+<p>For the rest of our tests, we expect them to work, because we defined our Rational class to extend Ordered[Rational]. Nevertheless, a characteristic of good testing is to <em>test the obvious</em>. As we did with the equality tests, the <code class="docutils literal"><span class="pre">&lt;=</span></code> and <code class="docutils literal"><span class="pre">&gt;=</span></code> are tested to ensure that they work for <code class="docutils literal"><span class="pre">&lt;</span></code> and <code class="docutils literal"><span class="pre">=</span></code> (for <code class="docutils literal"><span class="pre">&lt;=</span></code>) and <code class="docutils literal"><span class="pre">&gt;</span></code> and <code class="docutils literal"><span class="pre">=</span></code> (for <code class="docutils literal"><span class="pre">&gt;=</span></code>).</p>
+<p>Recalling the points we made about collections, the following shows how we test whether Rational works properly in a collection. We chose a Scala Set, because this set uses equality to determine whether or not a member should be included.</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="s">&quot;Within collections&quot;</span> <span class="n">should</span> <span class="s">&quot;work&quot;</span> <span class="n">in</span> <span class="o">{</span>
+  <span class="n">info</span><span class="o">(</span><span class="s">&quot;on Set[Rational]&quot;</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(-</span><span class="mi">3</span><span class="o">,</span> <span class="mi">6</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">r2</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="mi">4</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">r3</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">s</span> <span class="k">=</span> <span class="nc">Set</span><span class="o">(</span><span class="n">r1</span><span class="o">,</span> <span class="n">r2</span><span class="o">,</span> <span class="n">r3</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">s</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">2</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>If this test works as expected, <code class="docutils literal"><span class="pre">Rational(2,</span> <span class="pre">4)</span></code> and <code class="docutils literal"><span class="pre">Rational(1,</span> <span class="pre">2)</span></code> (two different objects, but both of which will have the numerator and denominator by virtue of having been reduced) will result in only one entry being added to the set. The second entry will be <code class="docutils literal"><span class="pre">Rational(-3,</span> <span class="pre">6)</span></code>. So the cardinality of the resulting Set[Rationa] should be two (2).</p>
+<div class="admonition-todo admonition" id="index-3">
+<p class="first admonition-title">Todo</p>
+<p class="last">Add pattern-matching case? I&#8217;m still a bit concerned that this is making the example too complicated for a first chapter.</p>
+</div>
+</div>
+<div class="section" id="discussion">
+<h2>Discussion<a class="headerlink" href="#discussion" title="Permalink to this headline">¶</a></h2>
+<p>In the interests of following the tradition of Packt books and providing highly hands-on treatment from the beginning, we focused our energy in this chapter on introducing the basics of testing by introducting a fairly well-known OO example, Rational numbers, and elaborating it completely by writing tests in TDD style (using JUnit, a fairly low-level testing framework) and BDD style (using one of the ScalaTest frameworks, known as FlatSpec). While TDD will continue to have a place in your toolset, we expect that you&#8217;ll find BDD the more compelling alternative, especially when you want to show your customers that you have incorporated direct testing their requirements in your code.</p>
+<p>It is worth taking a few moments to consider what sort of things we might want to test in practice. Three rather general questions tend to guide the way we think of testing:</p>
+<ul class="simple">
+<li>Does the code work?</li>
+<li>Does the code work well?</li>
+<li>How could the code be improved?</li>
+</ul>
+<p>In the general theory of testing, these three questions tend to be informed by some general ideas of software engineering, some of which can get rather theoretical.</p>
+<div class="section" id="correctness">
+<h3>Correctness<a class="headerlink" href="#correctness" title="Permalink to this headline">¶</a></h3>
+<p>The first of our three questions definitely falls into this category. When we talk about correctness, we are fundamentally talking about whether the code (algorithms) are correct in a formal sense. While there is still hope that formal verification systems will eventually be able to prove any piece of code correct, testing is a <em>pragmatic</em> approach to correctness. With the work we have put into testing the Rational number class, we are confident that it is correct. We&#8217;ve tested every dimension that a math-inclined person would expect us to test.</p>
+<p>But it is interesting to ponder: Have we <em>exhaustively</em> tested Rational yet? The answer is firmly in the negative. We&#8217;ve tested various combinations of things that should (and should not) appear in the numerator and denominator. But we haven&#8217;t thrown random data both to know whether anything breaks. More importantly, we haven&#8217;t done anything that appears to break performance.</p>
+</div>
+<div class="section" id="performance">
+<h3>Performance<a class="headerlink" href="#performance" title="Permalink to this headline">¶</a></h3>
+<p>We all are authors with interests in high-performance computing and related genres (e.g. embedded systems, mobile computing, covered later in this book). One thing our tests in this chapter haven&#8217;t covered is related to our second question, &#8220;Does the code run well?&#8221; For something as simple as Rational, we hope the answer is yes, but these tests do nothing to inform us of same.</p>
+<p>Performance testing is a huge challenge in general and something beyond the scope of this book to cover in depth.  But we still need to know in many situations. If we were implementing a collection class, we&#8217;d like to know if the running time of certain methods tracks the known theoretical running time. For example, if we were inserting an item into a (mutable) set, we&#8217;d expect the performance to track the running time of the underlying structure. If this were a red/black tree, we&#8217;d hope to see time proportional to <span class="math">\(O(log(n))\)</span>. We&#8217;ll look at these aspects later in the book by testing and exploring built-in collection classes, which provide a great case study for performance testing that doesn&#8217;t become unwieldy or overly domain-specific.</p>
+</div>
+<div class="section" id="lifecycle-testing">
+<h3>Lifecycle Testing<a class="headerlink" href="#lifecycle-testing" title="Permalink to this headline">¶</a></h3>
+<p>At present, we are taking a rather limited view of testing in this first chapter. We&#8217;re very much focused on unit testing and some aspects of acceptance testing. Complex software engineering includes other in-process testing, including integration testing (do all pieces of code work when put together?) to system and acceptance testing. When testing web and mobile applications, you interact with forms that accept data and interact in a black-box way with domain objects. We&#8217;re going to do a bit of user-interface testing in this book, especially when it comes to Android examples, but there are presentation-level tiers that we&#8217;re unlikely to cover, owing to the fact that we&#8217;re not writing those tiers in Scala (e.g. a web app, which is probably using some sort of JavaScript library).</p>
+</div>
+<div class="section" id="code-coverage">
+<h3>Code Coverage<a class="headerlink" href="#code-coverage" title="Permalink to this headline">¶</a></h3>
+<p>The third of our general questions about testing is to know &#8220;How could the code be improved?&#8221; For this question, we may need to look at code coverage tools. This can help us to understand whether the tests we have written really coverage all of the code in our domain. For example, do we honestly know that every single method and line of code in the Rational class has been <em>touched</em> by the tests we have written. We don&#8217;t know that by looking at JUnit or FlatSpec output directly. We&#8217;ll look at tools that can help us with this later in the book.</p>
+</div>
+<div class="section" id="coupling">
+<h3>Coupling<a class="headerlink" href="#coupling" title="Permalink to this headline">¶</a></h3>
+<p>Test driven development is an important part of incremental development. Because code is continuously changing as new requirements are introduced or refined, refactoring is also an important part of incremental development.</p>
+<p>Two important metrics to determine how easy it is to refactor code are afferent and efferent coupling. Afferent coupling describes the number of types that refer to a class. Efferent coupling describes the number of types a class refers to. Stable classes have a high ratio of afferent coupling to efferent coupling. These types of classes are considered ‘stable’. A ratio of 10:1 or 15:1 is commonly considered stable. When refactoring, it is simpler to refactor less stable classes and more challenging to refactor more stable classes.</p>
+<p>When writing unit tests, be sure to pay attention to how they effect efferent coupling. In our experience we’ve seen cases where tests will raise the stability from a 20:1 ratio to over a 100:1 ratio. It is our recommendation that if unit tests are introducing excessive efferent coupling that you introduce a factory or builder pattern for your tests to make use of. This will allow you to preserve the production stability of your code and make refactoring and incremental development more productive.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The role of automated testing in the development process (see Fowler)
+- testing
+- refactoring
+- CI/CD</p>
+</div>
+<table class="docutils footnote" frame="void" id="sbe" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id6">[1]</a></td><td>Martin Odersky, <em>Scala by Example</em>, <a class="reference external" href="http://www.scala-lang.org/docu/files/ScalaByExample.pdf">http://www.scala-lang.org/docu/files/ScalaByExample.pdf</a>.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="introcs" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id7">[2]</a></td><td>Andrew N. Harrington and George K. Thiruvathukal, <em>Introduction to Computer Science with C# and Mono</em>, <a class="reference external" href="http://introcs.cs.luc.edu">http://introcs.cs.luc.edu</a>.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="bddseparatingconcerns" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[3]</td><td><a class="reference external" href="http://stackoverflow.com/questions/15389490/bdd-in-scala-does-it-have-to-be-ugly">http://stackoverflow.com/questions/15389490/bdd-in-scala-does-it-have-to-be-ugly</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="atddcucumber" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[4]</td><td><a class="reference external" href="http://blog.knoldus.com/2013/01/15/atdd-cucumber-and-scala/">http://blog.knoldus.com/2013/01/15/atdd-cucumber-and-scala/</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="tddvsbdd" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id8">[5]</a></td><td><a class="reference external" href="http://blog.andolasoft.com/2014/06/rails-things-you-must-know-about-tdd-and-bdd.html">http://blog.andolasoft.com/2014/06/rails-things-you-must-know-about-tdd-and-bdd.html</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="sbt" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[6]</a></td><td>Scala Build Tool, <a class="reference external" href="http://www.scala-sbt.org/">http://www.scala-sbt.org/</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="git" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[7]</a></td><td>Git, <a class="reference external" href="http://git-scm.com">http://git-scm.com</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="github" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[8]</a></td><td>GitHub, <a class="reference external" href="http://github.com">http://github.com</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="bitbucket" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[9]</a></td><td><a class="reference external" href="http://bitbucket.org">http://bitbucket.org</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="junit" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[10]</a></td><td><a class="reference external" href="http://junit.org">http://junit.org</a></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2014, Kaylor, Läufer, and Thiruvathukal.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
