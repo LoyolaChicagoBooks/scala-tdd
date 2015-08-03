@@ -1,6 +1,5 @@
 build/
 examples/
-source/images/ci/build_perf.png
 *.acn
 *.acr
 *.alg

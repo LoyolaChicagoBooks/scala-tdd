@@ -31,9 +31,9 @@ function clean_build {
 # build.sh -w
 # builds web version using bootstrap/conf.py
 
-function preconditions {
-   make -C source/images/ci
-}
+#function preconditions {
+#   make -C source/images/ci
+#}
 
 function bootstrap_html {
    make CONFIG=bootstrap html
@@ -129,7 +129,7 @@ while getopts "czwepgabh?i" opt; do
     esac
 done
 
-preconditions
+#preconditions
 [ $CLEAN -ne 0 ] && clean_build
 [ $PULL -ne 0 ] && git_clone
 [ $HTML -ne 0 ] && bootstrap_html
