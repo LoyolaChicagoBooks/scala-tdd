@@ -1,3 +1,11 @@
+commit c923355dbf2f2d48c6acbecea8c555e9da17245c
+Author: George K. Thiruvathukal <gkt@cs.luc.edu>
+Date:   Mon Aug 3 12:59:51 2015 -0500
+
+    make project-independent PDF products
+    
+    Signed-off-by: George K. Thiruvathukal <gkt@cs.luc.edu>
+
 commit 34cbde054b31757a37c10f78d7dbfd2ee46979db
 Author: George K. Thiruvathukal <gkt@cs.luc.edu>
 Date:   Mon Aug 3 12:51:41 2015 -0500
@@ -29,10 +37,3 @@ Date:   Sun Aug 2 23:34:20 2015 -0500
     don't push examples on gh-pages build
     
     Signed-off-by: George K. Thiruvathukal <gkt@cs.luc.edu>
-
-commit afd42314f4365c77eca8709da4a6fcdb5aec785e
-Merge: 8939444 df877ea
-Author: George K. Thiruvathukal <gkt@cs.luc.edu>
-Date:   Sun Aug 2 23:25:17 2015 -0500
-
-    Merge branch 'master' of github.com:LoyolaChicagoBooks/scala-tdd

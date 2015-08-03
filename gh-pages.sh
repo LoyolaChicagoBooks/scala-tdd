@@ -15,8 +15,8 @@ rm -rf build
 rm -rf examples
 mkdir -p download
 mv -f build/html/* ./
-mv -f build/letterpdf/*.pdf ./download/
-mv -f build/bookpdf/*.pdf ./download/comp170book.pdf
+mv -f build/letterpdf/*.pdf ./download/letter.pdf
+mv -f build/bookpdf/*.pdf ./download/book7x9.pdf
 mv -f build/epub/*.epub ./download/
 mv -f build/dist/*.zip ./download/
 touch .nojekyll
