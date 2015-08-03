@@ -50,7 +50,11 @@ function bootstrap_epub {
 # builds 8.5 x 11 PDF version using bootstrap/conf.py
 
 function bootstrap_pdf {
-   make CONFIG=bootstrap  LATEXOPTS=' -interaction=batchmode ' latexpdf
+   if [ $INTERACTVE -eq 0 ]; then
+      make CONFIG=bootstrap  LATEXOPTS=' -interaction=batchmode ' latexpdf
+   else
+      make CONFIG=bootstrap latexpdf
+   fi
    rm -rf build/letterpdf
    mv -f build/latex build/letterpdf
 }
@@ -59,7 +63,11 @@ function bootstrap_pdf {
 # builds 7 x 9 PDF for CreateSpace (Amazon) using createspace/conf.py
 
 function createspace_pdf {
-   make CONFIG=createspace LATEXOPTS=' -interaction=batchmode ' latexpdf
+   if [ $INTERACTVE -eq 0 ]; then
+      make CONFIG=createspace LATEXOPTS=' -interaction=batchmode ' latexpdf
+   else
+      make CONFIG=createspace latexpdf
+   fi
    rm -rf build/bookpdf
    mv -f build/latex build/bookpdf
 }
@@ -79,7 +87,7 @@ function htmlzip {
 # shows help
 
 function show_help {
-   echo 'build.sh [-h] [-?] [-w] [-p] [-e] [-b] [-g]'
+   echo 'build.sh (-h|-?) (-w) (-p) (-e) (-b) (-g) (-i) (-a)'
    echo '  -h or -?: help'
    echo '  -c: clean before building any of the following'
    echo '  -g: pull examples from introcs-csharp-examples, etc.'
@@ -89,6 +97,7 @@ function show_help {
    echo '  -b: build book PDF (createspace config)'
    echo '  -z: build HTML ZIP bundle'
    echo '  -a: all of -g, -w, -e, -p, -b and -z'
+   echo '  -i: run LaTeX building (-p, -b) interactively (for debugging only)'
 }
 
 
@@ -103,8 +112,9 @@ PULL=0
 BOOK=0
 HTMLZIP=0
 CLEAN=0
+INTERACTIVE=0
 
-while getopts "czwepgabh?" opt; do
+while getopts "czwepgabh?i" opt; do
     case "$opt" in
     a)  HTML=1; EPUB=1; PDF=1; BOOK=1; PULL=1; HTMLZIP=1
         ;;
@@ -119,6 +129,8 @@ while getopts "czwepgabh?" opt; do
     b)  BOOK=1
         ;;
     g)  PULL=1
+        ;;
+    i)  INTERACTIVE=1
         ;;
     z)  HTML=1; HTMLZIP=1
         ;;
