@@ -1,0 +1,39 @@
+commit df877eafe256009ed5e6830d96a4a887225000f3
+Author: George K. Thiruvathukal <gkt@cs.luc.edu>
+Date:   Sun Aug 2 10:17:37 2015 -0500
+
+    update help
+    
+    Signed-off-by: George K. Thiruvathukal <gkt@cs.luc.edu>
+
+commit 7939d7b9cf106a4ab26343a67f8c222556446b8e
+Author: George K. Thiruvathukal <gkt@cs.luc.edu>
+Date:   Sun Aug 2 10:10:13 2015 -0500
+
+    a reason to test first:  fix test for interactive
+    
+    Signed-off-by: George K. Thiruvathukal <gkt@cs.luc.edu>
+
+commit 8a10ca3fbbf6165a0edde3ca7d44d08c6a8b6a49
+Author: George K. Thiruvathukal <gkt@cs.luc.edu>
+Date:   Sun Aug 2 10:05:13 2015 -0500
+
+    add support for LaTeX interactive (so we can debug LaTeX problems)
+    
+    Signed-off-by: George K. Thiruvathukal <gkt@cs.luc.edu>
+
+commit a677cd7d63145c4096e73263521c25e422ac8fda
+Author: George K. Thiruvathukal <gkt@cs.luc.edu>
+Date:   Sun Aug 2 09:32:25 2015 -0500
+
+    cleanup warning about _static
+    
+    Signed-off-by: George K. Thiruvathukal <gkt@cs.luc.edu>
+
+commit 3f974763456e8e3988e9ec8254c0d91131535975
+Author: George K. Thiruvathukal <gkt@cs.luc.edu>
+Date:   Sat Aug 1 18:14:42 2015 -0500
+
+    fix some errors in Sphinx directive use
+    
+    Signed-off-by: George K. Thiruvathukal <gkt@cs.luc.edu>
